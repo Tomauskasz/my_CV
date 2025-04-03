@@ -2121,10 +2121,10 @@
 }
 @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&display=swap");
 .diagonal-cut-left {
-  clip-path: polygon(100% 180px, 0 120px, 0 100%, 100% 100%);
+    clip-path: polygon(100% 17%, 0 13%, 0 100%, 100% 100%);
 }
 .diagonal-cut-right {
-  clip-path: polygon(100% 290px, 0 180px, 0 100%, 100% 100%);
+    clip-path: polygon(100% 25%, 0 17%, 0 100%, 100% 100%);
 }
 @media (max-width: 1100px) {
   .diagonal-cut-left {
