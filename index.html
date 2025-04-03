@@ -11,10 +11,11 @@
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
     />
+    <script src="lang.js" defer></script>
   </head>
 
   <!-- Background -->
-  <body class="min-h-screen min-w-screen bg-blue-200">
+  <body class="min-h-screen min-w-screen bg-blue-200 text-lg">
     <!-- Main container -->
     <div
       class="flex flex-wrap md:flex-row flex-col-reverse min-h-screen max-w-screen-2xl mx-auto font-inter"
@@ -26,7 +27,7 @@
 
         <!-- Content wrapper -->
         <div
-          class="relative flex flex-col items-center text-center h-full mx-20 gap-8"
+          class="relative flex flex-col items-center text-center h-full mx-auto gap-8 w-70"
         >
           <img
             src="profile.jpg"
@@ -35,9 +36,9 @@
           />
 
           <!-- Kontaktai -->
-          <section class="w-60 mt-10 mb-5 md:m-0 md:mt-3">
-            <h2 class="text-2xl">Kontaktai</h2>
-            <hr class="mb-5" />
+          <section class="mt-10 mb-5 md:m-0 md:mt-3" id="contacts-section">
+            <h2 class="text-2xl" id="contacts-title"></h2>
+            <hr class="mb-5 w-60 mx-auto" />
             <ul class="flex flex-col gap-5">
               <li class="flex flex-col items-center">
                 <a
@@ -46,7 +47,7 @@
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-12 w-12"
+                    class="h-12 w-12 mb-0.5"
                     viewBox="0 0 16 16"
                   >
                     <path
@@ -56,10 +57,10 @@
                       d="M15.834 12.244c0 1.168-.577 2.025-1.587 2.025-.503 0-1.002-.228-1.12-.648h-.043c-.118.416-.543.643-1.015.643-.77 0-1.259-.542-1.259-1.434v-.529c0-.844.481-1.4 1.26-1.4.585 0 .87.333.953.63h.03v-.568h.905v2.19c0 .272.18.42.411.42.315 0 .639-.415.639-1.39v-.118c0-1.277-.95-2.326-2.484-2.326h-.04c-1.582 0-2.64 1.067-2.64 2.724v.157c0 1.867 1.237 2.654 2.57 2.654h.045c.507 0 .935-.07 1.18-.18v.731c-.219.1-.643.175-1.237.175h-.044C10.438 16 9 14.82 9 12.646v-.214C9 10.36 10.421 9 12.485 9h.035c2.12 0 3.314 1.43 3.314 3.034zm-4.04.21v.227c0 .586.227.8.581.8.31 0 .564-.17.564-.743v-.367c0-.516-.275-.708-.572-.708-.346 0-.573.245-.573.791"
                     />
                   </svg>
-                  tomas.bitvinskas@gmail.com
+
+                  <span>tomas.bitvinskas@gmail.com</span>
                 </a>
               </li>
-
               <li class="flex flex-col items-center">
                 <a
                   href="tel:+37064655290"
@@ -67,7 +68,7 @@
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-12 w-12"
+                    class="h-12 w-12 mb-1"
                     viewBox="0 0 16 16"
                   >
                     <path
@@ -75,10 +76,9 @@
                       d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"
                     />
                   </svg>
-                  +37064655290
+                  <span>+37064655290</span>
                 </a>
               </li>
-
               <li class="flex flex-col items-center">
                 <a
                   href="https://www.facebook.com/tomas.bitvinskas"
@@ -87,47 +87,61 @@
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-12 w-12"
+                    class="h-12 w-12 mb-1"
                     viewBox="0 0 16 16"
                   >
                     <path
                       d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"
                     />
                   </svg>
-                  Tomas Bitvinskas
+                  <span>Tomas Bitvinskas</span>
+                </a>
+              </li>
+
+              <li class="flex flex-col items-center">
+                <a
+                  href="https://www.linkedin.com/in/tomas-bitvinskas-ab4689253/"
+                  target="_blank"
+                  class="hover:underline mt-1 flex flex-col items-center"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-12 w-12 mb-1"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"
+                    />
+                  </svg>
+                  <span>Tomas Bitvinskas</span>
                 </a>
               </li>
             </ul>
           </section>
 
-          <!-- Išssilavinimas -->
-          <section class="w-60 mb-5 md:m-0">
-            <h2 class="text-2xl">Išsilavinimas</h2>
-            <hr class="mb-5" />
-            <div class="flex flex-col gap-4">
+          <!-- Išsilavinimas -->
+          <section class="mb-5 md:m-0" id="education-section">
+            <h2 class="text-2xl" id="education-title"></h2>
+            <hr class="mb-5 w-60 mx-auto" />
+            <div class="flex flex-col gap-4" id="education-content">
               <div>
-                <h3 class="text-xl">Vidurinis</h3>
-                <p class="text-sm text-gray-600">
-                  Vilniaus Gabijos gimnazija, 2010-2022
-                </p>
+                <h3 class="text-xl"></h3>
+                <p class="text-sm text-gray-600"></p>
               </div>
               <div>
-                <h3 class="text-xl">Aukštasis (Studentas)</h3>
-                <p class="text-sm text-gray-600">
-                  Vilnius TECH, 2022-dabar <br />
-                  9.3 vidurkis
-                </p>
+                <h3 class="text-xl"></h3>
+                <p class="text-sm text-gray-600"></p>
               </div>
             </div>
           </section>
 
           <!-- Kalbos -->
-          <section class="w-60 mb-5">
-            <h2 class="text-2xl">Kalbos</h2>
-            <hr class="mb-5" />
-            <div class="flex flex-col gap-2">
-              <h3 class="text-xl">Lietuvių</h3>
-              <h3 class="text-xl">Anglų</h3>
+          <section class="mb-5" id="languages-section">
+            <h2 class="text-2xl" id="languages-title"></h2>
+            <hr class="mb-5 w-60 mx-auto" />
+            <div class="flex flex-col gap-2" id="languages-content">
+              <h3 class="text-xl"></h3>
+              <h3 class="text-xl"></h3>
             </div>
           </section>
         </div>
@@ -138,68 +152,95 @@
         <!-- Diagonal bg -->
         <div class="absolute h-full w-full bg-blue-50 diagonal-cut-right"></div>
 
+        <!-- Language Selector -->
+        <div class="md:absolute md:top-5 md:right-5 fixed right-5 top-5">
+          <!-- Button -->
+          <button
+            id="langBtn"
+            class="px-4 py-2 bg-white border rounded-xl shadow-lg hover:bg-gray-200 flex items-center gap-1 relative z-50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              class="bi bi-globe"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill="black"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"
+              />
+            </svg>
+            <span id="selectedLang">LT</span>
+          </button>
+
+          <!-- Dropdown -->
+          <div
+            id="langMenu"
+            class="absolute left-1/2 transform -translate-x-1/2 mt-2 w-max bg-white border rounded-xl shadow-lg hidden z-50"
+          >
+            <ul class="py-2">
+              <li>
+                <button
+                  class="lang-option px-4 py-2 hover:bg-gray-200"
+                  data-lang="LT"
+                >
+                  &#x1F1F1;&#x1F1F9; Lietuvių
+                </button>
+              </li>
+              <li>
+                <button
+                  class="lang-option px-4 py-2 hover:bg-gray-200"
+                  data-lang="EN"
+                >
+                  &#x1F1EC;&#x1F1E7; English
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
         <!-- Content wrapper -->
         <div class="relative flex flex-col items-center gap-10 mx-15 text-left">
           <section
-            class="lg:mt-20 lg:mb-16 md:mt-26 md:mb-14 mt-20 mb-25 text-center"
+            class="lg:mt-20 lg:mb-16 md:mt-26 md:mb-15 mt-20 mb-25 text-center"
           >
             <h2 class="lg:text-6xl text-5xl">Tomas Bitvinskas</h2>
             <p
               class="lg:text-2xl md:text-xl text-xl text-gray-600 uppercase mt-3"
-              id="sritis"
-            >
-              Dirbtinio intelekto studentas
-            </p>
+              id="job-title"
+            ></p>
           </section>
 
           <!-- Trumpas aprašymas -->
           <section>
-            <h2 class="text-2xl italic">Apie</h2>
+            <h2 class="text-2xl italic" id="about-title"></h2>
             <hr class="mb-3" />
-            <p class="text-justify">
-              Esu 22-ų metų, trečio kurso DI (dirbtinio intelekto)
-              <span class="text-blue-800">"Vilnius TECH"</span> studentas.
-              Mokausi programavimo: DI, tinklapių kūrimas (web-dev) bei pats
-              domiuosi kompiuterinių žaidimų kūrimu (game-dev). Esu motyvuotas
-              ir siekiu įgauti daug įvairių žinių, kad tapčiau geru specialistu.
+            <p class="text-justify" id="about-content">
+              <!-- Placeholder for dynamic content -->
             </p>
           </section>
 
           <!-- Įgūdžiai -->
           <section>
-            <h2 class="text-2xl italic">Įgūdžiai</h2>
+            <h2 class="text-2xl italic" id="skills-title"></h2>
             <hr class="mb-3" />
-            <ul class="list-inside list-disc space-y-2 text-justify">
-              <li>
-                Su Python esu dirbęs ties natūralios kalbos bei vaizdų
-                apdorojimu ir atpažinimu, "Reinforcement learning", regresine
-                analize, klasifikacija, klasterizacija, DI modelių "finetuning",
-                didžiųjų duomenų apdorojimu.
-              </li>
-              <li>
-                Dirbau ir su C++, kuriant kursinį objektinio programavimo darbą
-                bei realizuojant įvairias duomenų struktūras (binary tree,
-                stack, array ir pan.), jų algoritmus.
-              </li>
-              <li>
-                Turiu HTML&CSS bei Tailwind patirties, kuriant paprastus
-                tinklapius.
-              </li>
-              <li>
-                Esu dirbęs su Javascript, Oracle ir Node.js, kuriant
-                registracijos bei prisijungimo tinklapį.
-              </li>
+            <ul
+              class="list-inside list-disc space-y-2 text-justify"
+              id="skills-list"
+            >
+              <!-- Placeholder for dynamic content -->
             </ul>
           </section>
 
           <!-- Savybės -->
           <section class="mb-8">
-            <h2 class="text-2xl italic">Savybės</h2>
+            <h2 class="text-2xl italic" id="attributes-title"></h2>
             <hr class="mb-3" />
             <table>
-              <thead>
+              <thead id="attributes-thead">
                 <tr>
-                  <th class="border px-4 py-2 text-left font-semibold w-1/5">
+                  <th class="border px-4 py-2 text-left font-semibold w-1/6">
                     Savybė
                   </th>
                   <th class="border px-4 py-2 text-center font-semibold">
@@ -207,38 +248,8 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td class="border px-4 py-2">Atkaklumas</td>
-                  <td class="border px-4 py-2 text-center">
-                    Turiu užbaigti, ką pradėjau, nes lengvai ir giliai pasineriu
-                    į darbą.
-                  </td>
-                </tr>
-                <tr>
-                  <td class="border px-4 py-2">Sąmoningumas</td>
-                  <td class="border px-4 py-2 text-center">
-                    Neturiu jokių žalingų įpročių. Sveikas protas ir kūnas -
-                    būtini optimaliam darbui. "Rūpinkis savo kūnu. Tai
-                    vienintelė vieta, kurioje privalai gyventi." – Jim Rohn
-                  </td>
-                </tr>
-                <tr>
-                  <td class="border px-4 py-2">Darbštumas ir ambicija</td>
-                  <td class="border px-4 py-2 text-center">
-                    Nebijau įdėti darbo siekdamas savo tikslų ir tikiu, kad
-                    žmogus privalo nuolat kelti sau naujus iššūkius, nes tik
-                    taip galima tobulėti.
-                  </td>
-                </tr>
-                <tr>
-                  <td class="border px-4 py-2">Atsakingumas ir kruopštumas</td>
-                  <td class="border px-4 py-2 text-center">
-                    Atlieku darbus laiku ir kokybiškai. Visad stengsiuosi dėl
-                    to, kas man svarbu. „Jei verta ką nors daryti, verta tai
-                    daryti gerai.“ - Philip Stanhope.
-                  </td>
-                </tr>
+              <tbody id="attributes-table">
+                <!-- Placeholder for dynamic content -->
               </tbody>
             </table>
           </section>
