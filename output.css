@@ -2193,7 +2193,7 @@ h2, #sritis {
   font-family: "Merriweather Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
-  @apply uppercase;
+  text-transform: uppercase;
   letter-spacing: 2px;
 }
 :root {
