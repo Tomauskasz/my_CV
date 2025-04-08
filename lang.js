@@ -41,7 +41,7 @@ const translations = {
         gpa: "9.3 vidurkis",
       },
     ],
-    languages: ["Lietuvių", "Anglų"],
+    languages: ["Lietuvių", "Anglų", "Rusų"],
     attributes: [
       {
         name: "Atkaklumas",
