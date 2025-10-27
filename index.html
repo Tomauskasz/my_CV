@@ -32,7 +32,8 @@
           <img
             src="profile.jpg"
             alt="profile_picture"
-            class="mt-10 h-52 w-52 rounded-full object-cover"
+            class="mt-10 h-52 w-52 rounded-full object-cover cursor-pointer"
+            onclick="openModal()"
           />
 
           <!-- Kontaktai -->
@@ -157,7 +158,7 @@
           <!-- Button -->
           <button
             id="langBtn"
-            class="px-4 py-2 bg-white border rounded-xl shadow-lg hover:bg-gray-200 flex items-center gap-1 relative z-50"
+            class="lang-toggle px-4 py-2 bg-white border rounded-xl shadow-lg hover:bg-gray-200 flex items-center gap-1 relative z-50 transition-all duration-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -185,7 +186,7 @@
                   class="lang-option px-4 py-2 hover:bg-gray-200"
                   data-lang="LT"
                 >
-                  &#x1F1F1;&#x1F1F9; Lietuvių
+                  <img src="https://flagicons.lipis.dev/flags/4x3/lt.svg" alt="Lithuanian flag" class="flag-icon"> Lietuvių
                 </button>
               </li>
               <li>
@@ -193,7 +194,7 @@
                   class="lang-option px-4 py-2 hover:bg-gray-200"
                   data-lang="EN"
                 >
-                  &#x1F1EC;&#x1F1E7; English
+                  <img src="https://flagicons.lipis.dev/flags/4x3/gb.svg" alt="English flag" class="flag-icon"> English
                 </button>
               </li>
             </ul>
@@ -253,6 +254,29 @@
               </tbody>
             </table>
           </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for enlarged profile picture -->
+    <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+      <div class="modal-content p-4">
+        <div class="modal-image-wrap">
+          <div class="image-container">
+            <img
+              src="profile.jpg"
+              alt="profile_picture_enlarged"
+              class="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onclick="closeModal()"
+              class="close-btn text-white bg-black bg-opacity-70 rounded-full flex items-center justify-center hover:bg-opacity-90 transition-all"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>

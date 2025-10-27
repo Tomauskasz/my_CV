@@ -233,3 +233,37 @@ document.addEventListener("click", (e) => {
     langMenu.classList.add("hidden");
   }
 });
+
+// Modal functionality for profile picture
+function openModal() {
+  const modal = document.getElementById("profileModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden"; // Prevent background scrolling
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById("profileModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+    document.body.style.overflow = ""; // Restore scrolling
+  }
+}
+
+// Close modal when clicking outside the image
+document.addEventListener("click", (e) => {
+  const modal = document.getElementById("profileModal");
+  if (e.target === modal) {
+    closeModal();
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeModal();
+  }
+});

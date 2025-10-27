@@ -2188,19 +2188,53 @@
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
 h2, #sritis {
   font-family: "Merriweather Sans", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
+  text-shadow: var(--text-shadow);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h1 {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 :root {
-  --svg-icon-color: #51a2ff;
+  --svg-icon-color: #3b82f6;
+  --modern-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --modern-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --modern-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --modern-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
+
 svg {
   fill: var(--svg-icon-color);
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+svg:hover {
+  fill: #2563eb;
+  transform: scale(1.15);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
 }
 @property --tw-translate-x {
   syntax: "*";
@@ -2486,4 +2520,472 @@ svg {
 @property --tw-duration {
   syntax: "*";
   inherits: false;
+}
+
+
+
+
+/* Enhanced about section paragraph - matching skills section style */
+#about-content {
+  transition: all 0.2s ease;
+  line-height: 1.7;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0;
+}
+
+#about-content:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  color: #1e293b;
+  padding-left: 0.5rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  padding-right: 0.5rem;
+  transform: translateX(2px);
+}
+
+/* Enhanced table styling */
+#attributes-table td {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+#attributes-table tr:hover td {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  color: #1e293b;
+}
+
+#attributes-table td:first-child {
+  font-weight: 600;
+  color: #0f172a;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Enhanced list styling */
+#skills-list li {
+  transition: all 0.2s ease;
+  padding: 0.25rem 0;
+  border-radius: 0.25rem;
+  position: relative;
+}
+
+#skills-list li::marker {
+  color: #000000;
+  transition: color 0.2s ease;
+}
+
+#skills-list li:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  padding-left: 0.5rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  padding-right: 0.5rem;
+  transform: translateX(2px);
+}
+
+#skills-list li:hover::marker {
+  color: #1e293b;
+}
+
+/* Smooth animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease-out;
+}
+
+/* Enhanced focus states for accessibility */
+.focus-ring:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* Enhanced profile image styling */
+img[alt="profile_picture"] {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
+img[alt="profile_picture"]:hover {
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.2)) saturate(1.15) brightness(1.05);
+  transform: scale(1.05) rotate(1deg);
+  border-color: rgba(59, 130, 246, 0.6);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  cursor: pointer;
+}
+
+/* Modern text styling */
+p, li, span {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.uppercase {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Enhanced hr styling - more visible */
+hr {
+  background: linear-gradient(90deg, transparent 0%, #94a3b8 20%, #64748b 50%, #94a3b8 80%, transparent 100%);
+  height: 2px;
+  border: none;
+  margin: 1.5rem auto;
+  opacity: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 1px;
+}
+
+
+/* Global enhancements - simplified */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Enhanced focus indicators */
+a:focus, button:focus, [tabindex]:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  border-radius: 0.25rem;
+}
+
+/* Modern loading animation for dynamic content */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Clean modern table styling with visible grid lines */
+table {
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #cbd5e1;
+}
+
+th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #334155;
+  border-bottom: 2px solid #94a3b8;
+  border-right: 1px solid #cbd5e1;
+}
+
+th:last-child {
+  border-right: none;
+}
+
+td {
+  border-bottom: 1px solid #cbd5e1;
+  border-right: 1px solid #cbd5e1;
+  transition: background-color 0.2s ease;
+}
+
+td:last-child {
+  border-right: none;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover td {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+th:first-child {
+  border-top-left-radius: 0.5rem;
+  border-left: 1px solid #94a3b8;
+}
+
+th:last-child {
+  border-top-right-radius: 0.5rem;
+  border-right: 1px solid #94a3b8;
+}
+
+tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 0.5rem;
+  border-left: 1px solid #94a3b8;
+}
+
+tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 0.5rem;
+  border-right: 1px solid #94a3b8;
+}
+
+tbody tr:first-child td {
+  border-top: 1px solid #94a3b8;
+}
+
+/* Modern language selector styling */
+.lang-toggle {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid rgba(148, 163, 184, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+.lang-toggle:hover {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  border-color: #3b82f6;
+  box-shadow: 0 10px 15px -3px rgba(96, 165, 250, 0.25), 0 4px 6px -2px rgba(96, 165, 250, 0.1);
+  transform: translateY(-2px);
+  color: white;
+  cursor: pointer;
+}
+
+.lang-toggle svg {
+  transition: transform 0.3s ease;
+}
+
+.lang-toggle:hover svg {
+  transform: rotate(180deg) scale(1.1);
+}
+
+/* Modern dropdown styling */
+#langMenu {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  animation: slideInDown 0.2s ease-out;
+  transform-origin: top center;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+#langMenu .lang-option {
+  transition: all 0.2s ease;
+  border-radius: 0.5rem;
+  margin: 0.25rem;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+#langMenu .lang-option:hover {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  color: white;
+  transform: translateX(0);
+  padding-left: 1rem;
+}
+
+/* Flag icons using flagicons.lipis.dev */
+.flag-icon {
+  display: inline-block;
+  width: 28px;
+  height: 20px;
+  margin-right: 0.75rem;
+  border-radius: 3px;
+  vertical-align: middle;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+#langMenu .lang-option:first-child:hover {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+#langMenu .lang-option:last-child:hover {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* Modal styling */
+#profileModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+#profileModal.hidden {
+  display: none !important;
+}
+
+/* Modal layout containers */
+#profileModal .modal-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#profileModal .modal-image-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Enable container query units so button can size relative to the image width */
+  container-type: inline-size;
+}
+
+#profileModal .image-container {
+  position: relative;
+  display: inline-block;
+}
+
+#profileModal img {
+  animation: zoomIn 0.3s ease-out;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Close button sized and positioned relative to the image container */
+#profileModal .close-btn {
+  position: absolute;
+  /* Dynamic offset from image corner */
+  top: clamp(6px, 1.2cqw, 16px);
+  right: clamp(6px, 1.2cqw, 16px);
+
+  /* Dynamic size based on image width (cqw = 1% of container inline size) */
+  width: clamp(28px, 6cqw, 56px);
+  height: clamp(28px, 6cqw, 56px);
+
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: transform 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+  cursor: pointer;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  z-index: 10000;
+
+  /* Match image fade/zoom timing exactly */
+  animation: zoomIn 0.3s ease-out both;
+}
+
+/* Ensure the X icon scales with the button */
+#profileModal .close-btn svg {
+  width: 55%;
+  height: 55%;
+}
+
+#profileModal button:hover {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+#profileModal button svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Enhanced responsive visual improvements */
+@media (max-width: 768px) {
+  .lang-toggle {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .lang-toggle:hover {
+    transform: none;
+  }
+
+  #langMenu .lang-option:hover {
+    transform: none;
+  }
 }
