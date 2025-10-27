@@ -263,19 +263,23 @@
       <div class="modal-content p-4">
         <div class="modal-image-wrap">
           <div class="image-container">
-            <img
-              src="profile.jpg"
-              alt="profile_picture_enlarged"
-              class="max-w-full max-h-full object-contain rounded-lg"
-            />
-            <button
-              onclick="closeModal()"
-              class="close-btn text-white bg-black bg-opacity-70 rounded-full flex items-center justify-center hover:bg-opacity-90 transition-all"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div class="relative inline-block">
+              <img
+                src="profile.jpg"
+                alt="profile_picture_enlarged"
+                class="max-w-full max-h-full object-contain rounded-lg"
+                id="modalProfileImg"
+              />
+              <button
+                onclick="closeModal()"
+                class="modal-close-btn"
+                aria-label="Close"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>

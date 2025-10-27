@@ -1,3 +1,44 @@
+#profileModal .modal-close-btn svg {
+  transition: transform 0.25s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+#profileModal .modal-close-btn:hover svg {
+  transform: scale(1.32);
+}
+#contacts-section li:hover span,
+#contacts-section li:hover svg,
+#contacts-section li span,
+#contacts-section li svg {
+  transition: transform 0.25s cubic-bezier(0.4, 0.2, 0.2, 1), font-weight 0.2s;
+}
+#contacts-section li:hover span,
+#contacts-section li:hover svg {
+  transform: scale(1.08);
+  font-weight: 600;
+  z-index: 1;
+}
+#education-section .text-xl:hover,
+#languages-section .text-xl:hover {
+  transform: scale(1.08);
+  font-weight: 600;
+  transition: transform 0.25s cubic-bezier(0.4, 0.2, 0.2, 1), font-weight 0.2s;
+  z-index: 1;
+}
+#skills-list li:hover, #about-content:hover {
+  transform: scale(1.08);
+  font-weight: 600;
+  transition: transform 0.25s cubic-bezier(0.4, 0.2, 0.2, 1), font-weight 0.2s;
+  z-index: 1;
+}
+tbody tr:hover td:first-child {
+  transform: scale(1.08);
+  transition: transform 0.25s cubic-bezier(0.4, 0.2, 0.2, 1);
+  z-index: 1;
+}
+/* Remove blue outline from all buttons on focus and active */
+button:focus, button:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
 /*! tailwindcss v4.0.15 | MIT License | https://tailwindcss.com */
 @layer theme, base, components, utilities;
 @layer theme {
@@ -2634,10 +2675,12 @@ img[alt="profile_picture"] {
 }
 
 img[alt="profile_picture"]:hover {
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.2)) saturate(1.15) brightness(1.05);
-  transform: scale(1.05) rotate(1deg);
-  border-color: rgba(59, 130, 246, 0.6);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.25)) saturate(1.18) brightness(1.08);
+  transform: scale(1.13) rotate(-8deg);
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+  transition: transform 0.35s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0.2, 0.2, 1), filter 0.35s cubic-bezier(0.4, 0.2, 0.2, 1), border-color 0.35s cubic-bezier(0.4, 0.2, 0.2, 1);
+  z-index: 2;
   cursor: pointer;
 }
 
@@ -2737,8 +2780,13 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
-tbody tr:hover td {
-  background-color: rgba(59, 130, 246, 0.05);
+#skills-list li:hover,
+#about-content:hover,
+tbody tr:hover {
+  background-color: #f0f6ff;
+  color: #1e293b;
+  font-weight: 600;
+  box-shadow: 0 2px 12px 0 rgba(59,130,246,0.10);
 }
 
 th:first-child {
@@ -2911,18 +2959,16 @@ tbody tr:first-child td {
 }
 
 /* Close button sized and positioned relative to the image container */
-#profileModal .close-btn {
+#profileModal .modal-close-btn {
   position: absolute;
-  /* Dynamic offset from image corner */
-  top: clamp(6px, 1.2cqw, 16px);
-  right: clamp(6px, 1.2cqw, 16px);
-
-  /* Dynamic size based on image width (cqw = 1% of container inline size) */
-  width: clamp(28px, 6cqw, 56px);
-  height: clamp(28px, 6cqw, 56px);
-
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 9999px;
+  top: 0.5%;
+  right: 0.5%;
+  width: 8%;
+  aspect-ratio: 1/1;
+  min-width: 24px;
+  min-height: 24px;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2931,13 +2977,12 @@ tbody tr:first-child td {
   cursor: pointer;
   border: 2px solid rgba(255, 255, 255, 0.4);
   z-index: 10000;
-
-  /* Match image fade/zoom timing exactly */
-  animation: zoomIn 0.3s ease-out both;
+  animation: fadeIn 0.2s ease, zoomIn 0.3s ease-out both;
 }
-
-/* Ensure the X icon scales with the button */
-#profileModal .close-btn svg {
+#profileModal .modal-close-btn:hover {
+  background-color: rgba(0,0,0,0.35);
+}
+#profileModal .modal-close-btn svg {
   width: 55%;
   height: 55%;
 }
