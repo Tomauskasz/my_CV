@@ -20,12 +20,13 @@ const translations = {
     attributesTitle: "Savybės",
     attributesTableHeaders: ["Savybė", "Aprašymas"],
     about:
-      "Esu 22-ų metų, trečio kurso DI (dirbtinio intelekto) studentas Vilnius TECH. Mokausi programavimo: DI, tinklapių kūrimas (web-dev) bei pats domiuosi kompiuterinių žaidimų kūrimu (game-dev). Esu motyvuotas ir siekiu įgauti daug įvairių žinių, kad tapčiau geru specialistu.",
-    skills: [
+      "Esu 22-ų metų, ketvirto kurso DI (dirbtinio intelekto) studentas Vilnius TECH. Mokausi programavimo: DI, tinklapių kūrimas (web-dev) bei pats domiuosi kompiuterinių žaidimų kūrimu (game-dev). Esu motyvuotas ir siekiu įgauti daug įvairių žinių, kad tapčiau geru specialistu.",
+  skills: [
       'Su Python universitete esu dirbęs ties natūralios kalbos bei vaizdų apdorojimu ir atpažinimu, "Reinforcement learning", regresine analize, klasifikacija, klasterizacija, DI modelių "finetuning", didžiųjų duomenų apdorojimu.',
       "Dirbau ir su C++, kuriant kursinį objektinio programavimo darbą bei realizuojant įvairias duomenų struktūras (binary tree, stack, array ir pan.), jų algoritmus.",
       "Turiu HTML&CSS bei Tailwind patirties, kuriant paprastus tinklapius.",
       "Esu dirbęs su Javascript, Oracle ir Node.js, kuriant registracijos bei prisijungimo tinklapį.",
+      "Dirbau su OpenCV, FastAPI ir Python kompanijoje NNCODE, kuriant dirbtinio intelekto sistemas pagal klientų poreikius."
     ],
     education: [
       {
@@ -42,6 +43,12 @@ const translations = {
       },
     ],
     languages: ["Lietuvių", "Anglų"],
+    experienceTitle: "Patirtis",
+    experience: {
+      role: "DI sistemų programuotojas",
+      duration: "7 mėnesiai",
+      place: "NNCODE"
+    },
     attributes: [
       {
         name: "Atkaklumas",
@@ -75,12 +82,13 @@ const translations = {
     attributesTitle: "Attributes",
     attributesTableHeaders: ["Attribute", "Description"],
     about:
-      "I am a 22-year-old third-year AI (Artificial Intelligence) student at Vilnius TECH. I study programming: AI, web development, and I am also interested in game development. I am motivated to acquire a wide range of knowledge to become a skilled specialist.",
-    skills: [
+      "I am a 22-year-old fourth-year AI (Artificial Intelligence) student at Vilnius TECH. I study programming: AI, web development, and I am also interested in game development. I am motivated to acquire a wide range of knowledge to become a skilled specialist.",
+  skills: [
       "I have worked on university projects with Python in natural language and image processing, image recognition, segmentation, object detection, reinforcement learning, regression analysis, classification, clustering, AI model fine-tuning, and big data processing.",
       "I have experience with C++ from object-oriented programming and data structures (binary trees, stacks, arrays, etc.) courses",
       "I have experience with HTML & CSS and Tailwind by building simple websites.",
       "I have worked with JavaScript, Oracle, and Node.js to create a login and registration system.",
+      "I worked with OpenCV, FastAPI and Python at NNCODE, developing artificial intelligence systems tailored to client needs."
     ],
     education: [
       {
@@ -97,6 +105,12 @@ const translations = {
       },
     ],
     languages: ["Lithuanian", "English"],
+    experienceTitle: "Experience",
+    experience: {
+      role: "AI software engineer",
+      duration: "7 months",
+      place: "NNCODE"
+    },
     attributes: [
       {
         name: "Perseverance",
@@ -183,6 +197,16 @@ function updateContent(language) {
       languagesContent.appendChild(h3);
     });
   }
+
+  // Update experience section
+  const experienceTitle = document.getElementById("experience-title");
+  if (experienceTitle) experienceTitle.textContent = content.experienceTitle;
+  const experienceRole = document.getElementById("experience-role");
+  if (experienceRole) experienceRole.textContent = content.experience.role;
+  const experienceDuration = document.getElementById("experience-duration");
+  if (experienceDuration) experienceDuration.textContent = content.experience.duration;
+  const experiencePlace = document.getElementById("experience-place");
+  if (experiencePlace) experiencePlace.textContent = content.experience.place;
 
   // Update attributes table
   const attributesThead = document.getElementById("attributes-thead");
