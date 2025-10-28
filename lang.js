@@ -88,7 +88,7 @@ const translations = {
       "I have experience with C++ from object-oriented programming and data structures (binary trees, stacks, arrays, etc.) courses",
       "I have experience with HTML & CSS and Tailwind by building simple websites.",
       "I have worked with JavaScript, Oracle, and Node.js to create a login and registration system.",
-      "I worked with OpenCV, FastAPI and Python at NNCODE, developing artificial intelligence systems tailored to client needs."
+      "I worked with OpenCV, FastAPI and Python at NNCODE developing artificial intelligence systems tailored to client needs."
     ],
     education: [
       {
