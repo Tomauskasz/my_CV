@@ -32,8 +32,11 @@
           <img
             src="profile.jpg"
             alt="profile_picture"
-            class="mt-10 h-52 w-52 rounded-full object-cover cursor-pointer"
+            class="mt-10 h-52 w-52 rounded-full object-cover cursor-pointer blur-up"
             onclick="openModal()"
+            loading="eager"
+            style="background: url('profile-blur.jpg') center center / cover no-repeat;"
+            onload="this.classList.add('loaded')"
           />
 
           <!-- Kontaktai -->

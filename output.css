@@ -2688,10 +2688,17 @@ svg:hover {
 
 /* Enhanced profile image styling */
 img[alt="profile_picture"] {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), filter 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
   border: 3px solid rgba(255, 255, 255, 0.8);
   cursor: pointer;
+}
+
+img.blur-up {
+  filter: blur(16px);
+}
+img.blur-up.loaded {
+  filter: blur(0);
 }
 
 img[alt="profile_picture"]:hover {
