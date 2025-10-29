@@ -26,7 +26,7 @@ const translations = {
       "Dirbau ir su C++, kuriant kursinį objektinio programavimo darbą bei realizuojant įvairias duomenų struktūras (binary tree, stack, array ir pan.), jų algoritmus.",
       "Turiu HTML&CSS bei Tailwind patirties, kuriant paprastus tinklapius.",
       "Esu dirbęs su Javascript, Oracle ir Node.js, kuriant registracijos bei prisijungimo tinklapį.",
-      "Dirbau su OpenCV, FastAPI ir Python kompanijoje NNCODE, kuriant dirbtinio intelekto sistemas pagal klientų poreikius."
+      "Dirbau su Gazebo&ROS, OpenCV, FastAPI ir Python kompanijoje NNCODE, kuriant dirbtinio intelekto sistemas pagal klientų poreikius."
     ],
     education: [
       {
@@ -88,7 +88,7 @@ const translations = {
       "I have experience with C++ from object-oriented programming and data structures (binary trees, stacks, arrays, etc.) courses",
       "I have experience with HTML & CSS and Tailwind by building simple websites.",
       "I have worked with JavaScript, Oracle, and Node.js to create a login and registration system.",
-      "I worked with OpenCV, FastAPI and Python at NNCODE developing artificial intelligence systems tailored to client needs."
+      "I worked with Gazebo&ROS, OpenCV, FastAPI and Python at NNCODE developing artificial intelligence systems tailored to client needs."
     ],
     education: [
       {
