@@ -1,0 +1,14 @@
+.DS_Store
+Thumbs.db
+
+.playwright-mcp/
+
+.vscode/
+.idea/
+
+__pycache__/
+
+AGENTS.md
+.mulch/
+.impeccable.md
+.gitattributes
