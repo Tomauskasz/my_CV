@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-22T15:22:08.0849573+03:00",
+  "title": "Design System: Tomas Bitvinskas | CV",
+  "extensions": {
+    "colorMeta": {
+      "page-bg": {
+        "role": "neutral",
+        "displayName": "Ice Paper",
+        "canonical": "oklch(0.96 0.017 250)",
+        "tonalRamp": ["oklch(0.15 0.017 250)", "oklch(0.27 0.017 250)", "oklch(0.39 0.017 250)", "oklch(0.51 0.017 250)", "oklch(0.63 0.017 250)", "oklch(0.75 0.017 250)", "oklch(0.87 0.017 250)", "oklch(0.96 0.017 250)"]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "canonical": "oklch(0.61 0.15 253)",
+        "tonalRamp": ["oklch(0.15 0.08 253)", "oklch(0.25 0.1 253)", "oklch(0.37 0.12 253)", "oklch(0.49 0.12 253)", "oklch(0.61 0.15 253)", "oklch(0.73 0.12 253)", "oklch(0.85 0.08 253)", "oklch(0.95 0.03 253)"]
+      },
+      "sidebar-top": {
+        "role": "primary",
+        "displayName": "Midnight Panel",
+        "canonical": "oklch(0.5 0.072 254)",
+        "tonalRamp": ["oklch(0.15 0.04 254)", "oklch(0.25 0.05 254)", "oklch(0.35 0.06 254)", "oklch(0.4 0.058 253)", "oklch(0.5 0.072 254)", "oklch(0.62 0.06 254)", "oklch(0.76 0.04 254)", "oklch(0.9 0.02 254)"]
+      },
+      "text-strong": {
+        "role": "neutral",
+        "displayName": "Graphite Ink",
+        "canonical": "oklch(0.24 0.031 257)",
+        "tonalRamp": ["oklch(0.15 0.031 257)", "oklch(0.24 0.031 257)", "oklch(0.35 0.031 257)", "oklch(0.46 0.031 257)", "oklch(0.57 0.031 257)", "oklch(0.68 0.031 257)", "oklch(0.8 0.031 257)", "oklch(0.93 0.02 257)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Identity Display", "purpose": "Candidate name in the hero only." },
+      "headline": { "displayName": "Section Headline", "purpose": "Fast-scanning section wayfinding." },
+      "body": { "displayName": "Evidence Body", "purpose": "Qualifications, projects, and experience." },
+      "label": { "displayName": "Utility Label", "purpose": "Controls, contacts, and supporting metadata." }
+    },
+    "shadows": [
+      { "name": "card", "value": "0 24px 48px -34px rgba(18, 39, 74, 0.28)", "purpose": "Project-card resting depth." },
+      { "name": "floating", "value": "0 20px 34px -24px rgba(17, 35, 68, 0.32)", "purpose": "Language-toggle elevation." },
+      { "name": "elevated", "value": "0 28px 50px -30px rgba(16, 32, 60, 0.38)", "purpose": "Reserved stronger elevation." }
+    ],
+    "motion": [
+      { "name": "fast", "value": "160ms", "purpose": "Compact control feedback." },
+      { "name": "medium", "value": "260ms", "purpose": "Cards and dialog settling." },
+      { "name": "standard", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default easing for all visible transitions." }
+    ],
+    "breakpoints": [
+      { "name": "desktop-composition", "value": "960px" },
+      { "name": "narrow-mobile", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Language Toggle",
+      "kind": "nav",
+      "refersTo": "language-toggle",
+      "description": "Floating language selector for the main reading column.",
+      "html": "<button class=\"ds-lang-toggle\" type=\"button\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18M12 3c3 3.4 3 14.6 0 18M12 3c-3 3.4-3 14.6 0 18\"/></svg><span>LT</span></button>",
+      "css": ".ds-lang-toggle { display:inline-flex; align-items:center; gap:.55rem; min-height:44px; padding:.72rem 1rem; border:1px solid rgba(94,126,177,.3); border-radius:999px; background:var(--page-surface); color:var(--text-strong); box-shadow:var(--shadow-floating); font:600 .97rem/1.2 Inter,sans-serif; letter-spacing:.02em; transition:transform var(--motion-fast) var(--ease-standard),background-color var(--motion-fast) var(--ease-standard),border-color var(--motion-fast) var(--ease-standard); } .ds-lang-toggle svg { width:1.1rem; height:1.1rem; fill:none; stroke:currentColor; stroke-width:1.7; } .ds-lang-toggle:hover,.ds-lang-toggle:focus-visible { transform:translateY(-1px); background:rgba(255,255,255,.98); border-color:rgba(59,130,246,.28); outline:2px solid rgba(37,99,235,.85); outline-offset:4px; }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "project-card",
+      "description": "Primary proof container for applied work.",
+      "html": "<article class=\"ds-project-card\"><h3>Workflow Automation</h3><p>Applied AI work with clear implementation evidence.</p></article>",
+      "css": ".ds-project-card { position:relative; padding:1.2rem 1.25rem 1.15rem; border:1px solid var(--border-soft); border-radius:1.1rem; background:#fff; color:var(--text-strong); box-shadow:var(--shadow-card); font:400 1rem/1.65 Inter,sans-serif; transition:transform var(--motion-medium) var(--ease-standard),box-shadow var(--motion-medium) var(--ease-standard); } .ds-project-card::before { content:''; position:absolute; top:0; left:2.5%; width:95%; height:.25rem; border-radius:999px; background:linear-gradient(90deg,rgba(59,130,246,.72),rgba(59,130,246,.06)); } .ds-project-card h3 { margin:0 0 .65rem; font:700 1.1rem/1.32 Inter,sans-serif; } .ds-project-card p { margin:0; color:var(--text); } .ds-project-card:hover,.ds-project-card:focus-within { transform:translateY(-1px); box-shadow:0 26px 50px -34px rgba(18,39,74,.3); }"
+    },
+    {
+      "name": "Sidebar Contact",
+      "kind": "custom",
+      "refersTo": "sidebar-card",
+      "description": "Direct contact action on the blue sidebar.",
+      "html": "<a class=\"ds-contact\" href=\"mailto:hello@example.com\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M3 6h18v12H3zM3 7l9 6 9-6\"/></svg><span>hello@example.com</span></a>",
+      "css": ".ds-contact { display:flex; align-items:center; justify-content:center; gap:.85rem; min-height:3.8rem; padding:.95rem 1.02rem; border:1px solid var(--sidebar-border); border-radius:1.1rem; background:rgba(8,18,35,.16); color:var(--sidebar-text); box-shadow:inset 0 1px 0 rgba(255,255,255,.03); font:600 .97rem/1.58 Inter,sans-serif; text-decoration:none; overflow-wrap:anywhere; transition:transform var(--motion-medium) var(--ease-standard),background-color var(--motion-medium) var(--ease-standard); } .ds-contact svg { width:1.35rem; height:1.35rem; flex:0 0 auto; fill:none; stroke:rgba(157,195,230,.88); stroke-width:1.8; } .ds-contact:hover,.ds-contact:focus-visible { transform:translateY(-1px); background:rgba(8,18,35,.22); outline:2px solid rgba(255,255,255,.96); outline-offset:4px; }"
+    },
+    {
+      "name": "Sidebar Information Card",
+      "kind": "card",
+      "refersTo": "sidebar-card",
+      "description": "Education or experience summary inside the sidebar.",
+      "html": "<section class=\"ds-sidebar-card\"><h3>AI Automation Specialist</h3><p>Copla</p><p>Current role</p></section>",
+      "css": ".ds-sidebar-card { padding:1.05rem 1.08rem; border:1px solid var(--sidebar-border); border-radius:1.1rem; background:rgba(8,18,35,.16); color:var(--sidebar-text); box-shadow:inset 0 1px 0 rgba(255,255,255,.03); text-align:center; font-family:Inter,sans-serif; transition:transform var(--motion-medium) var(--ease-standard),background-color var(--motion-medium) var(--ease-standard); } .ds-sidebar-card h3 { margin:0 0 .3rem; color:var(--sidebar-text-strong); font-size:1.08rem; line-height:1.25; } .ds-sidebar-card p { margin:.2rem 0 0; color:var(--sidebar-muted); font-size:.92rem; line-height:1.48; font-style:italic; } .ds-sidebar-card:hover { transform:translateY(-1px); background:rgba(8,18,35,.22); }"
+    },
+    {
+      "name": "Language Chip",
+      "kind": "chip",
+      "refersTo": "language-chip",
+      "description": "Compact language-proficiency metadata.",
+      "html": "<span class=\"ds-language-chip\">English — Fluent</span>",
+      "css": ".ds-language-chip { display:inline-flex; align-items:center; justify-content:center; min-height:2.55rem; padding:.58rem .92rem; border:1px solid var(--sidebar-border); border-radius:999px; background:rgba(8,18,35,.14); color:var(--sidebar-text); box-shadow:inset 0 1px 0 rgba(255,255,255,.03); font:600 .94rem/1.2 Inter,sans-serif; }"
+    },
+    {
+      "name": "Profile Dialog Close",
+      "kind": "button",
+      "refersTo": "profile-dialog-close",
+      "description": "Circular close action used above the enlarged profile image.",
+      "html": "<button class=\"ds-modal-close\" type=\"button\" aria-label=\"Close\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m6 6 12 12M18 6 6 18\"/></svg></button>",
+      "css": ".ds-modal-close { display:inline-flex; align-items:center; justify-content:center; width:3rem; height:3rem; border:1px solid rgba(255,255,255,.24); border-radius:999px; background:rgba(9,18,38,.56); color:rgba(250,252,255,.96); box-shadow:0 14px 24px -18px rgba(0,0,0,.55); transition:transform var(--motion-fast) var(--ease-standard),background-color var(--motion-fast) var(--ease-standard); } .ds-modal-close svg { width:1.45rem; height:1.45rem; fill:none; stroke:currentColor; stroke-width:2; } .ds-modal-close:hover,.ds-modal-close:focus-visible { transform:translateY(-1px); background:rgba(9,18,38,.78); outline:2px solid rgba(255,255,255,.96); outline-offset:4px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Technical Signal Deck",
+    "overview": "This is a composed professional brief, not a generic CV template. A recruiter should immediately see a technically capable person with current, credible experience, then move through projects and contact paths without visual friction. The asymmetrical light-main and deep-blue-side layout keeps proof and personal context visibly distinct. The current system is polished rather than ornamental: translucent light surfaces, cool-blue gradients, soft floating depth, and a concise sans-serif pairing. It should feel calm, precise, and ambitious. Light mode is the implemented system. Dark mode is a requested future extension and must preserve the same information hierarchy and blue-led identity rather than introduce a different visual language.",
+    "keyCharacteristics": ["Recruiter scanning leads every layout decision.", "Blue is structural, not decorative.", "Cards carry evidence; the page shell carries atmosphere.", "Motion is subtle feedback, never a content dependency."],
+    "rules": [
+      { "name": "The Blue Carries Structure Rule", "body": "Use the accent to mark hierarchy, interaction, and evidence. Keep large text areas neutral so the page remains easy to scan.", "section": "colors" },
+      { "name": "The Proof Stays Readable Rule", "body": "Use display typography only for identity and major wayfinding. Evidence stays in the body hierarchy.", "section": "typography" },
+      { "name": "The Quiet Lift Rule", "body": "Apply elevation to group information and confirm interaction. Do not stack heavy shadows or turn every surface into a floating card.", "section": "elevation" }
+    ],
+    "dos": ["Do prioritize current professional evidence and direct contact paths.", "Do preserve the light-main, blue-sidebar composition when extending the existing identity.", "Do treat mobile as a complete reading experience, not a compressed desktop panel.", "Do maintain visible keyboard focus and reduced-motion behavior as baseline interaction quality.", "Do make a future dark mode a role-preserving counterpart to light mode."],
+    "donts": ["Don't replace the blue identity with unrelated accent colors.", "Don't let decorative diagonals, gradients, or shadows compete with qualifications and project proof.", "Don't turn the CV into a dense dashboard or a playful portfolio.", "Don't present stale education or employment content as current."]
+  }
+}
