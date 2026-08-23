@@ -421,7 +421,7 @@ button {
   stroke: var(--border-strong);
   stroke-width: 1.5;
   stroke-dasharray: 4 4;
-  transition: stroke 0.2s ease, stroke-width 0.2s ease;
+  transition: stroke 0.2s ease;
 }
 
 .link-line.active {
