@@ -1,608 +1,546 @@
+// ==========================================================================
+// TOMAS BITVINSKAS — CV APPLICATION & LOCALIZATION ENGINE
+// Bilingual Dictionary, Theme State & Proof Constellation Graph
+// ==========================================================================
+
 const translations = {
-  LT: {
-    title: "Dirbtinio intelekto studentas",
-    aboutTitle: "Apie mane",
-    skillsTitle: "Techniniai įgūdžiai",
-    projectsTitle: "Projektai",
-    contactsTitle: "Kontaktai",
-    educationTitle: "Išsilavinimas",
-    languagesTitle: "Kalbos",
-    about:
-      "Esu ketvirto kurso dirbtinio intelekto studentas Vilnius TECH universitete, labai besidomintis programavimu, dirbtiniu intelektu ir praktiniu problemų sprendimu. Mane motyvuoja iššūkiai, nuolatinis tobulėjimas ir noras kurti sistemas, kurios žmonėms kuria tikrą vertę.",
-    skills: [
-      "Programavimas: Python, C++, JavaScript, HTML/CSS",
-      "DI / ML: PyTorch, TensorFlow, natūralios kalbos apdorojimas, kompiuterinė rega, stiprinamasis mokymas, klasifikavimas, klasterizavimas, modelių tobulinimas",
-      "Internetinės svetainės / aplikacijos: FastAPI, Node.js, React, Tailwind CSS, MongoDB, Oracle",
-      "Įrankiai / platformos: OpenCV, ROS, Gazebo, n8n",
-    ],
-    education: [
-      {
-        title: "Dirbtinio intelekto studijos",
-        institution: "Vilnius TECH",
-        date: "2022-dabar",
-        gpa: "Vidurkis: 9,2",
-      },
-    ],
-    languages: ["Lietuvių - gimtoji", "Anglų - laisvai"],
-    experienceTitle: "Patirtis",
-    experience: {
-      place: "NNCODE",
-      role: "DI inžinierius",
-      duration: "Taikomieji DI sprendimai | kompiuterinė rega ir robotika",
-    },
-    experienceBullets: [
-      "Kūriau DI prototipus, serverinės dalies funkcijas ir jungiau skirtingus įrankius bei paslaugas, kad padėčiau įgyvendinti praktinius klientų projektus.",
-    ],
-    projects: [
-      {
-        title: "BeamNG autonominis vairuotojas - vairavimo sistemos mokymas",
-        bullets: [
-          "Sukūriau pilną BeamNG.tech autonominio automobilio mokymo procesą: nuo duomenų rinkimo iki modelio mokymo ir veikimo testavimo.",
-          "Tobulinau, kaip sistema mokosi ir elgiasi, gerindamas naudojamus duomenis, vertinimo būdus ir vairavimo sprendimų logiką.",
-        ],
-      },
-      {
-        title: "CareerCopilot - DI gyvenimo aprašymo asistentas",
-        bullets: [
-          "Sukūriau įrankį, kuris lygina gyvenimo aprašymus su darbo aprašymais, parodo atitikimus ir trūkumus bei pateikia pritaikytus pasiūlymus, motyvacinius laiškus ir pasiruošimą pokalbiams.",
-        ],
-      },
-      {
-        title: "Visual Search - panašių vaizdų paieška",
-        bullets: [
-          "Sukūriau sistemą, kuri leidžia įkelti vaizdą ir greitai rasti panašius vaizdus, naudojant FastAPI serverinę dalį ir React vartotojo sąsają.",
-        ],
-      },
-      {
-        title: "Studentų lankomumo sistema su veidų atpažinimu",
-        bullets: [
-          "Sukūriau lankomumo sistemos prototipą, kuri atpažįsta veidus, tvarko studentų įrašus ir turi lengvai naudojamą vartotojo sąsają.",
-        ],
-      },
-      {
-        title: "Etsy kainodaros asistentas - DI automatizavimo sistema",
-        bullets: [
-          "Sukūriau kainų peržiūros procesą n8n aplinkoje, kuris sujungia Google Sheets, Telegram ir OpenAI bei padeda kasdien priimti sprendimus dėl Etsy skelbimų.",
-          "Įdiegiau saugumo taisykles, DI peržiūrą ir patvirtinimų registravimą, kad kainų pakeitimai būtų aiškūs, peržiūrimi ir liktų žmogaus kontrolėje.",
-        ],
-      },
-      {
-        title: "Geležinkelio pervažų saugos sistema - stebėsena kompiuterine rega",
-        bullets: [
-          "Sukūriau kompiuterine rega paremtą geležinkelio pervažų saugos sistemą, kuri stebi judėjimą, aptinka įspėjamuosius signalus ir registruoja rizikingas situacijas peržiūrai.",
-        ],
-      },
-    ],
-  },
   EN: {
-    title: "Artificial Intelligence Student",
-    aboutTitle: "About Me",
-    skillsTitle: "Technical Skills",
-    projectsTitle: "Projects",
-    contactsTitle: "Contacts",
-    educationTitle: "Education",
-    languagesTitle: "Languages",
-    about:
-      "I am a fourth-year Artificial Intelligence student at Vilnius TECH university with a strong interest in programming, AI, and practical problem-solving. I am driven by challenge, continuous learning, and building systems that create real value and meaningful impact.",
-    skills: [
-      "Programming: Python, C++, JavaScript, HTML/CSS",
-      "AI / ML: PyTorch, TensorFlow, NLP, computer vision, reinforcement learning, classification, clustering, model fine-tuning",
-      "Backend / Web: FastAPI, Node.js, React, Tailwind CSS, MongoDB, Oracle",
-      "Tools / Platforms: OpenCV, ROS, Gazebo, n8n",
-    ],
-    education: [
-      {
-        title: "Artificial Intelligence studies",
-        institution: "Vilnius TECH",
-        date: "2022-Present",
-        gpa: "GPA: 9.2",
-      },
-    ],
-    languages: ["Lithuanian - Native", "English - Fluent"],
-    experienceTitle: "Experience",
-    experience: {
-      place: "NNCODE",
-      role: "AI Engineer",
-      duration: "Applied AI solutions | computer vision and robotics",
+    name: "Tomas Bitvinskas",
+    roleTitle: "Applied AI & Automation Engineer",
+    academicStatus: "4th-Year AI Student @ Vilnius TECH | GPA: 9.2 (Incoming Master's)",
+    contractPitch: "Open to direct-contract applied AI engineering, autonomous decision systems, computer vision pipelines, and robust LLM automations.",
+    contacts: {
+      email: "tomas.bitvinskas@gmail.com",
+      phone: "+37064655290",
+      linkedin: "https://www.linkedin.com/in/tomas-bitvinskas-ab4689253/",
+      github: "https://github.com/Tomauskasz"
     },
-    experienceBullets: [
-      "Built AI prototypes, backend features, and connected different tools and services to support practical client projects.",
+    sections: {
+      constellationTitle: "Proof Constellation",
+      constellationSubtitle: "Interactive evidence graph — select any node to inspect connected experience, research, or deployed systems.",
+      experienceTitle: "Commercial Experience @ NNCODE",
+      researchTitle: "Signature Research & Thesis",
+      projectsTitle: "Production Systems Portfolio",
+      credentialsTitle: "Credentials & Technical Capabilities",
+      academicBaselineTitle: "Academic Foundation",
+      stackTitle: "Core AI & Systems Stack",
+      languagesTitle: "Language Proficiency"
+    },
+    experience: [
+      {
+        id: "exp-nncode",
+        nodeId: "node-nncode",
+        place: "NNCODE",
+        role: "AI Engineer",
+        period: "Applied AI Solutions | Computer Vision & Robotics",
+        context: "Client-facing commercial AI solutions, computer vision pipelines, and robotics integrations.",
+        contribution: "Engineered production AI prototypes, resilient backend integration microservices, and connected multi-modal robotics and computer vision tooling for practical industrial client deployments.",
+        metrics: ["Production AI Microservices", "Multi-modal CV Integration", "Client-validated Prototypes"],
+        tags: ["Python", "FastAPI", "OpenCV", "ROS", "PyTorch"]
+      }
+    ],
+    research: [
+      {
+        id: "res-beamng",
+        nodeId: "node-beamng",
+        title: "BeamNG Autonomous Driver — End-to-End Driving Policy Training",
+        institution: "Vilnius TECH (Bachelor's Thesis, Grade: 10/10)",
+        context: "Autonomous vehicle decision-making in high-fidelity physics simulator (BeamNG.tech).",
+        contribution: "Architected complete simulation-to-policy pipeline: telemetry harvesting, dataset curation, reinforcement learning policy training, and automated regression evaluation loops.",
+        metrics: ["100% End-to-end Pipeline", "Closed-loop Driving Policy", "BeamNG.tech Simulation"],
+        tags: ["Reinforcement Learning", "PyTorch", "BeamNG.tech", "Telemetry Processing", "Python"]
+      }
     ],
     projects: [
       {
-        title: "BeamNG autonomous driver - Driving Policy Training",
-        bullets: [
-          "Built a full training pipeline for a self-driving BeamNG.tech car, covering data collection, model training, and performance testing.",
-          "Improved how the system learned and behaved by refining what data it used, how it was evaluated, and how its driving decisions were guided.",
-        ],
+        id: "proj-etsy",
+        nodeId: "node-etsy",
+        title: "Etsy Pricing Assistant — AI Automation Workflow",
+        context: "Daily pricing optimization across high-volume e-commerce inventory.",
+        contribution: "Built an autonomous n8n orchestration workflow integrating Google Sheets, Telegram interactive bots, and OpenAI API with strict human-in-the-loop audit logs and safety bounds.",
+        metrics: ["Zero unreviewed pricing mistakes", "Daily autonomous sync", "Audited audit trail"],
+        tags: ["n8n", "OpenAI API", "Telegram Bot API", "Google Sheets", "Python"]
       },
       {
-        title: "CareerCopilot - AI CV Assistant",
-        bullets: [
-          "Built a tool that reviews CVs against job descriptions, highlights fit and gaps, and creates tailored CV suggestions, cover letters, and interview prep.",
-        ],
+        id: "proj-career",
+        nodeId: "node-career",
+        title: "CareerCopilot — Intelligent CV & Career Strategy Assistant",
+        context: "Automated candidate-job description semantic matching and gap analysis.",
+        contribution: "Developed an LLM-powered engine that analyzes candidate credentials against job requirements, generates gap matrices, and creates tailored cover letters and interview preparation packs.",
+        metrics: ["Semantic gap matrix", "Automated cover generation", "NLP evaluation"],
+        tags: ["FastAPI", "React", "NLP", "LLM Fine-tuning", "Tailwind CSS"]
       },
       {
-        title: "Visual Search - Image Similarity Search",
-        bullets: [
-          "Built a system that lets users upload an image and quickly find similar images, with a FastAPI backend and React frontend.",
-        ],
+        id: "proj-visual",
+        nodeId: "node-visual",
+        title: "Visual Search — High-Dimensional Image Similarity Engine",
+        context: "Fast vector-based visual discovery across large image databases.",
+        contribution: "Implemented a fullstack image similarity search engine using deep feature extraction embeddings with a FastAPI backend and interactive React UI.",
+        metrics: ["Sub-second vector lookup", "Deep feature embeddings", "React UI"],
+        tags: ["PyTorch", "FastAPI", "React", "Computer Vision", "Embeddings"]
       },
       {
-        title: "Student Face Check-in System",
-        bullets: [
-          "Built a full attendance system that verifies faces, manages student records, and provides an easy-to-use web interface.",
-        ],
+        id: "proj-face",
+        nodeId: "node-face",
+        title: "Student Face Check-in & Attendance Verification",
+        context: "Automated biometric classroom attendance tracking.",
+        contribution: "Engineered a computer vision attendance system verifying student identities via facial recognition, managing persistent logs, and providing a clean administrative portal.",
+        metrics: ["Real-time facial verification", "Automated attendance logging", "Admin portal"],
+        tags: ["OpenCV", "Face Recognition", "Python", "SQLite", "HTML/CSS"]
       },
       {
-        title: "Etsy Pricing Assistant - AI Automation System",
-        bullets: [
-          "Built a pricing review workflow in n8n that brings together Google Sheets, Telegram, and OpenAI to support daily Etsy listing decisions.",
-          "Added safety rules, AI review, and approval logging so price changes stayed clear, reviewable, and under human control.",
-        ],
-      },
-      {
-        title: "Railroad Safety System - Computer Vision Monitoring",
-        bullets: [
-          "Built a computer-vision safety system for railroad crossings that tracks activity, detects warning signals, and records risky situations for review.",
-        ],
-      },
+        id: "proj-rail",
+        nodeId: "node-rail",
+        title: "Railroad Crossing Safety Monitor",
+        context: "Real-time safety hazard detection at critical infrastructure points.",
+        contribution: "Created a computer vision pipeline that tracks rail crossing traffic, detects optical warning signals, and automatically flags hazardous near-miss incidents for operator review.",
+        metrics: ["Real-time optical hazard detection", "Automated incident flagging", "Video analytics"],
+        tags: ["Computer Vision", "OpenCV", "Object Detection", "Python"]
+      }
     ],
+    skills: [
+      {
+        category: "Artificial Intelligence & Machine Learning",
+        items: ["PyTorch", "TensorFlow", "Reinforcement Learning", "Computer Vision", "NLP", "Model Fine-tuning", "Classification & Clustering"]
+      },
+      {
+        category: "Backend & Distributed Systems",
+        items: ["Python", "FastAPI", "Node.js", "C++", "JavaScript", "MongoDB", "Oracle", "Tailwind CSS"]
+      },
+      {
+        category: "Robotics, Simulation & Automation",
+        items: ["ROS", "Gazebo", "OpenCV", "BeamNG.tech", "n8n Workflow Automation", "Telegram Bots"]
+      }
+    ],
+    education: [
+      {
+        degree: "B.Sc. in Artificial Intelligence Systems",
+        institution: "Vilnius TECH (Vilnius Gediminas Technical University)",
+        period: "2022 – Present",
+        gpa: "GPA: 9.2 / 10",
+        notes: "Incoming Master's Student. Focus on autonomous robotics, computer vision, and machine learning."
+      }
+    ],
+    languages: [
+      { name: "Lithuanian", level: "Native proficiency" },
+      { name: "English", level: "Fluent / Professional working proficiency" }
+    ],
+    constellationGraph: {
+      nodes: [
+        { id: "node-nncode", label: "NNCODE (AI Role)", x: 260, y: 160, type: "commercial", targetId: "exp-nncode" },
+        { id: "node-beamng", label: "BeamNG Thesis", x: 420, y: 80, type: "research", targetId: "res-beamng" },
+        { id: "node-etsy", label: "Etsy AI Automation", x: 120, y: 90, type: "project", targetId: "proj-etsy" },
+        { id: "node-career", label: "CareerCopilot", x: 100, y: 230, type: "project", targetId: "proj-career" },
+        { id: "node-visual", label: "Visual Search", x: 440, y: 230, type: "project", targetId: "proj-visual" },
+        { id: "node-rail", label: "Rail Safety CV", x: 320, y: 270, type: "project", targetId: "proj-rail" }
+      ],
+      links: [
+        { source: "node-nncode", target: "node-beamng" },
+        { source: "node-nncode", target: "node-visual" },
+        { source: "node-nncode", target: "node-rail" },
+        { source: "node-nncode", target: "node-etsy" },
+        { source: "node-etsy", target: "node-career" },
+        { source: "node-beamng", target: "node-rail" },
+        { source: "node-visual", target: "node-rail" }
+      ]
+    }
   },
+  LT: {
+    name: "Tomas Bitvinskas",
+    roleTitle: "Taikomojo DI ir automatizavimo inžinierius",
+    academicStatus: "Vilnius TECH 4 kurso DI studentas | Vidurkis: 9,2 (būsimas magistrantas)",
+    contractPitch: "Pasiruošęs tiesioginiams taikomojo DI, autonominių sistemų, kompiuterinės regos ir LLM automatizavimo projektams.",
+    contacts: {
+      email: "tomas.bitvinskas@gmail.com",
+      phone: "+37064655290",
+      linkedin: "https://www.linkedin.com/in/tomas-bitvinskas-ab4689253/",
+      github: "https://github.com/Tomauskasz"
+    },
+    sections: {
+      constellationTitle: "Įrodymų žvaigždynas",
+      constellationSubtitle: "Interaktyvus patirties žemėlapis — paspauskite ant mazgo, kad pamatytumėte susijusią patirtį, tyrimus ir projektus.",
+      experienceTitle: "Komercinė patirtis @ NNCODE",
+      researchTitle: "Pagrindinis tyrimas ir baigiamasis darbas",
+      projectsTitle: "Taikomieji gamybiniai projektai",
+      credentialsTitle: "Kvalifikacija ir techniniai įgūdžiai",
+      academicBaselineTitle: "Išsilavinimo pagrindas",
+      stackTitle: "DI ir technologijų rinkinys",
+      languagesTitle: "Kalbų mokėjimas"
+    },
+    experience: [
+      {
+        id: "exp-nncode",
+        nodeId: "node-nncode",
+        place: "NNCODE",
+        role: "DI inžinierius",
+        period: "Taikomieji DI sprendimai | Kompiuterinė rega ir robotika",
+        context: "Taikomieji DI projektai klientų verslo procesams ir robotikos sprendimams.",
+        contribution: "Kūriau gamybinius DI prototipus, patikimas serverinės integracijos mikropaslaugas ir jungiau kompiuterinės regos bei robotikos įrankius praktiniams klientų užsakymams.",
+        metrics: ["Gamybinės DI mikropaslaugos", "Kompiuterinės regos integracija", "Klientų patvirtinti sprendimai"],
+        tags: ["Python", "FastAPI", "OpenCV", "ROS", "PyTorch"]
+      }
+    ],
+    research: [
+      {
+        id: "res-beamng",
+        nodeId: "node-beamng",
+        title: "BeamNG autonominis vairuotojas — Vairavimo politikos mokymas",
+        institution: "Vilnius TECH (Bakalauro baigiamasis darbas, įvertinimas: 10/10)",
+        context: "Autonominio automobilio sprendimų priėmimas didelio tikslumo fizikos simuliatoriuje (BeamNG.tech).",
+        contribution: "Sukūriau pilną procesą nuo simuliacijos iki valdymo modelio: telemetrijos rinkimą, duomenų paruošimą, stiprinamojo mokymo modelio treniravimą ir automatinį testavimą.",
+        metrics: ["100% pilnas procesas", "Uždaro ciklo vairavimo modelis", "BeamNG.tech simuliacija"],
+        tags: ["Stiprinamasis mokymas", "PyTorch", "BeamNG.tech", "Telemetrijos apdorojimas", "Python"]
+      }
+    ],
+    projects: [
+      {
+        id: "proj-etsy",
+        nodeId: "node-etsy",
+        title: "Etsy kainodaros asistentas — DI automatizavimo sistema",
+        context: "Kasdienis prekių kainų optimizavimas didelės apimties e-komercijos sąrašuose.",
+        contribution: "Sukūriau n8n automatizavimo procesą, apjungiantį Google Sheets, Telegram botus ir OpenAI API su griežtomis saugumo taisyklėmis ir žmogaus patvirtinimu.",
+        metrics: ["Nulinis klaidų skaičius", "Kasdienė automatinė sinchronizacija", "Žmogaus patvirtinimo auditas"],
+        tags: ["n8n", "OpenAI API", "Telegram Bot API", "Google Sheets", "Python"]
+      },
+      {
+        id: "proj-career",
+        nodeId: "node-career",
+        title: "CareerCopilot — DI gyvenimo aprašymo asistentas",
+        context: "Kandidatų CV ir darbo skelbimų atitikimo analizė.",
+        contribution: "Sukūriau sistemą, kuri lygina kandidato įgūdžius su reikalavimais, parodo trūkumus ir generuoja pritaikytus motyvacinius laiškus bei pasiruošimo pokalbiams klausimus.",
+        metrics: ["Semantinė atitikimo matrica", "Automatinis laiškų kūrimas", "NLP vertinimas"],
+        tags: ["FastAPI", "React", "NLP", "LLM Modeliai", "Tailwind CSS"]
+      },
+      {
+        id: "proj-visual",
+        nodeId: "node-visual",
+        title: "Visual Search — Panašių vaizdų paieškos sistema",
+        context: "Greita vektorinė vaizdų paieška didelėse duomenų bazėse.",
+        contribution: "Įdiegiau vaizdų panašumo paieškos variklį su giliųjų bruožų išskyrimu, FastAPI serverine dalimi ir React naudotojo sąsaja.",
+        metrics: ["Greita vektorinė paieška", "Giliųjų bruožų vektoriai", "React sąsaja"],
+        tags: ["PyTorch", "FastAPI", "React", "Kompiuterinė rega", "Vektoriai"]
+      },
+      {
+        id: "proj-face",
+        nodeId: "node-face",
+        title: "Studentų lankomumo sistema su veidų atpažinimu",
+        context: "Automatizuotas studentų lankomumo fiksavimas pagal veidus.",
+        contribution: "Sukūriau lankomumo sistemą, atpažįstančią veidus, registruojančią įrašus duomenų bazėje su aiškia administratoriaus sąsaja.",
+        metrics: ["Realaus laiko veidų atpažinimas", "Automatinis lankomumo žurnalas", "Valdymo pultas"],
+        tags: ["OpenCV", "Face Recognition", "Python", "SQLite", "HTML/CSS"]
+      },
+      {
+        id: "proj-rail",
+        nodeId: "node-rail",
+        title: "Geležinkelio pervažų saugos stebėsena",
+        context: "Realaus laiko saugumo stebėjimas geležinkelio pervažose.",
+        contribution: "Sukūriau kompiuterinės regos sistemą, kuri stebi judėjimą pervažoje, atpažįsta šviesoforo signalus ir registruoja incidentus operatoriaus peržiūrai.",
+        metrics: ["Realaus laiko pavojaus aptikimas", "Incidentų registravimas", "Vaizdo analizė"],
+        tags: ["Kompiuterinė rega", "OpenCV", "Objektų aptikimas", "Python"]
+      }
+    ],
+    skills: [
+      {
+        category: "Dirbtinis intelektas ir mašininis mokymas",
+        items: ["PyTorch", "TensorFlow", "Stiprinamasis mokymas", "Kompiuterinė rega", "NLP", "Modelių tobulinimas", "Klasifikavimas"]
+      },
+      {
+        category: "Serverinė dalis ir programavimas",
+        items: ["Python", "FastAPI", "Node.js", "C++", "JavaScript", "MongoDB", "Oracle", "Tailwind CSS"]
+      },
+      {
+        category: "Robotika, simuliacija ir automatizavimas",
+        items: ["ROS", "Gazebo", "OpenCV", "BeamNG.tech", "n8n procesų automatizavimas", "Telegram botai"]
+      }
+    ],
+    education: [
+      {
+        degree: "Dirbtinio intelekto sistemų bakalauras",
+        institution: "Vilnius TECH (Vilniaus Gedimino technikos universitetas)",
+        period: "2022 – Dabar",
+        gpa: "Vidurkis: 9,2 / 10",
+        notes: "Būsimas magistrantas. Specializacija: autonominė robotika, kompiuterinė rega ir mašininis mokymas."
+      }
+    ],
+    languages: [
+      { name: "Lietuvių kalba", level: "Gimtoji" },
+      { name: "Anglų kalba", level: "Laisvai / Profesinis lygis" }
+    ],
+    constellationGraph: {
+      nodes: [
+        { id: "node-nncode", label: "NNCODE (DI Inž.)", x: 260, y: 160, type: "commercial", targetId: "exp-nncode" },
+        { id: "node-beamng", label: "BeamNG Darbas", x: 420, y: 80, type: "research", targetId: "res-beamng" },
+        { id: "node-etsy", label: "Etsy DI n8n", x: 120, y: 90, type: "project", targetId: "proj-etsy" },
+        { id: "node-career", label: "CareerCopilot", x: 100, y: 230, type: "project", targetId: "proj-career" },
+        { id: "node-visual", label: "Visual Search", x: 440, y: 230, type: "project", targetId: "proj-visual" },
+        { id: "node-rail", label: "Pervažų sauga CV", x: 320, y: 270, type: "project", targetId: "proj-rail" }
+      ],
+      links: [
+        { source: "node-nncode", target: "node-beamng" },
+        { source: "node-nncode", target: "node-visual" },
+        { source: "node-nncode", target: "node-rail" },
+        { source: "node-nncode", target: "node-etsy" },
+        { source: "node-etsy", target: "node-career" },
+        { source: "node-beamng", target: "node-rail" },
+        { source: "node-visual", target: "node-rail" }
+      ]
+    }
+  }
 };
 
-const elements = {};
-let lastFocusedElement = null;
-let modalCloseTimer = null;
+const ICONS = {
+  check: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`
+};
 
-function getModalFocusableElements() {
-  if (!elements.profileModal) {
-    return [];
-  }
+const AppState = {
+  locale: "EN",
+  theme: "system",
+  activeNode: null
+};
 
-  return Array.from(
-    elements.profileModal.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    ),
-  ).filter((element) => !element.hasAttribute("disabled"));
+// ==========================================================================
+// PROOF CONSTELLATION GRAPH RENDERER
+// ==========================================================================
+function renderConstellationSVG(data, activeNodeId) {
+  const { nodes, links } = data.constellationGraph;
+  const nodeMap = new Map(nodes.map(n => [n.id, n]));
+
+  const linesHtml = links.map(link => {
+    const s = nodeMap.get(link.source);
+    const t = nodeMap.get(link.target);
+    if (!s || !t) return "";
+    const isActive = activeNodeId && (link.source === activeNodeId || link.target === activeNodeId);
+    return `<line x1="${s.x}" y1="${s.y}" x2="${t.x}" y2="${t.y}" class="link-line ${isActive ? "active" : ""}" />`;
+  }).join("");
+
+  const nodesHtml = nodes.map(node => {
+    const isSelected = node.id === activeNodeId;
+    const color = node.type === "commercial" ? "#1d4ed8" : (node.type === "research" ? "#0284c7" : "#475569");
+    const radius = isSelected ? 16 : 12;
+    return `
+      <g class="node-group ${isSelected ? "active" : ""}" 
+         data-node-id="${node.id}" 
+         data-target-id="${node.targetId}" 
+         onclick="CVApp.selectNode('${node.id}')" 
+         onkeydown="if(event.key==='Enter'||event.key===' '){CVApp.selectNode('${node.id}'); event.preventDefault();}"
+         tabindex="0" 
+         role="button" 
+         aria-label="Evidence node: ${node.label}">
+        <circle cx="${node.x}" cy="${node.y}" r="${radius}" class="node-circle" fill="${color}" stroke="#ffffff" stroke-width="2.5" />
+        <text x="${node.x}" y="${node.y + 24}" text-anchor="middle" class="node-text">${node.label}</text>
+      </g>
+    `;
+  }).join("");
+
+  return `
+    <svg viewBox="0 0 540 320" class="svg-constellation" role="img" aria-label="Proof Constellation evidence network">
+      ${linesHtml}
+      ${nodesHtml}
+    </svg>
+  `;
 }
 
-function getLanguageOptions() {
-  return Array.from(document.querySelectorAll(".lang-option"));
-}
-
-function isLanguageMenuOpen() {
-  return elements.langMenu?.classList.contains("is-open");
-}
-
-function focusLanguageOption(index) {
-  const options = getLanguageOptions();
-  if (!options.length) {
-    return;
-  }
-
-  const normalizedIndex = (index + options.length) % options.length;
-  options[normalizedIndex].focus();
-}
-
-function openLanguageMenu({ focusIndex } = {}) {
-  if (!elements.langMenu || !elements.langBtn) {
-    return;
-  }
-
-  elements.langMenu.classList.add("is-open");
-  elements.langBtn.setAttribute("aria-expanded", "true");
-
-  if (typeof focusIndex === "number") {
-    requestAnimationFrame(() => focusLanguageOption(focusIndex));
-  }
-}
-
-function closeLanguageMenu({ restoreFocus = false } = {}) {
-  if (!elements.langMenu || !elements.langBtn) {
-    return;
-  }
-
-  elements.langMenu.classList.remove("is-open");
-  elements.langBtn.setAttribute("aria-expanded", "false");
-
-  if (restoreFocus) {
-    elements.langBtn.focus();
-  }
-}
-
-function toggleLanguageMenu() {
-  if (isLanguageMenuOpen()) {
-    closeLanguageMenu();
-  } else {
-    openLanguageMenu();
-  }
-}
-
-function createBulletList(items, className) {
-  const list = document.createElement("ul");
-  list.className = className;
-
-  items.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    list.appendChild(li);
-  });
-
-  return list;
-}
-
-function createMetaLine(text, emphasis = false) {
-  const paragraph = document.createElement("p");
-  paragraph.className = emphasis ? "meta-line meta-emphasis" : "meta-line";
-  paragraph.textContent = text;
-  return paragraph;
-}
-
-function setLanguage(language) {
-  if (!translations[language]) {
-    return;
-  }
-
-  const shouldRestoreFocus = isLanguageMenuOpen();
-
-  document.documentElement.lang = language === "LT" ? "lt" : "en";
-
-  if (elements.selectedLang) {
-    elements.selectedLang.textContent = language;
-  }
-
-  closeLanguageMenu({ restoreFocus: shouldRestoreFocus });
-  updateContent(language);
-}
-
-function updateContent(language) {
-  const content = translations[language];
-  if (!content) {
-    return;
-  }
-
-  document.getElementById("job-title").textContent = content.title;
-  document.getElementById("about-title").textContent = content.aboutTitle;
-  document.getElementById("skills-title").textContent = content.skillsTitle;
-  document.getElementById("projects-title").textContent = content.projectsTitle;
-  document.getElementById("contacts-title").textContent = content.contactsTitle;
-  document.getElementById("education-title").textContent =
-    content.educationTitle;
-  document.getElementById("languages-title").textContent =
-    content.languagesTitle;
-
-  const aboutContent = document.getElementById("about-content");
-  if (aboutContent) {
-    aboutContent.textContent = content.about;
-  }
-
-  const skillsList = document.getElementById("skills-list");
-  if (skillsList) {
-    skillsList.innerHTML = "";
-    content.skills.forEach((skill) => {
-      const li = document.createElement("li");
-      li.className = "skill-item";
-
-      const separatorIndex = skill.indexOf(":");
-      if (separatorIndex >= 0) {
-        const label = document.createElement("strong");
-        label.className = "skill-label";
-        label.textContent = skill.slice(0, separatorIndex + 1);
-
-        const copy = document.createElement("span");
-        copy.className = "skill-copy";
-        copy.textContent = ` ${skill.slice(separatorIndex + 1).trim()}`;
-
-        li.append(label, copy);
-      } else {
-        li.textContent = skill;
-      }
-
-      skillsList.appendChild(li);
-    });
-  }
-
-  const projectsContent = document.getElementById("projects-content");
-  if (projectsContent) {
-    projectsContent.innerHTML = "";
-    content.projects.forEach((project) => {
-      const article = document.createElement("article");
-      article.className = "project-card";
-
-      const heading = document.createElement("h3");
-      heading.className = "project-title";
-      heading.textContent = project.title;
-
-      article.appendChild(heading);
-      article.appendChild(createBulletList(project.bullets, "project-list"));
-      projectsContent.appendChild(article);
-    });
-  }
-
-  const educationContent = document.getElementById("education-content");
-  if (educationContent) {
-    educationContent.innerHTML = "";
-
-    content.education.forEach((education) => {
-      const card = document.createElement("div");
-      card.className = "info-card";
-
-      const title = document.createElement("h3");
-      title.className = "card-title";
-      title.textContent = education.title;
-
-      const metaStack = document.createElement("div");
-      metaStack.className = "meta-stack";
-      metaStack.appendChild(
-        createMetaLine(`${education.institution} | ${education.date}`),
-      );
-
-      if (education.gpa) {
-        metaStack.appendChild(createMetaLine(education.gpa, true));
-      }
-
-      card.append(title, metaStack);
-      educationContent.appendChild(card);
-    });
-  }
-
-  const languagesContent = document.getElementById("languages-content");
-  if (languagesContent) {
-    languagesContent.innerHTML = "";
-    content.languages.forEach((languageItem) => {
-      const chip = document.createElement("p");
-      chip.className = "language-chip";
-      chip.textContent = languageItem;
-      languagesContent.appendChild(chip);
-    });
-  }
-
-  const experienceTitle = document.getElementById("experience-title");
-  if (experienceTitle) {
-    experienceTitle.textContent = content.experienceTitle;
-  }
-
-  const experienceContent = document.getElementById("experience-content");
-  if (experienceContent) {
-    experienceContent.innerHTML = "";
-
-    const summaryCard = document.createElement("div");
-    summaryCard.className = "info-card";
-
-    const role = document.createElement("h3");
-    role.className = "experience-inline-title";
-    role.textContent = content.experience.role;
-
-    const place = document.createElement("span");
-    place.className = "experience-inline-title";
-    place.textContent = content.experience.place;
-
-    const roleLine = document.createElement("div");
-    roleLine.className = "experience-role-line";
-
-    const roleSeparator = document.createElement("span");
-    roleSeparator.className = "experience-role-separator";
-    roleSeparator.setAttribute("aria-hidden", "true");
-    roleSeparator.textContent = "|";
-
-    const metaStack = document.createElement("div");
-    metaStack.className = "meta-stack";
-
-    const duration = createMetaLine(content.experience.duration);
-    duration.id = "experience-duration";
-
-    roleLine.append(role, roleSeparator, place);
-    metaStack.append(duration);
-    summaryCard.append(roleLine, metaStack);
-    experienceContent.appendChild(summaryCard);
-
-    if (content.experienceBullets.length) {
-      experienceContent.appendChild(
-        createBulletList(content.experienceBullets, "experience-list"),
-      );
-    }
-  }
-}
-
-function finishClosingModal() {
-  if (!elements.profileModal) {
-    return;
-  }
-
-  elements.profileModal.classList.add("hidden");
-  elements.profileModal.classList.remove("is-open", "is-closing");
-  document.body.classList.remove("modal-open");
-
-  if (elements.pageContent) {
-    elements.pageContent.inert = false;
-  }
-
-  if (lastFocusedElement instanceof HTMLElement) {
-    lastFocusedElement.focus();
-  }
-
-  modalCloseTimer = null;
-}
-
-function openModal() {
-  const modal = elements.profileModal;
-  const closeButton = modal?.querySelector(".modal-close-btn");
-  if (!modal || modal.classList.contains("is-open")) {
-    return;
-  }
-
-  if (modalCloseTimer) {
-    window.clearTimeout(modalCloseTimer);
-    modalCloseTimer = null;
-  }
-
-  lastFocusedElement = document.activeElement;
-  modal.classList.remove("hidden", "is-closing");
-
-  requestAnimationFrame(() => {
-    modal.classList.add("is-open");
-  });
-
-  document.body.classList.add("modal-open");
-
-  if (elements.pageContent) {
-    elements.pageContent.inert = true;
-  }
-
-  closeButton?.focus();
-}
-
-function closeModal() {
-  const modal = elements.profileModal;
-  if (
-    !modal ||
-    modal.classList.contains("hidden") ||
-    modal.classList.contains("is-closing")
-  ) {
-    return;
-  }
-
-  modal.classList.remove("is-open");
-  modal.classList.add("is-closing");
-  modalCloseTimer = window.setTimeout(finishClosingModal, 260);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  elements.langBtn = document.getElementById("langBtn");
-  elements.langMenu = document.getElementById("langMenu");
-  elements.selectedLang = document.getElementById("selectedLang");
-  elements.profileModal = document.getElementById("profileModal");
-  elements.pageContent = document.getElementById("pageContent");
-  elements.profileImage = document.getElementById("profileImage");
-
-  setLanguage("LT");
-
-  if (elements.profileImage) {
-    const markLoaded = () => elements.profileImage.classList.add("loaded");
-
-    elements.profileImage.addEventListener("click", openModal);
-    elements.profileImage.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openModal();
+// ==========================================================================
+// APPLICATION CONTROLLER
+// ==========================================================================
+const CVApp = {
+  init() {
+    // Detect theme preference
+    const savedTheme = localStorage.getItem("cv_theme") || "system";
+    this.setTheme(savedTheme, false);
+
+    // Watch system theme changes
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+      if (AppState.theme === "system") {
+        this.applyTheme();
       }
     });
 
-    if (elements.profileImage.complete) {
-      markLoaded();
-    } else {
-      elements.profileImage.addEventListener("load", markLoaded, { once: true });
+    // Detect language preference
+    const savedLang = localStorage.getItem("cv_lang") || "EN";
+    this.setLanguage(savedLang, false);
+
+    this.render();
+  },
+
+  setTheme(theme, save = true) {
+    AppState.theme = theme;
+    if (save) localStorage.setItem("cv_theme", theme);
+    this.applyTheme();
+    this.updateThemeButtons();
+  },
+
+  applyTheme() {
+    let effectiveTheme = AppState.theme;
+    if (effectiveTheme === "system") {
+      effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
-  }
+    document.documentElement.setAttribute("data-theme", effectiveTheme);
+  },
 
-  elements.profileModal
-    ?.querySelector(".modal-close-btn")
-    ?.addEventListener("click", closeModal);
-
-  getLanguageOptions().forEach((option) => {
-    option.addEventListener("click", (event) => {
-      const selectedLanguage = event.currentTarget.dataset.lang;
-      setLanguage(selectedLanguage);
+  updateThemeButtons() {
+    document.querySelectorAll("[data-theme-btn]").forEach(btn => {
+      const btnTheme = btn.getAttribute("data-theme-btn");
+      btn.classList.toggle("active", btnTheme === AppState.theme);
     });
-  });
-});
+  },
 
-document.addEventListener("click", (event) => {
-  if (!elements.langBtn || !elements.langMenu) {
-    return;
-  }
+  setLanguage(lang, save = true) {
+    if (!translations[lang]) return;
+    AppState.locale = lang;
+    if (save) localStorage.setItem("cv_lang", lang);
 
-  if (elements.langBtn.contains(event.target)) {
-    toggleLanguageMenu();
-    return;
-  }
+    document.documentElement.lang = lang.toLowerCase();
+    document.title = `${translations[lang].name} | ${translations[lang].roleTitle}`;
 
-  if (!elements.langMenu.contains(event.target)) {
-    closeLanguageMenu();
-  }
+    this.updateLangButtons();
+    this.render();
+  },
 
-  if (event.target === elements.profileModal) {
-    closeModal();
-  }
-});
+  updateLangButtons() {
+    document.querySelectorAll("[data-lang-btn]").forEach(btn => {
+      const btnLang = btn.getAttribute("data-lang-btn");
+      btn.classList.toggle("active", btnLang === AppState.locale);
+    });
+  },
 
-document.addEventListener("keydown", (event) => {
-  if (
-    event.key === "Tab" &&
-    elements.profileModal &&
-    !elements.profileModal.classList.contains("hidden")
-  ) {
-    const focusableElements = getModalFocusableElements();
-    if (!focusableElements.length) {
-      return;
+  selectNode(nodeId) {
+    AppState.activeNode = nodeId;
+    const data = translations[AppState.locale];
+    const node = data.constellationGraph.nodes.find(n => n.id === nodeId);
+    this.renderConstellation();
+
+    if (node && node.targetId) {
+      document.querySelectorAll(".evidence-card").forEach(el => el.classList.remove("is-targeted"));
+      const targetEl = document.getElementById(node.targetId);
+      if (targetEl) {
+        targetEl.classList.add("is-targeted");
+        targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  },
+
+  renderConstellation() {
+    const container = document.getElementById("constellationContainer");
+    if (!container) return;
+    const data = translations[AppState.locale];
+    container.innerHTML = renderConstellationSVG(data, AppState.activeNode);
+  },
+
+  render() {
+    const data = translations[AppState.locale];
+
+    // Static text mappings
+    const heroName = document.getElementById("heroName");
+    if (heroName) heroName.textContent = data.name;
+
+    const heroRole = document.getElementById("heroRole");
+    if (heroRole) heroRole.textContent = data.roleTitle;
+
+    const heroPitch = document.getElementById("heroPitch");
+    if (heroPitch) heroPitch.textContent = data.contractPitch;
+
+    const constellationTitle = document.getElementById("constellationTitle");
+    if (constellationTitle) constellationTitle.textContent = data.sections.constellationTitle;
+
+    const constellationSubtitle = document.getElementById("constellationSubtitle");
+    if (constellationSubtitle) constellationSubtitle.textContent = data.sections.constellationSubtitle;
+
+    const chapter1Title = document.getElementById("chapter1Title");
+    if (chapter1Title) chapter1Title.textContent = data.sections.experienceTitle;
+
+    const chapter2Title = document.getElementById("chapter2Title");
+    if (chapter2Title) chapter2Title.textContent = data.sections.researchTitle;
+
+    const chapter3Title = document.getElementById("chapter3Title");
+    if (chapter3Title) chapter3Title.textContent = data.sections.projectsTitle;
+
+    const chapter4Title = document.getElementById("chapter4Title");
+    if (chapter4Title) chapter4Title.textContent = data.sections.credentialsTitle;
+
+    // Render Experience List
+    const expList = document.getElementById("experienceList");
+    if (expList) {
+      expList.innerHTML = data.experience.map(exp => `
+        <article id="${exp.id}" class="evidence-card ${AppState.activeNode === exp.nodeId ? "is-targeted" : ""}">
+          <div class="flex-between" style="margin-bottom:0.5rem;">
+            <h4 class="text-xl font-extrabold">${exp.role} — ${exp.place}</h4>
+            <span class="tag tag-highlight">${exp.period}</span>
+          </div>
+          <p class="text-base text-secondary" style="margin-bottom:0.85rem;">${exp.contribution}</p>
+          <div class="flex-wrap-gap">
+            ${exp.metrics.map(m => `<span class="tag tag-success">${ICONS.check} ${m}</span>`).join("")}
+            ${exp.tags.map(t => `<span class="tag">${t}</span>`).join("")}
+          </div>
+        </article>
+      `).join("");
     }
 
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    if (event.shiftKey && document.activeElement === firstElement) {
-      event.preventDefault();
-      lastElement.focus();
-    } else if (!event.shiftKey && document.activeElement === lastElement) {
-      event.preventDefault();
-      firstElement.focus();
-    }
-  }
-
-  if (event.key === "Escape") {
-    if (isLanguageMenuOpen()) {
-      event.preventDefault();
-      closeLanguageMenu({ restoreFocus: true });
+    // Render Research List
+    const resList = document.getElementById("researchList");
+    if (resList) {
+      resList.innerHTML = data.research.map(res => `
+        <article id="${res.id}" class="evidence-card ${AppState.activeNode === res.nodeId ? "is-targeted" : ""}">
+          <h4 class="text-xl font-extrabold text-brand" style="margin-bottom:0.4rem;">${res.title}</h4>
+          <p class="text-sm text-muted" style="margin-bottom:0.75rem;">${res.institution}</p>
+          <p class="text-base text-secondary" style="margin-bottom:0.85rem;">${res.contribution}</p>
+          <div class="flex-wrap-gap">
+            ${res.metrics.map(m => `<span class="tag tag-highlight">${ICONS.check} ${m}</span>`).join("")}
+            ${res.tags.map(t => `<span class="tag">${t}</span>`).join("")}
+          </div>
+        </article>
+      `).join("");
     }
 
-    closeModal();
-    return;
-  }
-
-  if (document.activeElement === elements.langBtn) {
-    const optionCount = getLanguageOptions().length;
-    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      openLanguageMenu({ focusIndex: 0 });
-    } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-      openLanguageMenu({ focusIndex: optionCount - 1 });
+    // Render Projects List
+    const projList = document.getElementById("projectsList");
+    if (projList) {
+      projList.innerHTML = data.projects.map(proj => `
+        <article id="${proj.id}" class="evidence-card ${AppState.activeNode === proj.nodeId ? "is-targeted" : ""}">
+          <h4 class="text-lg font-bold" style="margin-bottom:0.4rem;">${proj.title}</h4>
+          <p class="text-sm text-secondary" style="margin-bottom:0.75rem;">${proj.contribution}</p>
+          <div class="flex-wrap-gap">
+            ${proj.tags.map(t => `<span class="tag">${t}</span>`).join("")}
+          </div>
+        </article>
+      `).join("");
     }
 
-    return;
-  }
+    // Render Competencies Grid
+    const compGrid = document.getElementById("competenciesGrid");
+    if (compGrid) {
+      compGrid.innerHTML = `
+        <div class="evidence-card">
+          <h4 class="text-base font-bold" style="margin-bottom:0.5rem;">${data.sections.academicBaselineTitle}</h4>
+          <p class="text-base font-bold">${data.education[0].institution}</p>
+          <p class="text-sm text-brand font-medium" style="margin:0.35rem 0;">${data.education[0].degree} (${data.education[0].gpa})</p>
+          <p class="text-xs text-muted" style="margin-bottom:0.75rem;">${data.education[0].notes}</p>
+          
+          <h4 class="text-base font-bold" style="margin-bottom:0.35rem; border-top:1px solid var(--border-subtle); padding-top:0.75rem;">${data.sections.languagesTitle}</h4>
+          <div style="display:flex; flex-direction:column; gap:0.25rem;">
+            ${data.languages.map(l => `<p class="text-xs"><strong>${l.name}:</strong> ${l.level}</p>`).join("")}
+          </div>
+        </div>
 
-  const languageOptions = getLanguageOptions();
-  const activeOptionIndex = languageOptions.findIndex(
-    (option) => option === document.activeElement,
-  );
+        <div class="evidence-card">
+          <h4 class="text-base font-bold" style="margin-bottom:0.75rem;">${data.sections.stackTitle}</h4>
+          <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            ${data.skills.map(s => `
+              <div>
+                <h5 class="text-xs font-bold text-muted" style="margin-bottom:0.35rem;">${s.category}</h5>
+                <div class="flex-wrap-gap">
+                  ${s.items.map(i => `<span class="tag">${i}</span>`).join("")}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
 
-  if (activeOptionIndex === -1) {
-    return;
+    this.renderConstellation();
   }
+};
 
-  switch (event.key) {
-    case "ArrowDown":
-      event.preventDefault();
-      focusLanguageOption(activeOptionIndex + 1);
-      break;
-    case "ArrowUp":
-      event.preventDefault();
-      focusLanguageOption(activeOptionIndex - 1);
-      break;
-    case "Home":
-      event.preventDefault();
-      focusLanguageOption(0);
-      break;
-    case "End":
-      event.preventDefault();
-      focusLanguageOption(languageOptions.length - 1);
-      break;
-    case "Tab":
-      closeLanguageMenu();
-      break;
-    default:
-      break;
-  }
-});
+window.CVApp = CVApp;
+document.addEventListener("DOMContentLoaded", () => CVApp.init());

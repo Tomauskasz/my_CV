@@ -16,21 +16,20 @@ A bilingual public CV for Tomas Bitvinskas. Its success outcome is a direct cont
 
 ## Positioning
 
-Tomas is a junior AI automation specialist with a Vilnius TECH bachelor's degree covering artificial intelligence systems and computer systems. His experience combines AI engineering, computer vision, workflow automation, and integrations with tools such as n8n, Slack, and Jira.
+Tomas is an AI engineer focused on AI automation, LLM agents, and computer vision. His experience combines workflow automation, practical AI systems, and integrations with tools such as n8n, Slack, and Jira.
 
 ## Operating Context
 
-- Current role: Junior AI Automation Specialist at Copla, a compliance automation company; approximately three and a half months in role as of 2026-08.
-- Recent work: n8n workflow automation and integrations with Slack and Jira, plus experience working in a team and company environment.
-- Prior role: six months of AI engineering and computer-vision work at NNCODE.
-- Education: bachelor's degree from Vilnius TECH in artificial intelligence systems and computer systems. The bachelor's thesis received a grade of 10. The overall grade was approximately 9 and needs confirmation before it is stated as an exact value.
+- Current role: Junior AI Automations Specialist at Copla, a compliance automation company, since May 2026.
+- Recent work: reduced compliance-workflow creation from 1-2 days to about 5-10 minutes; built evidence review around about 6.3K expert-reviewed cases; and automated Slack-to-Jira bug reporting.
+- Prior role: AI Engineer at NNCODE from Apr 2025 to Sep 2025, with computer vision, robotics, and AI workflow work.
+- Education: Bachelor's Degree of Informatics Sciences from Vilnius TECH (2022-2026), with Artificial Intelligence Systems and Informatics Engineering study fields, a GPA of 9/10, and a thesis grade of 10/10. Incoming Master of Artificial Intelligence Engineering student from Sep 2026.
 
 ## Capabilities and Constraints
 
 - Static, single-page web CV with no build step or backend.
-- Lithuanian and English content switch client-side; both languages must remain complete and equivalent.
+- Lithuanian and English content switch client-side. Both language variants are current and complete; English is the default language.
 - The existing page supports keyboard navigation for the language menu and profile-photo dialog; preserve these accessible interactions.
-- Current published study and employment copy is stale and must be corrected before it represents Tomas's current profile.
 
 ## Brand Commitments
 
@@ -38,14 +37,14 @@ The site represents Tomas Bitvinskas professionally. All qualifications, experie
 
 ## Evidence on Hand
 
-- `lang.js` contains bilingual skills, six project summaries, and the existing education and employment copy.
+- `lang.js` contains the current bilingual CV content: two roles, thesis research, three personal projects, two education records, technical skills, and languages.
 - `profile.jpg` is the available portrait asset.
 - `index.html` contains direct email, phone, LinkedIn, and GitHub contact paths.
-- The current code still describes Tomas as a fourth-year student at Vilnius TECH and shows NNCODE as his current role. Treat those statements as outdated.
+- Both language variants reflect the supplied 2026 CV.
 
 ## Product Principles
 
 1. Convert credible interest into a direct contract.
 2. Show concrete, current evidence before broad claims.
-3. Keep both languages equally useful and professionally accurate.
+3. Keep both language variants professionally accurate and equivalent.
 4. Preserve accessible, fast static delivery.
