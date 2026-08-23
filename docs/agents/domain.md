@@ -18,11 +18,15 @@ Single-context repo (static CV application):
 ├── README.md
 ├── AGENTS.md
 ├── CONTEXT.md
+├── DESIGN.md
+├── PRODUCT.md
 ├── CODING_STANDARDS.md
 ├── index.html
 ├── lang.js
 ├── output.css
 ├── profile.jpg
+├── scripts/
+│   └── parity-check.js
 └── docs/agents/
     ├── issue-tracker.md
     ├── triage-labels.md

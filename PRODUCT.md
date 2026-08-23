@@ -8,43 +8,46 @@ web
 
 ## Users
 
-Recruiters and hiring managers who are evaluating Tomas Bitvinskas for a direct contract. The site must make his current qualifications, applied experience, and contact paths easy to verify.
+Recruiters and engineering hiring managers evaluating Tomas Bitvinskas for direct-contract AI and automation engineering roles. The site makes his applied experience, academic rigor, verified production systems, and contact paths immediate to scan and verify.
 
 ## Product Purpose
 
-A bilingual public CV for Tomas Bitvinskas. Its success outcome is a direct contract.
+A bilingual executive evidence dossier and proof constellation for Tomas Bitvinskas. Its success outcome is a direct contract inquiry or high-conviction engineering interview.
 
 ## Positioning
 
-Tomas is an AI engineer focused on AI automation, LLM agents, and computer vision. His experience combines workflow automation, practical AI systems, and integrations with tools such as n8n, Slack, and Jira.
+Tomas is an Applied AI & Automation Engineer specializing in autonomous decision systems, computer vision pipelines, and resilient LLM agent orchestrations. His background combines academic excellence (Vilnius TECH, GPA 9.2, thesis 10/10) with commercial practice (@ NNCODE) and production automations.
 
 ## Operating Context
 
-- Current role: Junior AI Automations Specialist at Copla, a compliance automation company, since May 2026.
-- Recent work: reduced compliance-workflow creation from 1-2 days to about 5-10 minutes; built evidence review around about 6.3K expert-reviewed cases; and automated Slack-to-Jira bug reporting.
-- Prior role: AI Engineer at NNCODE from Apr 2025 to Sep 2025, with computer vision, robotics, and AI workflow work.
-- Education: Bachelor's Degree of Informatics Sciences from Vilnius TECH (2022-2026), with Artificial Intelligence Systems and Informatics Engineering study fields, a GPA of 9/10, and a thesis grade of 10/10. Incoming Master of Artificial Intelligence Engineering student from Sep 2026.
+- Commercial experience: AI Engineer at NNCODE (applied AI microservices, multi-modal computer vision, robotics integration).
+- Signature research: BeamNG autonomous driving policy training pipeline (Vilnius TECH Bachelor's Thesis, Grade: 10/10).
+- Academic foundation: B.Sc. in Artificial Intelligence Systems from Vilnius TECH (2022–Present, GPA: 9.2/10). Incoming Master of Artificial Intelligence Engineering student.
+- Production systems: Etsy AI Pricing Assistant (n8n workflow), CareerCopilot CV assistant, Visual Search vector engine, Student Face Attendance, and Railroad Crossing Safety CV monitor.
 
 ## Capabilities and Constraints
 
-- Static, single-page web CV with no build step or backend.
-- Lithuanian and English content switch client-side. Both language variants are current and complete; English is the default language.
-- The existing page supports keyboard navigation for the language menu and profile-photo dialog; preserve these accessible interactions.
+- Pure static delivery: single-page web portfolio with no runtime build step or backend.
+- Bilingual localization: client-side instant switching between English (`EN`) and Lithuanian (`LT`) with 100% dictionary parity. Complete English CV is embedded directly in semantic HTML5 as a zero-JS fallback.
+- Interactive Proof Constellation: scalable SVG evidence graph mapping relationships between commercial roles, thesis research, production projects, and core capabilities.
+- Theme system: Light, Dark, and System modes with instant persistence and strict WCAG AA contrast compliance (≥ 4.5:1).
+- Print system: dedicated `@media print` stylesheet producing an elegant 2-page black-and-white CV without UI chrome.
 
 ## Brand Commitments
 
-The site represents Tomas Bitvinskas professionally. All qualifications, experience, dates, grades, and project claims must be factual and supportable.
+The site represents Tomas Bitvinskas with technical authority, calm visual precision, and zero generic slop. All metrics, qualifications, dates, grades, and project outcomes are factual, verifiable, and supportable.
 
 ## Evidence on Hand
 
-- `lang.js` contains the current bilingual CV content: two roles, thesis research, three personal projects, two education records, technical skills, and languages.
-- `profile.jpg` is the available portrait asset.
-- `index.html` contains direct email, phone, LinkedIn, and GitHub contact paths.
-- Both language variants reflect the supplied 2026 CV.
+- `lang.js` contains the canonical bilingual dictionary, theme controller, and SVG constellation renderer.
+- `index.html` contains semantic HTML5 landmarks, direct contact links, and no-JS fallback.
+- `output.css` contains tokenized design system, themes, responsive rules, and print styles.
+- `scripts/parity-check.js` validates translation completeness and DOM element bindings.
+- `profile.jpg` is the high-resolution portrait asset.
 
 ## Product Principles
 
-1. Convert credible interest into a direct contract.
-2. Show concrete, current evidence before broad claims.
-3. Keep both language variants professionally accurate and equivalent.
-4. Preserve accessible, fast static delivery.
+1. Convert credible recruiter interest into direct contract inquiries.
+2. Ground every claim in concrete, verifiable evidence cards.
+3. Maintain 100% bilingual parity across English and Lithuanian.
+4. Deliver resilient, accessible, zero-JS static performance.
