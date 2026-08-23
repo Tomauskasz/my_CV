@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tomas Bitvinskas | Applied AI & Automation Engineer</title>
-    <meta name="description" content="Personal CV & Executive Evidence Dossier of Tomas Bitvinskas — Applied AI & Automation Engineer, Vilnius TECH AI student, and NNCODE AI Engineer." />
+    <meta name="description" content="Executive Evidence Dossier & Proof Constellation for Tomas Bitvinskas — Applied AI & Automation Engineer, Vilnius TECH AI student, and NNCODE AI Engineer." />
     
     <!-- Open Graph & Social Sharing Metadata -->
     <meta property="og:title" content="Tomas Bitvinskas | Applied AI & Automation Engineer" />
@@ -12,100 +12,135 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="profile.jpg" />
 
-    <!-- Stylesheets & Fonts -->
+    <!-- Google Fonts: Syne + Plus Jakarta Sans + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&family=Merriweather+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="output.css" />
     
     <script src="lang.js" defer></script>
   </head>
   <body>
-    <!-- Top Global Header -->
+    <!-- Top HUD Navigation Bar -->
     <header class="site-header">
       <div class="site-header-inner">
         <div class="site-identity">
-          <img src="profile.jpg" alt="Tomas Bitvinskas portrait" class="site-avatar" />
-          <div class="site-identity-text">
+          <div class="avatar-wrapper">
+            <img src="profile.jpg" alt="Tomas Bitvinskas portrait" class="site-avatar" />
+            <div class="status-dot-pulse" title="Available for Direct Contract"></div>
+          </div>
+          <div class="site-identity-meta">
             <h1>Tomas Bitvinskas</h1>
-            <p>Applied AI & Automation Engineer</p>
+            <p>APPLIED AI // VILNIUS TECH & NNCODE</p>
           </div>
         </div>
 
-        <div class="site-header-controls">
-          <!-- Locale Selector -->
+        <div class="header-controls">
+          <!-- Locale Toggle -->
           <div class="toggle-group" role="group" aria-label="Language selection">
-            <button class="toggle-btn" data-lang-btn="LT" onclick="CVApp.setLanguage('LT')" aria-label="Switch to Lithuanian">LT</button>
-            <button class="toggle-btn active" data-lang-btn="EN" onclick="CVApp.setLanguage('EN')" aria-label="Switch to English">EN</button>
+            <button class="toggle-btn" data-lang-btn="LT" onclick="CVApp.setLanguage('LT')" aria-label="Lietuvių kalba">LT</button>
+            <button class="toggle-btn active" data-lang-btn="EN" onclick="CVApp.setLanguage('EN')" aria-label="English">EN</button>
           </div>
 
-          <!-- Theme Selector -->
+          <!-- Theme Toggle -->
           <div class="toggle-group" role="group" aria-label="Theme selection">
-            <button class="toggle-btn" data-theme-btn="light" onclick="CVApp.setTheme('light')" aria-label="Light theme">Light</button>
-            <button class="toggle-btn" data-theme-btn="dark" onclick="CVApp.setTheme('dark')" aria-label="Dark theme">Dark</button>
-            <button class="toggle-btn active" data-theme-btn="system" onclick="CVApp.setTheme('system')" aria-label="System theme">Auto</button>
+            <button class="toggle-btn" data-theme-btn="light" onclick="CVApp.setTheme('light')" aria-label="Light mode">Light</button>
+            <button class="toggle-btn" data-theme-btn="dark" onclick="CVApp.setTheme('dark')" aria-label="Dark mode">Dark</button>
+            <button class="toggle-btn active" data-theme-btn="system" onclick="CVApp.setTheme('system')" aria-label="Auto theme">Auto</button>
           </div>
 
-          <!-- Quick Contact Action -->
-          <a href="mailto:tomas.bitvinskas@gmail.com?subject=Direct%20Inquiry%20from%20CV%20Portfolio" class="btn-action btn-action-primary">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            <span>Quick Contact</span>
+          <!-- Direct Action Trigger -->
+          <a href="mailto:tomas.bitvinskas@gmail.com?subject=Direct%20Inquiry%20from%20CV%20Portfolio" class="btn-primary">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span>Direct Inquiry</span>
           </a>
         </div>
       </div>
     </header>
 
     <!-- Main Executive Evidence Dossier -->
-    <main class="dossier-container" id="mainContent">
-      <!-- Recruiter Hero & Pitch -->
-      <section class="dossier-hero">
-        <div style="margin-bottom:0.75rem;">
-          <span class="tag tag-highlight">VERIFIED EVIDENCE DOSSIER</span>
-          <span class="tag tag-success">DIRECT-CONTRACT READY</span>
+    <main class="dossier-layout" id="mainContent">
+      <!-- Asymmetric Hero Section (Variance: 8) -->
+      <section class="hero-editorial">
+        <div class="hero-editorial-lead">
+          <div class="hero-badge-strip">
+            <span class="badge-status" id="statusBadge">AVAILABLE FOR DIRECT CONTRACT</span>
+            <span class="badge-tag">VILNIUS / REMOTE</span>
+          </div>
+          <h2 class="hero-title" id="heroName"><span>Tomas Bitvinskas</span></h2>
+          <div class="hero-subtitle" id="heroRole">Applied AI & Automation Engineer</div>
+          <p class="hero-manifesto" id="heroPitch">
+            Engineering autonomous decision systems, multi-modal computer vision pipelines, and resilient LLM agent automations with production-grade reliability.
+          </p>
+          <div class="hero-actions-grid">
+            <a href="mailto:tomas.bitvinskas@gmail.com" class="btn-primary">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span>Email Tomas</span>
+            </a>
+            <a href="https://www.linkedin.com/in/tomas-bitvinskas-ab4689253/" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+              <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/Tomauskasz" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              <span>GitHub</span>
+            </a>
+            <a href="tel:+37064655290" class="btn-ghost">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>+37064655290</span>
+            </a>
+          </div>
         </div>
-        <h2 id="heroName">Tomas Bitvinskas</h2>
-        <div class="hero-lead" id="heroRole">Applied AI & Automation Engineer</div>
-        <p class="hero-pitch" id="heroPitch">
-          Open to direct-contract applied AI engineering, autonomous decision systems, computer vision pipelines, and robust LLM automations.
-        </p>
-        <div class="hero-actions">
-          <a href="mailto:tomas.bitvinskas@gmail.com" class="btn-action btn-action-primary">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            <span>Email Tomas</span>
-          </a>
-          <a href="https://www.linkedin.com/in/tomas-bitvinskas-ab4689253/" target="_blank" rel="noopener noreferrer" class="btn-action">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-            <span>LinkedIn Profile</span>
-          </a>
-          <a href="https://github.com/Tomauskasz" target="_blank" rel="noopener noreferrer" class="btn-action">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-            <span>GitHub: Tomauskasz</span>
-          </a>
-          <a href="tel:+37064655290" class="btn-action">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <span>+37064655290</span>
-          </a>
+
+        <!-- Telemetry Radar HUD -->
+        <div class="hero-radar-card">
+          <div class="radar-header">
+            <span class="text-xs font-mono font-bold" id="radarTitle">SYSTEM CAPABILITY TELEMETRY</span>
+            <span class="badge-tag">VERIFIED</span>
+          </div>
+          <div class="radar-metric-list" id="radarMetricsList">
+            <div class="radar-metric-item">
+              <span class="radar-metric-label">ACADEMIC BASELINE</span>
+              <span class="radar-metric-val">GPA 9.2 / Thesis 10/10</span>
+            </div>
+            <div class="radar-metric-item">
+              <span class="radar-metric-label">CORE DOMAIN FOCUS</span>
+              <span class="radar-metric-val">Autonomous Policy & CV</span>
+            </div>
+            <div class="radar-metric-item">
+              <span class="radar-metric-label">COMMERCIAL PRACTICE</span>
+              <span class="radar-metric-val">NNCODE AI Engineer</span>
+            </div>
+            <div class="radar-metric-item">
+              <span class="radar-metric-label">PRODUCTION SYSTEMS</span>
+              <span class="radar-metric-val">5 Deployed Architectures</span>
+            </div>
+            <div class="radar-metric-item">
+              <span class="radar-metric-label">AVAILABILITY</span>
+              <span class="radar-metric-val">Direct Contract (Q3–Q4)</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- Proof Constellation Interactive Section -->
-      <section class="constellation-box" id="constellationSection" aria-label="Interactive Proof Constellation">
-        <div class="flex-between" style="margin-bottom:0.4rem;">
-          <h3 class="text-sm font-bold font-display" id="constellationTitle" style="text-transform:uppercase; letter-spacing:0.05em;">Proof Constellation</h3>
-          <span class="tag tag-highlight">Interactive Graph</span>
+      <!-- Proof Constellation Interactive Topology Section -->
+      <section class="constellation-wrapper" id="constellationSection" aria-label="Interactive Proof Constellation">
+        <div class="constellation-header">
+          <h3 class="text-sm font-mono font-bold" id="constellationTitle" style="letter-spacing:0.05em;">PROOF CONSTELLATION</h3>
+          <span class="badge-tag">INTERACTIVE TOPOLOGY</span>
         </div>
-        <p class="text-xs text-muted" id="constellationSubtitle" style="margin-bottom:1rem;">
-          Interactive evidence graph — select any node to inspect connected experience, research, or deployed systems.
+        <p class="text-xs text-muted font-mono" id="constellationSubtitle">
+          Interactive topological network — select any node to inspect connected commercial practice, thesis research, or production systems.
         </p>
         <div id="constellationContainer">
           <!-- Fallback static link index when JS is inactive -->
           <noscript>
             <div style="padding:1rem; background:var(--bg-subtle); border-radius:var(--radius-md);">
-              <p class="text-sm font-bold" style="margin-bottom:0.5rem;">Evidence Directory (No-Script Mode):</p>
+              <p class="text-sm font-bold font-mono" style="margin-bottom:0.5rem;">Evidence Topology Index (No-Script Mode):</p>
               <ul style="list-style:inside disc; font-size:var(--text-sm);">
                 <li><a href="#exp-nncode">Commercial Practice @ NNCODE (AI Engineer)</a></li>
                 <li><a href="#res-beamng">Bachelor Thesis: BeamNG Autonomous Driving Pipeline (10/10)</a></li>
-                <li><a href="#proj-etsy">Etsy Pricing AI Assistant (n8n Workflow)</a></li>
+                <li><a href="#proj-etsy">Etsy Pricing AI Assistant (n8n Autonomous Workflow)</a></li>
                 <li><a href="#proj-career">CareerCopilot AI Assistant</a></li>
                 <li><a href="#proj-visual">Visual Search Vector Similarity Engine</a></li>
                 <li><a href="#proj-rail">Railroad Crossing Computer Vision Monitor</a></li>
@@ -115,28 +150,33 @@
         </div>
       </section>
 
-      <!-- Chapter 01: Commercial Experience -->
+      <!-- Chapter 01: Commercial Practice -->
       <section class="dossier-chapter" id="chapter1">
-        <h3 class="chapter-title" id="chapter1Title">Commercial Experience @ NNCODE</h3>
+        <div class="chapter-heading">
+          <span class="chapter-number">01</span>
+          <h3 class="chapter-title" id="chapter1Title">Commercial Practice @ NNCODE</h3>
+        </div>
         <div class="evidence-list" id="experienceList">
           <!-- Default SSR Content -->
           <article id="exp-nncode" class="evidence-card">
-            <div class="flex-between" style="margin-bottom:0.5rem;">
-              <h4 class="text-xl font-extrabold">AI Engineer — NNCODE</h4>
-              <span class="tag tag-highlight">Applied AI Solutions | Computer Vision & Robotics</span>
+            <div class="card-header-bar">
+              <h4 class="card-title">AI Engineer — NNCODE</h4>
+              <span class="card-meta-badge">Apr 2025 – Sep 2025</span>
             </div>
-            <p class="text-base text-secondary" style="margin-bottom:0.85rem;">
-              Engineered production AI prototypes, resilient backend integration microservices, and connected multi-modal robotics and computer vision tooling for practical industrial client deployments.
+            <p class="card-context-row">Applied Industrial AI Solutions | Multi-Modal CV & Robotics</p>
+            <p class="card-body">
+              Engineered production AI microservices, resilient backend integration pipelines, and integrated multi-modal computer vision and robotics tooling for practical industrial deployments.
             </p>
-            <div class="flex-wrap-gap">
-              <span class="tag tag-success">✓ Production AI Microservices</span>
-              <span class="tag tag-success">✓ Multi-modal CV Integration</span>
-              <span class="tag tag-success">✓ Client-validated Prototypes</span>
-              <span class="tag">Python</span>
-              <span class="tag">FastAPI</span>
-              <span class="tag">OpenCV</span>
-              <span class="tag">ROS</span>
-              <span class="tag">PyTorch</span>
+            <div class="tech-tag-row">
+              <span class="metric-pill">✓ Production AI Microservices</span>
+              <span class="metric-pill">✓ Multi-modal CV Integration</span>
+              <span class="metric-pill">✓ Client-validated Prototypes</span>
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">FastAPI</span>
+              <span class="tech-tag">OpenCV</span>
+              <span class="tech-tag">ROS</span>
+              <span class="tech-tag">PyTorch</span>
+              <span class="tech-tag">Docker</span>
             </div>
           </article>
         </div>
@@ -144,104 +184,131 @@
 
       <!-- Chapter 02: Signature Research -->
       <section class="dossier-chapter" id="chapter2">
-        <h3 class="chapter-title" id="chapter2Title">Signature Research & Thesis</h3>
+        <div class="chapter-heading">
+          <span class="chapter-number">02</span>
+          <h3 class="chapter-title" id="chapter2Title">Signature Research & Thesis</h3>
+        </div>
         <div class="evidence-list" id="researchList">
           <!-- Default SSR Content -->
           <article id="res-beamng" class="evidence-card">
-            <h4 class="text-xl font-extrabold text-brand" style="margin-bottom:0.4rem;">
-              BeamNG Autonomous Driver — End-to-End Driving Policy Training
-            </h4>
-            <p class="text-sm text-muted" style="margin-bottom:0.75rem;">
-              Vilnius TECH (Bachelor's Thesis, Grade: 10/10)
+            <div class="card-header-bar">
+              <h4 class="card-title text-brand">BeamNG Autonomous Driver — End-to-End Driving Policy Training</h4>
+              <span class="card-meta-badge">Vilnius TECH (Thesis 10/10)</span>
+            </div>
+            <p class="card-context-row">Closed-loop autonomous vehicle decision-making in BeamNG.tech physics simulator.</p>
+            <p class="card-body">
+              Architected complete simulation-to-policy pipeline: real-time telemetry harvesting, dataset curation, reinforcement learning policy training, and automated regression evaluation loops.
             </p>
-            <p class="text-base text-secondary" style="margin-bottom:0.85rem;">
-              Architected complete simulation-to-policy pipeline: telemetry harvesting, dataset curation, reinforcement learning policy training, and automated regression evaluation loops in BeamNG.tech.
-            </p>
-            <div class="flex-wrap-gap">
-              <span class="tag tag-highlight">★ 100% End-to-end Pipeline</span>
-              <span class="tag tag-highlight">★ Closed-loop Driving Policy</span>
-              <span class="tag tag-highlight">★ BeamNG.tech Simulation</span>
-              <span class="tag">Reinforcement Learning</span>
-              <span class="tag">PyTorch</span>
-              <span class="tag">BeamNG.tech</span>
-              <span class="tag">Telemetry Processing</span>
-              <span class="tag">Python</span>
+            <div class="tech-tag-row">
+              <span class="metric-pill">★ 100% End-to-end Pipeline</span>
+              <span class="metric-pill">★ Closed-loop Driving Policy</span>
+              <span class="metric-pill">★ BeamNG.tech Simulation</span>
+              <span class="tech-tag">Reinforcement Learning</span>
+              <span class="tech-tag">PyTorch</span>
+              <span class="tech-tag">BeamNG.tech</span>
+              <span class="tech-tag">Telemetry Processing</span>
+              <span class="tech-tag">Python</span>
             </div>
           </article>
         </div>
       </section>
 
-      <!-- Chapter 03: Production Systems Portfolio -->
+      <!-- Chapter 03: Production Systems Portfolio (Bento Grid) -->
       <section class="dossier-chapter" id="chapter3">
-        <h3 class="chapter-title" id="chapter3Title">Production Systems Portfolio</h3>
-        <div class="evidence-list" id="projectsList">
+        <div class="chapter-heading">
+          <span class="chapter-number">03</span>
+          <h3 class="chapter-title" id="chapter3Title">Production Systems Portfolio</h3>
+        </div>
+        <div class="projects-bento" id="projectsList">
           <!-- Default SSR Content -->
-          <article id="proj-etsy" class="evidence-card">
-            <h4 class="text-lg font-bold" style="margin-bottom:0.4rem;">Etsy Pricing Assistant — AI Automation Workflow</h4>
-            <p class="text-sm text-secondary" style="margin-bottom:0.75rem;">
+          <article id="proj-etsy" class="evidence-card featured-wide">
+            <div class="card-header-bar">
+              <h4 class="card-title">Etsy Pricing Assistant — Autonomous n8n Workflow</h4>
+              <span class="card-meta-badge">01 // SYS</span>
+            </div>
+            <p class="card-context-row">Daily pricing optimization across high-volume e-commerce inventory.</p>
+            <p class="card-body">
               Built an autonomous n8n orchestration workflow integrating Google Sheets, Telegram interactive bots, and OpenAI API with strict human-in-the-loop audit logs and safety bounds.
             </p>
-            <div class="flex-wrap-gap">
-              <span class="tag">n8n</span>
-              <span class="tag">OpenAI API</span>
-              <span class="tag">Telegram Bot API</span>
-              <span class="tag">Google Sheets</span>
-              <span class="tag">Python</span>
+            <div class="tech-tag-row">
+              <span class="metric-pill">✓ Zero unreviewed pricing mistakes</span>
+              <span class="metric-pill">✓ Daily autonomous sync</span>
+              <span class="tech-tag">n8n</span>
+              <span class="tech-tag">OpenAI API</span>
+              <span class="tech-tag">Telegram Bot API</span>
+              <span class="tech-tag">Google Sheets</span>
+              <span class="tech-tag">Python</span>
             </div>
           </article>
 
           <article id="proj-career" class="evidence-card">
-            <h4 class="text-lg font-bold" style="margin-bottom:0.4rem;">CareerCopilot — Intelligent CV & Career Strategy Assistant</h4>
-            <p class="text-sm text-secondary" style="margin-bottom:0.75rem;">
+            <div class="card-header-bar">
+              <h4 class="card-title">CareerCopilot — Intelligent CV & Career Strategy Engine</h4>
+              <span class="card-meta-badge">02 // SYS</span>
+            </div>
+            <p class="card-context-row">Candidate-job semantic matching and structural gap analysis.</p>
+            <p class="card-body">
               Developed an LLM-powered engine that analyzes candidate credentials against job requirements, generates gap matrices, and creates tailored cover letters and interview preparation packs.
             </p>
-            <div class="flex-wrap-gap">
-              <span class="tag">FastAPI</span>
-              <span class="tag">React</span>
-              <span class="tag">NLP</span>
-              <span class="tag">LLM Fine-tuning</span>
-              <span class="tag">Tailwind CSS</span>
+            <div class="tech-tag-row">
+              <span class="tech-tag">FastAPI</span>
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">NLP</span>
+              <span class="tech-tag">LLM Fine-tuning</span>
+              <span class="tech-tag">Tailwind CSS</span>
             </div>
           </article>
 
           <article id="proj-visual" class="evidence-card">
-            <h4 class="text-lg font-bold" style="margin-bottom:0.4rem;">Visual Search — High-Dimensional Image Similarity Engine</h4>
-            <p class="text-sm text-secondary" style="margin-bottom:0.75rem;">
+            <div class="card-header-bar">
+              <h4 class="card-title">Visual Search — High-Dimensional Vector Similarity Engine</h4>
+              <span class="card-meta-badge">03 // SYS</span>
+            </div>
+            <p class="card-context-row">Fast vector-based visual discovery across large image databases.</p>
+            <p class="card-body">
               Implemented a fullstack image similarity search engine using deep feature extraction embeddings with a FastAPI backend and interactive React UI.
             </p>
-            <div class="flex-wrap-gap">
-              <span class="tag">PyTorch</span>
-              <span class="tag">FastAPI</span>
-              <span class="tag">React</span>
-              <span class="tag">Computer Vision</span>
-              <span class="tag">Embeddings</span>
+            <div class="tech-tag-row">
+              <span class="tech-tag">PyTorch</span>
+              <span class="tech-tag">FastAPI</span>
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Computer Vision</span>
+              <span class="tech-tag">Embeddings</span>
             </div>
           </article>
 
           <article id="proj-face" class="evidence-card">
-            <h4 class="text-lg font-bold" style="margin-bottom:0.4rem;">Student Face Check-in & Attendance Verification</h4>
-            <p class="text-sm text-secondary" style="margin-bottom:0.75rem;">
-              Engineered a computer vision attendance system verifying student identities via facial recognition, managing persistent logs, and providing a clean administrative portal.
+            <div class="card-header-bar">
+              <h4 class="card-title">Student Face Check-in & Biometric Attendance System</h4>
+              <span class="card-meta-badge">04 // SYS</span>
+            </div>
+            <p class="card-context-row">Automated biometric classroom attendance verification.</p>
+            <p class="card-body">
+              Engineered a computer vision attendance system verifying student identities via facial recognition, managing persistent logs, and providing an administrative portal.
             </p>
-            <div class="flex-wrap-gap">
-              <span class="tag">OpenCV</span>
-              <span class="tag">Face Recognition</span>
-              <span class="tag">Python</span>
-              <span class="tag">SQLite</span>
-              <span class="tag">HTML/CSS</span>
+            <div class="tech-tag-row">
+              <span class="tech-tag">OpenCV</span>
+              <span class="tech-tag">Face Recognition</span>
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">SQLite</span>
+              <span class="tech-tag">HTML/CSS</span>
             </div>
           </article>
 
           <article id="proj-rail" class="evidence-card">
-            <h4 class="text-lg font-bold" style="margin-bottom:0.4rem;">Railroad Crossing Safety Monitor</h4>
-            <p class="text-sm text-secondary" style="margin-bottom:0.75rem;">
+            <div class="card-header-bar">
+              <h4 class="card-title">Railroad Crossing Real-Time Safety Monitor</h4>
+              <span class="card-meta-badge">05 // SYS</span>
+            </div>
+            <p class="card-context-row">Real-time safety hazard detection at critical transport infrastructure points.</p>
+            <p class="card-body">
               Created a computer vision pipeline that tracks rail crossing traffic, detects optical warning signals, and automatically flags hazardous near-miss incidents for operator review.
             </p>
-            <div class="flex-wrap-gap">
-              <span class="tag">Computer Vision</span>
-              <span class="tag">OpenCV</span>
-              <span class="tag">Object Detection</span>
-              <span class="tag">Python</span>
+            <div class="tech-tag-row">
+              <span class="tech-tag">Computer Vision</span>
+              <span class="tech-tag">OpenCV</span>
+              <span class="tech-tag">Object Detection</span>
+              <span class="tech-tag">Python</span>
             </div>
           </article>
         </div>
@@ -249,55 +316,68 @@
 
       <!-- Chapter 04: Academic & Technical Foundation -->
       <section class="dossier-chapter" id="chapter4">
-        <h3 class="chapter-title" id="chapter4Title">Credentials & Technical Capabilities</h3>
+        <div class="chapter-heading">
+          <span class="chapter-number">04</span>
+          <h3 class="chapter-title" id="chapter4Title">Credentials & Technical Capabilities</h3>
+        </div>
         <div class="competency-grid" id="competenciesGrid">
           <div class="evidence-card">
-            <h4 class="text-base font-bold" style="margin-bottom:0.5rem;">Academic Foundation</h4>
-            <p class="text-base font-bold">Vilnius TECH (Vilnius Gediminas Technical University)</p>
-            <p class="text-sm text-brand font-medium" style="margin:0.35rem 0;">B.Sc. in Artificial Intelligence Systems (GPA: 9.2 / 10)</p>
-            <p class="text-xs text-muted" style="margin-bottom:0.75rem;">Incoming Master's Student. Focus on autonomous robotics, computer vision, and machine learning.</p>
+            <div class="card-header-bar">
+              <h4 class="card-title">Academic Foundation</h4>
+              <span class="card-meta-badge">Vilnius TECH</span>
+            </div>
+            <p class="text-base font-bold" style="margin-top:0.35rem;">Vilnius Gediminas Technical University (Vilnius TECH)</p>
+            <p class="text-sm text-brand font-bold" style="margin:0.25rem 0;">B.Sc. in Artificial Intelligence Systems</p>
+            <p class="card-context-row" style="margin-bottom:0.75rem;">GPA: 9.2 / 10 | Bachelor's Thesis: 10/10</p>
+            <p class="text-xs text-muted" style="margin-bottom:1.25rem;">Incoming Master's Student in AI Engineering. Focus on autonomous robotics, computer vision, and machine learning.</p>
             
-            <h4 class="text-base font-bold" style="margin-bottom:0.35rem; border-top:1px solid var(--border-subtle); padding-top:0.75rem;">Language Proficiency</h4>
-            <p class="text-xs"><strong>Lithuanian:</strong> Native proficiency</p>
-            <p class="text-xs"><strong>English:</strong> Fluent / Professional working proficiency</p>
+            <h4 class="card-title" style="border-top:1px solid var(--border-subtle); padding-top:1rem; margin-bottom:0.6rem; font-size:var(--text-lg);">Language Proficiency</h4>
+            <div style="display:flex; flex-direction:column; gap:0.35rem;">
+              <p class="text-xs font-mono"><strong>Lithuanian:</strong> <span class="text-muted">Native proficiency</span></p>
+              <p class="text-xs font-mono"><strong>English:</strong> <span class="text-muted">Fluent / Professional working proficiency</span></p>
+            </div>
           </div>
 
           <div class="evidence-card">
-            <h4 class="text-base font-bold" style="margin-bottom:0.75rem;">Core AI & Systems Stack</h4>
-            <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            <div class="card-header-bar">
+              <h4 class="card-title">Core AI & Systems Stack</h4>
+              <span class="card-meta-badge">PRODUCTION STACK</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:1rem; margin-top:0.5rem;">
               <div>
-                <h5 class="text-xs font-bold text-muted" style="margin-bottom:0.35rem;">Artificial Intelligence & Machine Learning</h5>
-                <div class="flex-wrap-gap">
-                  <span class="tag">PyTorch</span>
-                  <span class="tag">TensorFlow</span>
-                  <span class="tag">Reinforcement Learning</span>
-                  <span class="tag">Computer Vision</span>
-                  <span class="tag">NLP</span>
-                  <span class="tag">Model Fine-tuning</span>
+                <h5 class="text-xs font-bold text-muted font-mono" style="margin-bottom:0.4rem; text-transform:uppercase;">Artificial Intelligence & Machine Learning</h5>
+                <div class="tech-tag-row">
+                  <span class="tech-tag">PyTorch</span>
+                  <span class="tech-tag">TensorFlow</span>
+                  <span class="tech-tag">Reinforcement Learning</span>
+                  <span class="tech-tag">Computer Vision</span>
+                  <span class="tech-tag">NLP</span>
+                  <span class="tech-tag">Model Fine-tuning</span>
+                  <span class="tech-tag">Classification & Clustering</span>
                 </div>
               </div>
               <div>
-                <h5 class="text-xs font-bold text-muted" style="margin-bottom:0.35rem;">Backend & Distributed Systems</h5>
-                <div class="flex-wrap-gap">
-                  <span class="tag">Python</span>
-                  <span class="tag">FastAPI</span>
-                  <span class="tag">Node.js</span>
-                  <span class="tag">C++</span>
-                  <span class="tag">JavaScript</span>
-                  <span class="tag">MongoDB</span>
-                  <span class="tag">Oracle</span>
-                  <span class="tag">Tailwind CSS</span>
+                <h5 class="text-xs font-bold text-muted font-mono" style="margin-bottom:0.4rem; text-transform:uppercase;">Backend & Distributed Systems</h5>
+                <div class="tech-tag-row">
+                  <span class="tech-tag">Python</span>
+                  <span class="tech-tag">FastAPI</span>
+                  <span class="tech-tag">Node.js</span>
+                  <span class="tech-tag">C++</span>
+                  <span class="tech-tag">JavaScript</span>
+                  <span class="tech-tag">MongoDB</span>
+                  <span class="tech-tag">Oracle</span>
+                  <span class="tech-tag">Tailwind CSS</span>
                 </div>
               </div>
               <div>
-                <h5 class="text-xs font-bold text-muted" style="margin-bottom:0.35rem;">Robotics, Simulation & Automation</h5>
-                <div class="flex-wrap-gap">
-                  <span class="tag">ROS</span>
-                  <span class="tag">Gazebo</span>
-                  <span class="tag">OpenCV</span>
-                  <span class="tag">BeamNG.tech</span>
-                  <span class="tag">n8n</span>
-                  <span class="tag">Telegram Bots</span>
+                <h5 class="text-xs font-bold text-muted font-mono" style="margin-bottom:0.4rem; text-transform:uppercase;">Robotics, Simulation & Automation</h5>
+                <div class="tech-tag-row">
+                  <span class="tech-tag">ROS</span>
+                  <span class="tech-tag">Gazebo</span>
+                  <span class="tech-tag">OpenCV</span>
+                  <span class="tech-tag">BeamNG.tech</span>
+                  <span class="tech-tag">n8n</span>
+                  <span class="tech-tag">Telegram Bots</span>
                 </div>
               </div>
             </div>
@@ -308,7 +388,7 @@
 
     <!-- Site Footer -->
     <footer class="site-footer">
-      <p>© 2026 Tomas Bitvinskas. Bilingual CV & Proof Constellation. All rights reserved.</p>
+      <p>© 2026 Tomas Bitvinskas // Executive Evidence Dossier & Proof Constellation. All rights reserved.</p>
     </footer>
   </body>
 </html>
