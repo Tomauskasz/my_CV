@@ -1,6 +1,6 @@
 // ==========================================================================
-// TOMAS BITVINSKAS — BESPOKE EXECUTIVE DOSSIER ENGINE
-// Anti-Slop Bilingual Dictionary, Radar Telemetry & Proof Constellation Graph
+// TOMAS BITVINSKAS — EXECUTIVE EVIDENCE DOSSIER ENGINE
+// Anti-Slop Bilingual Dictionary, Telemetry Systems & Proof Constellation Graph
 // ==========================================================================
 
 const translations = {
@@ -28,7 +28,8 @@ const translations = {
       credentialsTitle: "Credentials & Technical Capabilities",
       academicBaselineTitle: "Academic Foundation",
       stackTitle: "Core AI & Systems Stack",
-      languagesTitle: "Language Proficiency"
+      languagesTitle: "Language Proficiency",
+      pipelineTitle: "CLOSED-LOOP RL PIPELINE ARCHITECTURE"
     },
     experience: [
       {
@@ -39,7 +40,11 @@ const translations = {
         period: "Apr 2025 – Sep 2025",
         context: "Applied Industrial AI Solutions | Multi-Modal CV & Robotics",
         contribution: "Engineered production AI microservices, resilient backend integration pipelines, and integrated multi-modal computer vision and robotics tooling for practical industrial deployments.",
-        metrics: ["Production AI Microservices", "Multi-modal CV Integration", "Client-validated Prototypes"],
+        deliverables: [
+          { idx: "01", text: "Production AI Microservices" },
+          { idx: "02", text: "Multi-Modal CV Tooling" },
+          { idx: "03", text: "Client-Validated Systems" }
+        ],
         tags: ["Python", "FastAPI", "OpenCV", "ROS", "PyTorch", "Docker"]
       }
     ],
@@ -51,7 +56,17 @@ const translations = {
         institution: "Vilnius TECH (Bachelor's Thesis, Grade: 10/10)",
         context: "Closed-loop autonomous vehicle decision-making in BeamNG.tech physics simulator.",
         contribution: "Architected complete simulation-to-policy pipeline: real-time telemetry harvesting, dataset curation, reinforcement learning policy training, and automated regression evaluation loops.",
-        metrics: ["100% End-to-end Pipeline", "Closed-loop Driving Policy", "BeamNG.tech Simulation"],
+        pipelineSteps: [
+          "BeamNG Simulation",
+          "Real-Time Telemetry",
+          "RL Policy Training",
+          "Closed-Loop Eval"
+        ],
+        deliverables: [
+          { idx: "★", text: "100% End-to-End Policy Pipeline" },
+          { idx: "★", text: "Sub-Second Telemetry Processing" },
+          { idx: "★", text: "Grade 10/10 Bachelor's Defense" }
+        ],
         tags: ["Reinforcement Learning", "PyTorch", "BeamNG.tech", "Telemetry Processing", "Python"]
       }
     ],
@@ -62,7 +77,11 @@ const translations = {
         title: "Etsy Pricing Assistant — Autonomous n8n Workflow",
         context: "Daily pricing optimization across high-volume e-commerce inventory.",
         contribution: "Built an autonomous n8n orchestration workflow integrating Google Sheets, Telegram interactive bots, and OpenAI API with strict human-in-the-loop audit logs and safety bounds.",
-        metrics: ["Zero unreviewed pricing mistakes", "Daily autonomous sync", "Audited audit trail"],
+        deliverables: [
+          { idx: "01", text: "Zero unreviewed pricing errors" },
+          { idx: "02", text: "Daily autonomous sync engine" },
+          { idx: "03", text: "Audited audit log trail" }
+        ],
         tags: ["n8n", "OpenAI API", "Telegram Bot API", "Google Sheets", "Python"],
         featured: true
       },
@@ -72,7 +91,10 @@ const translations = {
         title: "CareerCopilot — Intelligent CV & Career Strategy Engine",
         context: "Candidate-job semantic matching and structural gap analysis.",
         contribution: "Developed an LLM-powered engine that analyzes candidate credentials against job requirements, generates gap matrices, and creates tailored cover letters and interview preparation packs.",
-        metrics: ["Semantic gap matrix", "Automated cover generation", "NLP evaluation"],
+        deliverables: [
+          { idx: "01", text: "Semantic gap matrix" },
+          { idx: "02", text: "Automated cover generation" }
+        ],
         tags: ["FastAPI", "React", "NLP", "LLM Fine-tuning", "Tailwind CSS"],
         featured: false
       },
@@ -82,7 +104,10 @@ const translations = {
         title: "Visual Search — High-Dimensional Vector Similarity Engine",
         context: "Fast vector-based visual discovery across large image databases.",
         contribution: "Implemented a fullstack image similarity search engine using deep feature extraction embeddings with a FastAPI backend and interactive React UI.",
-        metrics: ["Sub-second vector lookup", "Deep feature embeddings", "React UI"],
+        deliverables: [
+          { idx: "01", text: "Sub-second vector lookup" },
+          { idx: "02", text: "Deep feature embeddings" }
+        ],
         tags: ["PyTorch", "FastAPI", "React", "Computer Vision", "Embeddings"],
         featured: false
       },
@@ -92,7 +117,10 @@ const translations = {
         title: "Student Face Check-in & Biometric Attendance System",
         context: "Automated biometric classroom attendance verification.",
         contribution: "Engineered a computer vision attendance system verifying student identities via facial recognition, managing persistent logs, and providing an administrative portal.",
-        metrics: ["Real-time facial verification", "Automated attendance logging", "Admin portal"],
+        deliverables: [
+          { idx: "01", text: "Real-time facial verification" },
+          { idx: "02", text: "Automated attendance logging" }
+        ],
         tags: ["OpenCV", "Face Recognition", "Python", "SQLite", "HTML/CSS"],
         featured: false
       },
@@ -102,7 +130,10 @@ const translations = {
         title: "Railroad Crossing Real-Time Safety Monitor",
         context: "Real-time safety hazard detection at critical transport infrastructure points.",
         contribution: "Created a computer vision pipeline that tracks rail crossing traffic, detects optical warning signals, and automatically flags hazardous near-miss incidents for operator review.",
-        metrics: ["Real-time optical hazard detection", "Automated incident flagging", "Video analytics"],
+        deliverables: [
+          { idx: "01", text: "Real-time hazard detection" },
+          { idx: "02", text: "Optical incident flagging" }
+        ],
         tags: ["Computer Vision", "OpenCV", "Object Detection", "Python"],
         featured: false
       }
@@ -136,12 +167,12 @@ const translations = {
     ],
     constellationGraph: {
       nodes: [
-        { id: "node-nncode", label: "NNCODE (AI Role)", x: 260, y: 160, type: "commercial", targetId: "exp-nncode" },
-        { id: "node-beamng", label: "BeamNG Thesis", x: 420, y: 80, type: "research", targetId: "res-beamng" },
-        { id: "node-etsy", label: "Etsy AI Automation", x: 120, y: 90, type: "project", targetId: "proj-etsy" },
-        { id: "node-career", label: "CareerCopilot", x: 100, y: 230, type: "project", targetId: "proj-career" },
-        { id: "node-visual", label: "Visual Search", x: 440, y: 230, type: "project", targetId: "proj-visual" },
-        { id: "node-rail", label: "Rail Safety CV", x: 320, y: 270, type: "project", targetId: "proj-rail" }
+        { id: "node-nncode", label: "NNCODE (AI Role)", x: 260, y: 150, type: "commercial", targetId: "exp-nncode" },
+        { id: "node-beamng", label: "BeamNG Thesis", x: 420, y: 75, type: "research", targetId: "res-beamng" },
+        { id: "node-etsy", label: "Etsy AI Automation", x: 120, y: 85, type: "project", targetId: "proj-etsy" },
+        { id: "node-career", label: "CareerCopilot", x: 100, y: 220, type: "project", targetId: "proj-career" },
+        { id: "node-visual", label: "Visual Search", x: 440, y: 220, type: "project", targetId: "proj-visual" },
+        { id: "node-rail", label: "Rail Safety CV", x: 320, y: 260, type: "project", targetId: "proj-rail" }
       ],
       links: [
         { source: "node-nncode", target: "node-beamng" },
@@ -178,7 +209,8 @@ const translations = {
       credentialsTitle: "Kvalifikacija ir techniniai įgūdžiai",
       academicBaselineTitle: "Išsilavinimo pagrindas",
       stackTitle: "DI ir technologijų rinkinys",
-      languagesTitle: "Kalbų mokėjimas"
+      languagesTitle: "Kalbų mokėjimas",
+      pipelineTitle: "UŽDARO CIKLO MOKYMO PROCESO ARCHITEKTŪRA"
     },
     experience: [
       {
@@ -189,7 +221,11 @@ const translations = {
         period: "2025 bal. – 2025 rugs.",
         context: "Taikomieji pramoniniai DI sprendimai | Kompiuterinė rega ir robotika",
         contribution: "Kūriau gamybines DI mikropaslaugas, patikimas serverinės integracijos grandines ir jungiau kompiuterinės regos bei robotikos įrankius pramoniniams klientų užsakymams.",
-        metrics: ["Gamybinės DI mikropaslaugos", "Kompiuterinės regos integracija", "Klientų patvirtinti sprendimai"],
+        deliverables: [
+          { idx: "01", text: "Gamybinės DI mikropaslaugos" },
+          { idx: "02", text: "Kompiuterinės regos integracija" },
+          { idx: "03", text: "Klientų patvirtintos sistemos" }
+        ],
         tags: ["Python", "FastAPI", "OpenCV", "ROS", "PyTorch", "Docker"]
       }
     ],
@@ -201,7 +237,17 @@ const translations = {
         institution: "Vilnius TECH (Bakalauro baigiamasis darbas, įvertinimas: 10/10)",
         context: "Autonominio automobilio sprendimų priėmimas didelio tikslumo fizikos simuliatoriuje (BeamNG.tech).",
         contribution: "Sukūriau pilną procesą nuo simuliacijos iki valdymo modelio: telemetrijos rinkimą, duomenų paruošimą, stiprinamojo mokymo modelio treniravimą ir automatinį testavimą.",
-        metrics: ["100% pilnas procesas", "Uždaro ciklo vairavimo modelis", "BeamNG.tech simuliacija"],
+        pipelineSteps: [
+          "BeamNG simuliacija",
+          "Realaus laiko telemetrija",
+          "Stiprinamasis mokymas",
+          "Uždaro ciklo testas"
+        ],
+        deliverables: [
+          { idx: "★", text: "100% pilnas modelio procesas" },
+          { idx: "★", text: "Realaus laiko telemetrija" },
+          { idx: "★", text: "Bakalauro įvertinimas 10/10" }
+        ],
         tags: ["Stiprinamasis mokymas", "PyTorch", "BeamNG.tech", "Telemetrijos apdorojimas", "Python"]
       }
     ],
@@ -212,7 +258,11 @@ const translations = {
         title: "Etsy kainodaros asistentas — Autonominė n8n sistema",
         context: "Kasdienis prekių kainų optimizavimas didelės apimties e-komercijos sąrašuose.",
         contribution: "Sukūriau n8n automatizavimo procesą, apjungiantį Google Sheets, Telegram botus ir OpenAI API su griežtomis saugumo taisyklėmis ir žmogaus patvirtinimu.",
-        metrics: ["Nulinis klaidų skaičius", "Kasdienė automatinė sinchronizacija", "Žmogaus patvirtinimo auditas"],
+        deliverables: [
+          { idx: "01", text: "Nulinis klaidų skaičius" },
+          { idx: "02", text: "Kasdienė automatinė sinchronizacija" },
+          { idx: "03", text: "Žmogaus patvirtinimo auditas" }
+        ],
         tags: ["n8n", "OpenAI API", "Telegram Bot API", "Google Sheets", "Python"],
         featured: true
       },
@@ -222,7 +272,10 @@ const translations = {
         title: "CareerCopilot — DI gyvenimo aprašymo asistentas",
         context: "Kandidatų CV ir darbo skelbimų atitikimo analizė.",
         contribution: "Sukūriau sistemą, kuri lygina kandidato įgūdžius su reikalavimais, parodo trūkumus ir generuoja pritaikytus motyvacinius laiškus bei pasiruošimo pokalbiams klausimus.",
-        metrics: ["Semantinė atitikimo matrica", "Automatinis laiškų kūrimas", "NLP vertinimas"],
+        deliverables: [
+          { idx: "01", text: "Semantinė atitikimo matrica" },
+          { idx: "02", text: "Automatinis laiškų kūrimas" }
+        ],
         tags: ["FastAPI", "React", "NLP", "LLM Modeliai", "Tailwind CSS"],
         featured: false
       },
@@ -232,7 +285,10 @@ const translations = {
         title: "Visual Search — Panašių vaizdų paieškos sistema",
         context: "Greita vektorinė vaizdų paieška didelėse duomenų bazėse.",
         contribution: "Įdiegiau vaizdų panašumo paieškos variklį su giliųjų bruožų išskyrimu, FastAPI serverine dalimi ir React naudotojo sąsaja.",
-        metrics: ["Greita vektorinė paieška", "Giliųjų bruožų vektoriai", "React sąsaja"],
+        deliverables: [
+          { idx: "01", text: "Greita vektorinė paieška" },
+          { idx: "02", text: "Giliųjų bruožų vektoriai" }
+        ],
         tags: ["PyTorch", "FastAPI", "React", "Kompiuterinė rega", "Vektoriai"],
         featured: false
       },
@@ -242,7 +298,10 @@ const translations = {
         title: "Studentų lankomumo sistema su veidų atpažinimu",
         context: "Automatizuotas biometrinis studentų lankomumo fiksavimas pagal veidus.",
         contribution: "Sukūriau lankomumo sistemą, atpažįstančią veidus, registruojančią įrašus duomenų bazėje su aiškia administratoriaus sąsaja.",
-        metrics: ["Realaus laiko veidų atpažinimas", "Automatinis lankomumo žurnalas", "Valdymo pultas"],
+        deliverables: [
+          { idx: "01", text: "Realaus laiko veidų atpažinimas" },
+          { idx: "02", text: "Automatinis lankomumo žurnalas" }
+        ],
         tags: ["OpenCV", "Face Recognition", "Python", "SQLite", "HTML/CSS"],
         featured: false
       },
@@ -252,7 +311,10 @@ const translations = {
         title: "Geležinkelio pervažų saugos stebėsena",
         context: "Realaus laiko saugumo stebėjimas geležinkelio pervažose.",
         contribution: "Sukūriau kompiuterinės regos sistemą, kuri stebi judėjimą pervažoje, atpažįsta šviesoforo signalus ir registruoja incidentus operatoriaus peržiūrai.",
-        metrics: ["Realaus laiko pavojaus aptikimas", "Incidentų registravimas", "Vaizdo analizė"],
+        deliverables: [
+          { idx: "01", text: "Realaus laiko pavojaus aptikimas" },
+          { idx: "02", text: "Incidentų registravimas" }
+        ],
         tags: ["Kompiuterinė rega", "OpenCV", "Objektų aptikimas", "Python"],
         featured: false
       }
@@ -286,12 +348,12 @@ const translations = {
     ],
     constellationGraph: {
       nodes: [
-        { id: "node-nncode", label: "NNCODE (DI Inž.)", x: 260, y: 160, type: "commercial", targetId: "exp-nncode" },
-        { id: "node-beamng", label: "BeamNG Darbas", x: 420, y: 80, type: "research", targetId: "res-beamng" },
-        { id: "node-etsy", label: "Etsy DI n8n", x: 120, y: 90, type: "project", targetId: "proj-etsy" },
-        { id: "node-career", label: "CareerCopilot", x: 100, y: 230, type: "project", targetId: "proj-career" },
-        { id: "node-visual", label: "Visual Search", x: 440, y: 230, type: "project", targetId: "proj-visual" },
-        { id: "node-rail", label: "Pervažų sauga CV", x: 320, y: 270, type: "project", targetId: "proj-rail" }
+        { id: "node-nncode", label: "NNCODE (AI Role)", x: 260, y: 150, type: "commercial", targetId: "exp-nncode" },
+        { id: "node-beamng", label: "BeamNG Thesis", x: 420, y: 75, type: "research", targetId: "res-beamng" },
+        { id: "node-etsy", label: "Etsy AI Automation", x: 120, y: 85, type: "project", targetId: "proj-etsy" },
+        { id: "node-career", label: "CareerCopilot", x: 100, y: 220, type: "project", targetId: "proj-career" },
+        { id: "node-visual", label: "Visual Search", x: 440, y: 220, type: "project", targetId: "proj-visual" },
+        { id: "node-rail", label: "Rail Safety CV", x: 320, y: 260, type: "project", targetId: "proj-rail" }
       ],
       links: [
         { source: "node-nncode", target: "node-beamng" },
@@ -304,10 +366,6 @@ const translations = {
       ]
     }
   }
-};
-
-const ICONS = {
-  check: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`
 };
 
 const AppState = {
@@ -334,7 +392,7 @@ function renderConstellationSVG(data, activeNodeId) {
   const nodesHtml = nodes.map(node => {
     const isSelected = node.id === activeNodeId;
     const color = node.type === "commercial" ? "#2563eb" : (node.type === "research" ? "#0284c7" : "#475569");
-    const radius = isSelected ? 16 : 11;
+    const radius = isSelected ? 15 : 10;
     return `
       <g class="node-group ${isSelected ? "active" : ""}" 
          data-node-id="${node.id}" 
@@ -345,13 +403,13 @@ function renderConstellationSVG(data, activeNodeId) {
          role="button" 
          aria-label="Evidence node: ${node.label}">
         <circle cx="${node.x}" cy="${node.y}" r="${radius}" class="node-circle" fill="${color}" stroke="#ffffff" stroke-width="2" />
-        <text x="${node.x}" y="${node.y + 22}" text-anchor="middle" class="node-text">${node.label}</text>
+        <text x="${node.x}" y="${node.y + 20}" text-anchor="middle" class="node-text">${node.label}</text>
       </g>
     `;
   }).join("");
 
   return `
-    <svg viewBox="0 0 540 320" class="svg-constellation" role="img" aria-label="Proof Constellation evidence network">
+    <svg viewBox="0 0 540 300" class="svg-constellation" role="img" aria-label="Proof Constellation evidence network">
       ${linesHtml}
       ${nodesHtml}
     </svg>
@@ -363,8 +421,12 @@ function renderConstellationSVG(data, activeNodeId) {
 // ==========================================================================
 const CVApp = {
   init() {
-    const savedTheme = localStorage.getItem("cv_theme") || "system";
-    this.setTheme(savedTheme, false);
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryTheme = urlParams.get("theme");
+    const queryLang = urlParams.get("lang");
+
+    const savedTheme = queryTheme || localStorage.getItem("cv_theme") || "system";
+    this.setTheme(savedTheme, !queryTheme);
 
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
       if (AppState.theme === "system") {
@@ -372,8 +434,8 @@ const CVApp = {
       }
     });
 
-    const savedLang = localStorage.getItem("cv_lang") || "EN";
-    this.setLanguage(savedLang, false);
+    const savedLang = (queryLang ? queryLang.toUpperCase() : null) || localStorage.getItem("cv_lang") || "EN";
+    this.setLanguage(savedLang, !queryLang);
 
     this.render();
   },
@@ -426,7 +488,7 @@ const CVApp = {
     this.renderConstellation();
 
     if (node && node.targetId) {
-      document.querySelectorAll(".evidence-card").forEach(el => el.classList.remove("is-targeted"));
+      document.querySelectorAll(".commercial-dossier-card, .research-spotlight-card, .system-card").forEach(el => el.classList.remove("is-targeted"));
       const targetEl = document.getElementById(node.targetId);
       if (targetEl) {
         targetEl.classList.add("is-targeted");
@@ -483,101 +545,132 @@ const CVApp = {
     const radarList = document.getElementById("radarMetricsList");
     if (radarList) {
       radarList.innerHTML = data.radarMetrics.map(m => `
-        <div class="radar-metric-item">
-          <span class="radar-metric-label">${m.label}</span>
-          <span class="radar-metric-val">${m.val}</span>
+        <div class="radar-row">
+          <span class="radar-row-label">${m.label}</span>
+          <span class="radar-row-value">${m.val}</span>
         </div>
       `).join("");
     }
 
-    // Render Experience List
+    // Render Experience (Chapter 01: Heroic Split Card)
     const expList = document.getElementById("experienceList");
     if (expList) {
       expList.innerHTML = data.experience.map(exp => `
-        <article id="${exp.id}" class="evidence-card ${AppState.activeNode === exp.nodeId ? "is-targeted" : ""}">
-          <div class="card-header-bar">
-            <h4 class="card-title">${exp.role} — ${exp.place}</h4>
-            <span class="card-meta-badge">${exp.period}</span>
+        <article id="${exp.id}" class="commercial-dossier-card ${AppState.activeNode === exp.nodeId ? "is-targeted" : ""}">
+          <div class="dossier-header-flex">
+            <h4 class="dossier-title">${exp.role} — ${exp.place}</h4>
+            <span class="dossier-period-chip">${exp.period}</span>
           </div>
-          <p class="card-context-row">${exp.context}</p>
-          <p class="card-body">${exp.contribution}</p>
-          <div class="tech-tag-row">
-            ${exp.metrics.map(m => `<span class="metric-pill">${ICONS.check} ${m}</span>`).join("")}
-            ${exp.tags.map(t => `<span class="tech-tag">${t}</span>`).join("")}
+          <p class="dossier-context">${exp.context}</p>
+          <p class="dossier-body">${exp.contribution}</p>
+          <div class="deliverables-grid">
+            ${exp.deliverables.map(d => `
+              <div class="deliverable-box">
+                <span>[${d.idx}]</span> ${d.text}
+              </div>
+            `).join("")}
+          </div>
+          <div class="tech-spec-bar">
+            <span class="tech-spec-label">TECH SPEC:</span>
+            ${exp.tags.map(t => `<span class="spec-chip">${t}</span>`).join("")}
           </div>
         </article>
       `).join("");
     }
 
-    // Render Research List
+    // Render Research (Chapter 02: Responsive Pipeline Grid)
     const resList = document.getElementById("researchList");
     if (resList) {
       resList.innerHTML = data.research.map(res => `
-        <article id="${res.id}" class="evidence-card ${AppState.activeNode === res.nodeId ? "is-targeted" : ""}">
-          <div class="card-header-bar">
-            <h4 class="card-title text-brand">${res.title}</h4>
-            <span class="card-meta-badge">${res.institution}</span>
+        <article id="${res.id}" class="research-spotlight-card ${AppState.activeNode === res.nodeId ? "is-targeted" : ""}">
+          <div class="dossier-header-flex">
+            <h4 class="dossier-title text-brand">${res.title}</h4>
+            <span class="dossier-period-chip">${res.institution}</span>
           </div>
-          <p class="card-context-row">${res.context}</p>
-          <p class="card-body">${res.contribution}</p>
-          <div class="tech-tag-row">
-            ${res.metrics.map(m => `<span class="metric-pill">${ICONS.check} ${m}</span>`).join("")}
-            ${res.tags.map(t => `<span class="tech-tag">${t}</span>`).join("")}
+          <p class="dossier-context">${res.context}</p>
+          <p class="dossier-body">${res.contribution}</p>
+          
+          <div class="pipeline-grid">
+            ${res.pipelineSteps.map((step, idx) => `
+              <div class="pipeline-grid-step">
+                <span>0${idx + 1} //</span> ${step}
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="deliverables-grid">
+            ${res.deliverables.map(d => `
+              <div class="deliverable-box">
+                <span>${d.idx}</span> ${d.text}
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="tech-spec-bar">
+            <span class="tech-spec-label">RESEARCH STACK:</span>
+            ${res.tags.map(t => `<span class="spec-chip">${t}</span>`).join("")}
           </div>
         </article>
       `).join("");
     }
 
-    // Render Projects Bento Grid
+    // Render Projects (Chapter 03: Asymmetric Systems Bento)
     const projList = document.getElementById("projectsList");
     if (projList) {
       projList.innerHTML = data.projects.map((proj, idx) => `
-        <article id="${proj.id}" class="evidence-card ${proj.featured ? "featured-wide" : ""} ${AppState.activeNode === proj.nodeId ? "is-targeted" : ""}">
-          <div class="card-header-bar">
-            <h4 class="card-title">${proj.title}</h4>
-            <span class="card-meta-badge">0${idx + 1} // SYS</span>
+        <article id="${proj.id}" class="system-card ${proj.featured ? "featured-full" : ""} ${AppState.activeNode === proj.nodeId ? "is-targeted" : ""}">
+          <div class="dossier-header-flex">
+            <h4 class="dossier-title">${proj.title}</h4>
+            <span class="dossier-period-chip">0${idx + 1} // SYS</span>
           </div>
-          <p class="card-context-row">${proj.context}</p>
-          <p class="card-body">${proj.contribution}</p>
-          <div class="tech-tag-row">
-            ${proj.metrics.map(m => `<span class="metric-pill">${ICONS.check} ${m}</span>`).join("")}
-            ${proj.tags.map(t => `<span class="tech-tag">${t}</span>`).join("")}
+          <p class="dossier-context">${proj.context}</p>
+          <p class="dossier-body">${proj.contribution}</p>
+          <div class="deliverables-grid" style="margin-bottom:0.75rem;">
+            ${proj.deliverables.map(d => `
+              <div class="deliverable-box">
+                <span>[${d.idx}]</span> ${d.text}
+              </div>
+            `).join("")}
+          </div>
+          <div class="tech-spec-bar">
+            <span class="tech-spec-label">SYS STACK:</span>
+            ${proj.tags.map(t => `<span class="spec-chip">${t}</span>`).join("")}
           </div>
         </article>
       `).join("");
     }
 
-    // Render Competencies Grid
+    // Render Competencies (Chapter 04: Swiss Technical Specification)
     const compGrid = document.getElementById("competenciesGrid");
     if (compGrid) {
       compGrid.innerHTML = `
-        <div class="evidence-card">
-          <div class="card-header-bar">
-            <h4 class="card-title">${data.sections.academicBaselineTitle}</h4>
-            <span class="card-meta-badge">Vilnius TECH</span>
+        <div class="competency-card">
+          <div class="dossier-header-flex">
+            <h4 class="dossier-title">${data.sections.academicBaselineTitle}</h4>
+            <span class="dossier-period-chip">Vilnius TECH</span>
           </div>
           <p class="text-base font-bold" style="margin-top:0.35rem;">${data.education[0].institution}</p>
           <p class="text-sm text-brand font-bold" style="margin:0.25rem 0;">${data.education[0].degree}</p>
-          <p class="card-context-row" style="margin-bottom:0.75rem;">${data.education[0].gpa}</p>
+          <p class="dossier-context" style="margin-bottom:0.75rem;">${data.education[0].gpa}</p>
           <p class="text-xs text-muted" style="margin-bottom:1.25rem;">${data.education[0].notes}</p>
           
-          <h4 class="card-title" style="border-top:1px solid var(--border-subtle); padding-top:1rem; margin-bottom:0.6rem; font-size:var(--text-lg);">${data.sections.languagesTitle}</h4>
+          <h4 class="dossier-title" style="border-top:1px solid var(--border-subtle); padding-top:1rem; margin-bottom:0.6rem; font-size:var(--text-base);">${data.sections.languagesTitle}</h4>
           <div style="display:flex; flex-direction:column; gap:0.35rem;">
             ${data.languages.map(l => `<p class="text-xs font-mono"><strong>${l.name}:</strong> <span class="text-muted">${l.level}</span></p>`).join("")}
           </div>
         </div>
 
-        <div class="evidence-card">
-          <div class="card-header-bar">
-            <h4 class="card-title">${data.sections.stackTitle}</h4>
-            <span class="card-meta-badge">PRODUCTION STACK</span>
+        <div class="competency-card">
+          <div class="dossier-header-flex">
+            <h4 class="dossier-title">${data.sections.stackTitle}</h4>
+            <span class="dossier-period-chip">VERIFIED STACK</span>
           </div>
           <div style="display:flex; flex-direction:column; gap:1rem; margin-top:0.5rem;">
             ${data.skills.map(s => `
               <div>
                 <h5 class="text-xs font-bold text-muted font-mono" style="margin-bottom:0.4rem; text-transform:uppercase;">${s.category}</h5>
-                <div class="tech-tag-row">
-                  ${s.items.map(i => `<span class="tech-tag">${i}</span>`).join("")}
+                <div class="tech-spec-bar" style="padding-top:0; border:none;">
+                  ${s.items.map(i => `<span class="spec-chip">${i}</span>`).join("")}
                 </div>
               </div>
             `).join("")}
