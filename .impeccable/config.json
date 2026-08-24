@@ -1,0 +1,21 @@
+{
+  "buildPath": "comp",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-radius",
+        "value": "1.2vw,",
+        "createdAt": "2026-08-24T12:11:36.434Z",
+        "reason": "detector regex-mode artifact: splits clamp(0.5rem, 1.2vw, 1rem) into tokens; verified single frame radius in output.css:182"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "1rem)",
+        "createdAt": "2026-08-24T12:11:36.543Z",
+        "reason": "detector regex-mode artifact: splits clamp(0.5rem, 1.2vw, 1rem) into tokens; verified single frame radius in output.css:182"
+      }
+    ]
+  }
+}

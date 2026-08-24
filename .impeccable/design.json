@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-24T08:11:00Z",
+  "title": "Design System: Tomas Bitvinskas CV",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Sapphire Accent",
+        "canonical": "oklch(0.61 0.15 253)",
+        "tonalRamp": [
+          "oklch(0.20 0.15 253)",
+          "oklch(0.30 0.15 253)",
+          "oklch(0.40 0.15 253)",
+          "oklch(0.50 0.15 253)",
+          "oklch(0.61 0.15 253)",
+          "oklch(0.72 0.13 253)",
+          "oklch(0.83 0.09 253)",
+          "oklch(0.94 0.04 253)"
+        ]
+      },
+      "text-strong": {
+        "role": "neutral",
+        "displayName": "Deep Slate Navy",
+        "canonical": "oklch(0.24 0.031 257)",
+        "tonalRamp": [
+          "oklch(0.15 0.031 257)",
+          "oklch(0.24 0.031 257)",
+          "oklch(0.35 0.031 257)",
+          "oklch(0.48 0.031 257)",
+          "oklch(0.62 0.025 257)",
+          "oklch(0.75 0.020 257)",
+          "oklch(0.88 0.015 257)",
+          "oklch(0.96 0.008 257)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero title"
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings"
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Project and experience descriptions"
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-card",
+        "value": "0 24px 48px -34px rgba(18, 39, 74, 0.28)",
+        "purpose": "Card grounding shadow"
+      },
+      {
+        "name": "shadow-floating",
+        "value": "0 20px 34px -24px rgba(17, 35, 68, 0.32)",
+        "purpose": "Language toggle shadow"
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Standard tactile easing"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "md",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "960px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "card-project",
+      "description": "Tactile white project card with top sapphire glow gradient.",
+      "html": "<div class=\"ds-project-card\"><h3 class=\"ds-card-title\">BeamNG Autonominis Vairuotojas</h3><p class=\"ds-card-desc\">Sukurtas pilnas autonominio automobilio mokymo procesas...</p></div>",
+      "css": ".ds-project-card { position: relative; background: rgba(255, 255, 255, 0.97); border: 1px solid rgba(84, 118, 171, 0.26); border-radius: 1.1rem; padding: 1.2rem 1.25rem; box-shadow: 0 24px 48px -34px rgba(18, 39, 74, 0.28); font-family: 'Inter', sans-serif; transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1); } .ds-project-card::before { content: ''; position: absolute; top: 0; left: 50%; width: 95%; height: 0.25rem; transform: translateX(-50%); border-radius: 999px; background: linear-gradient(90deg, rgba(59, 130, 246, 0.78), rgba(59, 130, 246, 0.1)); } .ds-project-card:hover { transform: translateY(-1px); } .ds-card-title { font-size: 1.1rem; font-weight: 700; color: oklch(0.24 0.031 257); margin: 0 0 0.5rem; } .ds-card-desc { font-size: 1rem; line-height: 1.65; color: oklch(0.38 0.03 255); margin: 0; }"
+    },
+    {
+      "name": "Language Toggle",
+      "kind": "button",
+      "refersTo": "button-lang-toggle",
+      "description": "Pill button for opening the language menu.",
+      "html": "<button class=\"ds-lang-toggle\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"currentColor\"><path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5z\"/></svg><span>LT</span></button>",
+      "css": ".ds-lang-toggle { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.72rem 1rem; border: 1px solid rgba(94, 126, 177, 0.3); border-radius: 999px; background: rgba(246, 250, 255, 0.96); color: oklch(0.24 0.031 257); font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: transform 0.16s, border-color 0.16s; } .ds-lang-toggle:hover { transform: translateY(-1px); border-color: rgba(59, 130, 246, 0.4); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Precision Lab",
+    "overview": "The Precision Lab represents a refined, rigorous technical identity tailored for recruiters and engineering leaders. The interface balances high-density information architecture with tactile, luminous depth.",
+    "keyCharacteristics": [
+      "High-contrast dual-pane layout with atmospheric diagonal accent geometry.",
+      "Luminous tactile cards with subtle top accent gradients and soft ambient elevation.",
+      "Micro-interactions on interactive cards and language switchers.",
+      "Uncompromising typography pairing: geometric clarity in Inter for body, grounded authority in Merriweather Sans for headers."
+    ],
+    "rules": [
+      {
+        "name": "The Dual-Stage Contrast Rule",
+        "body": "Dark surfaces strictly house identity, navigation, and compact profile metadata; luminous light surfaces house long-form project and experience narratives.",
+        "section": "colors"
+      },
+      {
+        "name": "The Micro-Lift Rule",
+        "body": "Interactive cards and buttons lift by exactly -1px on hover with a cubic-bezier(0.22, 1, 0.36, 1) easing curve.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do maintain strict visual and spatial parity when switching between Lithuanian (LT) and English (EN).",
+      "Do preserve the crisp dual-stage architecture (dark sticky sidebar, luminous main stage).",
+      "Do use Merriweather Sans exclusively for headers and Inter for data/body content."
+    ],
+    "donts": [
+      "Don't introduce heavy, opaque drop shadows or flat unstyled gray borders.",
+      "Don't clutter project cards with raw unformatted walls of text.",
+      "Don't break the zero-runtime-dependency architecture."
+    ]
+  }
+}
