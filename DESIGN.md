@@ -257,6 +257,13 @@ Everything else separates with a 1px rule or with space.
 **No zero-offset halos.** A shadow must carry both an offset and a blur. A ring of
 colour at `0 0 0 Npx` is decoration, not depth, and is not used.
 
+**The modal's opacity transition is load-bearing.** `closeModal()` waits for
+`transitionend` on `#profileModal`'s `opacity` before it hides the element and
+releases `inert`. Never set that transition to `0s` and never remove it — a
+zero-duration transition fires no event, so the modal would stay open and the
+page would stay inert. The reduced-motion block deliberately leaves it alone and
+drops only the `.modal-content` transform.
+
 ## Shapes
 
 - **Small** `0.25rem` — tags.

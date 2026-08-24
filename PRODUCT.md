@@ -16,7 +16,7 @@ Serve as a high-signal, accessible, and interactive curriculum vitae / portfolio
 
 ## Positioning
 
-A practical end-to-end AI engineer: bridges rigorous machine learning / robotics (PyTorch, TensorFlow, ROS, Gazebo, BeamNG autonomous systems) with modern full-stack web and backend delivery (FastAPI, Node.js, React, Tailwind CSS, n8n), backed by a 9.2 GPA at Vilnius TECH.
+A practical end-to-end AI engineer: bridges rigorous machine learning / robotics (PyTorch, TensorFlow, ROS, Gazebo, BeamNG autonomous systems) with modern full-stack web and backend delivery (FastAPI, Node.js, React, Tailwind CSS, n8n), backed by a 9/10 GPA at Vilnius TECH.
 
 ## Operating Context
 
@@ -40,7 +40,7 @@ A practical end-to-end AI engineer: bridges rigorous machine learning / robotics
 
 - Current codebase in index.html, lang.js (complete bilingual copy dictionary), and output.css.
 - Profile photograph (profile.jpg).
-- Verified academic record: Vilnius TECH (2022–present), 9.2 GPA.
+- Verified academic record: Vilnius TECH (2022–present), 9/10 GPA.
 - Commercial & applied experience: NNCODE (AI Engineer), BeamNG autonomous driving pipeline, CareerCopilot assistant, and practical automation pipelines.
 
 ## Product Principles

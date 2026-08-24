@@ -16,7 +16,8 @@
       property="og:description"
       content="AI automation, LLM agents and computer vision. Cut compliance-workflow creation from days to minutes at Copla; 4x faster vision pipeline at NNCODE."
     />
-    <meta property="og:image" content="profile-1200.jpg" />
+    <meta property="og:url" content="https://tomauskasz.github.io/my_CV/" />
+    <meta property="og:image" content="https://tomauskasz.github.io/my_CV/profile-1200.jpg" />
     <meta name="twitter:card" content="summary" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -181,22 +182,16 @@
       </aside>
     </main>
 
-    <div
-      id="profileModal"
-      class="hidden"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="profileModalTitle"
-    >
-      <div class="modal-content">
-        <h2 id="profileModalTitle" class="sr-only">Profile photo</h2>
-        <img src="profile-1200.jpg" alt="Tomas Bitvinskas" id="modalProfileImg" loading="lazy" />
-        <button type="button" class="modal-close-btn" aria-label="Close">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </div>
+    <!-- A real <dialog>: showModal() supplies the focus trap, Escape, the
+         top layer and focus restoration, so none of it is hand-written. -->
+    <dialog id="profileModal" aria-labelledby="profileModalTitle">
+      <h2 id="profileModalTitle" class="sr-only">Profile photo</h2>
+      <img src="profile-1200.jpg" alt="Tomas Bitvinskas" id="modalProfileImg" loading="lazy" />
+      <button type="button" class="modal-close-btn" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </dialog>
   </body>
 </html>

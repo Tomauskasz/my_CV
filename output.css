@@ -135,10 +135,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body.modal-open {
-  overflow: hidden;
-}
-
 /* Dates, scores and metrics sit in columns, so their digits must too. */
 .card-years,
 .card-date-badge,
@@ -731,42 +727,56 @@ body.modal-open {
 /* 14. Modal --------------------------------------------------------------- */
 
 #profileModal {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem;
-  background: rgba(10, 23, 46, 0.68);
+  margin: auto;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  /* `allow-discrete` lets `display` and `overlay` animate, so the close fade
+     runs without JavaScript holding a duration that must match this one. */
   opacity: 0;
-  visibility: hidden;
+  transform: scale(0.985);
   transition:
     opacity var(--motion-medium) var(--ease),
-    visibility 0s linear var(--motion-medium);
+    transform var(--motion-medium) var(--ease),
+    display var(--motion-medium) allow-discrete,
+    overlay var(--motion-medium) allow-discrete;
 }
 
-#profileModal.hidden {
-  display: none;
-}
-
-#profileModal.is-open {
+#profileModal[open] {
   opacity: 1;
-  visibility: visible;
-  transition-delay: 0s;
-}
-
-.modal-content {
-  position: relative;
-  transform: scale(0.985);
-  transition: transform var(--motion-medium) var(--ease);
-}
-
-#profileModal.is-open .modal-content {
   transform: none;
 }
 
+@starting-style {
+  #profileModal[open] {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+#profileModal::backdrop {
+  background: rgba(10, 23, 46, 0.68);
+  opacity: 0;
+  transition:
+    opacity var(--motion-medium) var(--ease),
+    display var(--motion-medium) allow-discrete,
+    overlay var(--motion-medium) allow-discrete;
+}
+
+#profileModal[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  #profileModal[open]::backdrop {
+    opacity: 0;
+  }
+}
+
 #profileModal img {
+  display: block;
   max-width: min(90vw, 32rem);
   max-height: 86vh;
   width: auto;
@@ -840,10 +850,9 @@ body.modal-open {
     scroll-behavior: auto !important;
   }
 
-  .modal-content,
-  #profileModal.is-open .modal-content {
+  #profileModal,
+  #profileModal[open] {
     transform: none;
-    transition-property: opacity, visibility;
   }
 }
 

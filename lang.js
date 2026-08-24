@@ -23,7 +23,12 @@ const translations = {
       "Programavimas su DI: Codex, Claude Code, MCP serveriai, SKILL.md / agentų instrukcijos, subagentų konfigūracijos, automatizuotas testavimas, kodo peržiūra, naršyklės automatizavimas",
       "Integracijos: Slack, Jira, Telegram, WhatsApp, Discord",
     ],
-    isLT: true,
+    eduLabels: {
+      field: "Kryptis:",
+      gpa: "Vidurkis:",
+      thesis: "Baigiamasis:",
+      start: "Pradžia:",
+    },
     education: [
       {
         title: "Informatikos bakalauras",
@@ -143,7 +148,12 @@ const translations = {
       "AI-assisted Development: Codex, Claude Code, MCP servers, custom skills/instructions, custom sub-agents, automated testing, code review, browser automation, brainstorming, research",
       "Integrations: Slack, Jira, Telegram, WhatsApp, Discord",
     ],
-    isLT: false,
+    eduLabels: {
+      field: "Field:",
+      gpa: "GPA:",
+      thesis: "Thesis:",
+      start: "Start:",
+    },
     education: [
       {
         title: "Bachelor's in Informatics",
@@ -244,8 +254,6 @@ const translations = {
 
 const STORAGE_KEY = "cv-lang";
 const elements = {};
-let lastFocusedElement = null;
-let modalCloseTimer = null;
 
 /* ---------- language ---------- */
 
@@ -424,7 +432,7 @@ function renderProjects(container, projects) {
   });
 }
 
-function renderEducation(container, education, isLT) {
+function renderEducation(container, education, labels) {
   container.replaceChildren();
 
   const addRow = (rows, label, value, valueClass) => {
@@ -446,23 +454,23 @@ function renderEducation(container, education, isLT) {
     const rows = el("div", "edu-detail-rows");
 
     if (entry.field) {
-      addRow(rows, isLT ? "Kryptis:" : "Field:", entry.field, "edu-value");
+      addRow(rows, labels.field, entry.field, "edu-value");
     }
 
     if (entry.gpa) {
-      const row = addRow(rows, isLT ? "Vidurkis:" : "GPA:", entry.gpa, "edu-score-pill");
+      const row = addRow(rows, labels.gpa, entry.gpa, "edu-score-pill");
       if (entry.thesis) {
         row.append(
-          el("span", "edu-label", isLT ? "Baigiamasis:" : "Thesis:"),
+          el("span", "edu-label", labels.thesis),
           el("span", "edu-score-pill", entry.thesis),
         );
       }
     } else if (entry.thesis) {
-      addRow(rows, isLT ? "Baigiamasis:" : "Thesis:", entry.thesis, "edu-score-pill");
+      addRow(rows, labels.thesis, entry.thesis, "edu-score-pill");
     }
 
     if (entry.status) {
-      addRow(rows, isLT ? "Pradžia:" : "Start:", entry.status, "edu-value");
+      addRow(rows, labels.start, entry.status, "edu-value");
     }
 
     card.append(header, el("h3", "card-title", entry.title), rows);
@@ -518,82 +526,25 @@ function updateContent(content) {
   if (projects) renderProjects(projects, content.projects);
 
   const education = document.getElementById("education-content");
-  if (education) renderEducation(education, content.education, content.isLT);
+  if (education) renderEducation(education, content.education, content.eduLabels);
 
   const languages = document.getElementById("languages-content");
   if (languages) renderLanguages(languages, content.languages);
 }
 
 /* ---------- photo modal ---------- */
-
-function getModalFocusableElements() {
-  if (!elements.profileModal) {
-    return [];
-  }
-
-  return Array.from(
-    elements.profileModal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])'),
-  ).filter((node) => !node.hasAttribute("disabled"));
-}
-
-function finishClosingModal() {
-  elements.profileModal.classList.add("hidden");
-  elements.profileModal.classList.remove("is-open");
-  document.body.classList.remove("modal-open");
-
-  if (elements.pageContent) {
-    elements.pageContent.inert = false;
-  }
-
-  if (lastFocusedElement instanceof HTMLElement) {
-    lastFocusedElement.focus();
-  }
-
-  modalCloseTimer = null;
-}
+/* <dialog>.showModal() provides the focus trap, Escape-to-close, page
+   inerting and focus restoration natively, and CSS `allow-discrete` runs the
+   fade. Nothing here duplicates any of it. */
 
 function openModal() {
-  const modal = elements.profileModal;
-  if (!modal || modal.classList.contains("is-open")) {
-    return;
-  }
-
-  if (modalCloseTimer) {
-    window.clearTimeout(modalCloseTimer);
-    modalCloseTimer = null;
-  }
-
-  lastFocusedElement = document.activeElement;
-  modal.classList.remove("hidden");
-  // Force a reflow rather than waiting on rAF: rAF is throttled in background
-  // tabs, which would leave the modal locked open at opacity 0.
-  void modal.offsetHeight;
-  modal.classList.add("is-open");
-
-  document.body.classList.add("modal-open");
-
-  if (elements.pageContent) {
-    elements.pageContent.inert = true;
-  }
-
-  modal.querySelector(".modal-close-btn")?.focus();
-}
-
-function closeModal() {
-  const modal = elements.profileModal;
-  if (!modal || modal.classList.contains("hidden") || modalCloseTimer) {
-    return;
-  }
-
-  modal.classList.remove("is-open");
-  modalCloseTimer = window.setTimeout(finishClosingModal, 240);
+  elements.profileModal?.showModal();
 }
 
 /* ---------- wiring ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
   elements.profileModal = document.getElementById("profileModal");
-  elements.pageContent = document.getElementById("pageContent");
 
   setLanguage(initialLanguage(), { persist: false });
 
@@ -605,44 +556,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   elements.profileModal
     ?.querySelector(".modal-close-btn")
-    ?.addEventListener("click", closeModal);
+    ?.addEventListener("click", () => elements.profileModal.close());
 
+  // A click that lands on the dialog element itself is a click on the
+  // backdrop; anything inside the photo or the button stops here.
   elements.profileModal?.addEventListener("click", (event) => {
     if (event.target === elements.profileModal) {
-      closeModal();
+      elements.profileModal.close();
     }
   });
-});
-
-document.addEventListener("keydown", (event) => {
-  const modal = elements.profileModal;
-  if (!modal || modal.classList.contains("hidden")) {
-    return;
-  }
-
-  if (event.key === "Escape") {
-    event.preventDefault();
-    closeModal();
-    return;
-  }
-
-  if (event.key !== "Tab") {
-    return;
-  }
-
-  const focusable = getModalFocusableElements();
-  if (!focusable.length) {
-    return;
-  }
-
-  const first = focusable[0];
-  const last = focusable[focusable.length - 1];
-
-  if (event.shiftKey && document.activeElement === first) {
-    event.preventDefault();
-    last.focus();
-  } else if (!event.shiftKey && document.activeElement === last) {
-    event.preventDefault();
-    first.focus();
-  }
 });
