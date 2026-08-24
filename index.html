@@ -23,12 +23,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Merriweather+Sans:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400..700&family=Merriweather+Sans:wght@300..800&display=swap"
       rel="stylesheet"
     />
-    <link href="./output.css?v=23" rel="stylesheet" />
+    <link href="./output.css?v=52" rel="stylesheet" />
     <link rel="icon" href="data:," />
-    <script src="lang.js?v=23" defer></script>
+    <script src="lang.js?v=52" defer></script>
+    <script src="motion.js?v=52" defer></script>
   </head>
 
   <body>
@@ -37,15 +38,14 @@
     <main id="pageContent" aria-label="Curriculum vitae">
       <section class="page-main">
         <div class="content-shell">
-          <div class="topbar-row">
-            <div class="lang-switch" role="group" id="langSwitch">
-              <button type="button" class="lang-option" data-lang="LT" aria-pressed="false">
-                LT
-              </button>
-              <button type="button" class="lang-option" data-lang="EN" aria-pressed="false">
-                EN
-              </button>
-            </div>
+          <div class="lang-switch" role="group" id="langSwitch" data-active="LT">
+            <span class="lang-indicator" aria-hidden="true"></span>
+            <button type="button" class="lang-option" data-lang="LT" aria-pressed="false">
+              LT
+            </button>
+            <button type="button" class="lang-option" data-lang="EN" aria-pressed="false">
+              EN
+            </button>
           </div>
 
           <header class="hero-section">
@@ -91,6 +91,10 @@
       </section>
 
       <aside class="page-sidebar">
+        <!-- Painted by motion.js when WebGL is available; the CSS aurora and the
+             flat gradient below it are the two fallbacks. -->
+        <canvas id="railCanvas" aria-hidden="true"></canvas>
+
         <div class="sidebar-shell">
           <div class="profile-image-wrap">
             <button type="button" id="profileImageBtn" class="profile-image-btn">
@@ -193,5 +197,7 @@
         </svg>
       </button>
     </dialog>
+
+    <div id="cursorHalo" aria-hidden="true"></div>
   </body>
 </html>

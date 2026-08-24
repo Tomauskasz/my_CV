@@ -15,6 +15,12 @@
         "value": "1rem)",
         "createdAt": "2026-08-24T12:11:36.543Z",
         "reason": "detector regex-mode artifact: splits clamp(0.5rem, 1.2vw, 1rem) into tokens; verified single frame radius in output.css:182"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "createdAt": "2026-08-24T19:13:28.524Z",
+        "reason": "deliberate, bounded exception: --ease-back is used in exactly five RELEASE gestures (language pill, card tilt release, contact icon, photo, modal close). Everything that ARRIVES uses --ease-arrive, cubic-bezier(0.06, 0.94, 0.13, 1), which is the ease-out-quint/expo family this rule asks for. The boundary is enforced by a named rule and a Don't in DESIGN.md. Claude's design call, not a user decision."
       }
     ]
   }

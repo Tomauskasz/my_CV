@@ -9,6 +9,10 @@
     10. Projects          11. Sidebar          12. Photo
     13. Language switch   14. Modal            15. Responsive
     16. Motion            17. Print
+
+   Section 16 is the motion system. It is not decoration bolted onto a static
+   page: the page boots, stays alive, answers the pointer, and reveals on
+   scroll. Every effect there degrades to the finished, legible page.
    ========================================================================== */
 
 /* 1. Reset ---------------------------------------------------------------- */
@@ -91,7 +95,8 @@ button {
   --surface-raised: #fff;
 
   /* Sidebar ground. Deep enough that every ink below clears 4.5:1 against
-     the LIGHTEST point of the gradient, not just the average. */
+     the LIGHTEST point of the gradient, not just the average. The shader in
+     section 11 is clamped to the same ceiling — see the lightest-frame rule. */
   --sidebar-top: oklch(0.44 0.07 254);
   --sidebar-bottom: oklch(0.34 0.055 253);
 
@@ -111,16 +116,87 @@ button {
   --accent-strong: oklch(0.49 0.12 253);
   --accent-on-dark: oklch(0.88 0.07 253);
   --accent-tint: oklch(0.61 0.15 253 / 0.08);
+  --accent-border: oklch(0.61 0.15 253 / 0.28);
 
   --rule: oklch(0.87 0.016 252);
   --rule-strong: oklch(0.78 0.03 252);
 
+  /* The rail's flow. These are the CSS aurora's stops — the fallback the rail
+     shows wherever WebGL will not run. Alpha is baked in, as with
+     `--accent-tint`, because they only ever appear as gradient stops. */
+  --rail-flow-near: oklch(0.55 0.11 253 / 0.5);
+  --rail-flow-far: oklch(0.5 0.1 262 / 0.45);
+  --rail-flow-deep: oklch(0.47 0.09 246 / 0.4);
+
+  /* Column rhythm. The rail and the stage are two independent columns that
+     have to agree on three horizontal lines: the top of the photo, its
+     centre, and the top of the first section under it. Each of those lines is
+     a sum of the values below, so they live here rather than as clamps
+     repeated in both shells — a hand-tuned pixel would only hold at one
+     viewport, and every one of these scales on a different curve. */
+  --photo-size: clamp(7.5rem, 24vw, 9.5rem);
+  --rail-pad-top: clamp(1.75rem, 4vw, 2.25rem);
+  --rail-gap: 1.9rem;
+  --stage-pad-top: clamp(2rem, 4vw, 3.25rem);
+  --stage-pad-x: clamp(1.25rem, 4vw, 3.25rem);
+  --stage-gap: clamp(2.25rem, 4vw, 3rem);
+
   --shadow-frame: 0 32px 64px -40px rgba(15, 34, 68, 0.28);
   --shadow-raised: 0 12px 24px -16px rgba(18, 39, 74, 0.26);
+  --shadow-lifted: 0 26px 44px -26px rgba(18, 39, 74, 0.42);
 
   --motion-fast: 140ms;
   --motion-medium: 240ms;
+  --motion-slow: 1250ms;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Harder than an exponential ease-out, deliberately: an arrival should
+     spend most of its distance immediately and then take a long time to
+     settle the last few percent, so the eye has time to register where it
+     landed. Used by every entrance and by nothing else. */
+  --ease-arrive: cubic-bezier(0.06, 0.94, 0.13, 1);
+  /* Overshoots, then settles. Used where something should feel sprung into
+     place rather than eased into it: the language pill, the tilt release. */
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* The boot timeline, in three phases and one place. The order is the
+     reading order of the document: the name arrives, then the identity rail
+     that supports it, then the evidence.
+
+       1. HERO   — the frame, then the name and its lede. Right side.
+       2. RAIL   — the wipe, the photo ring, then the contact/education/
+                   language rows. Left side.
+       3. STAGE  — everything else on the right, and last of all the numbers.
+
+     Each phase starts before the previous one has finished its tail;
+     otherwise the sequence runs past ten seconds. */
+  --boot-frame: 0ms;
+  --boot-name: 250ms;
+  --boot-lede: 1000ms;
+  /* The role line and the specialisation under it are two statements, not one
+     block. At 220ms apart against a ~1s duration they overlapped by 78% and
+     read as arriving together. */
+  --boot-lede-step: 860ms;
+  /* The rail's GROUND arrives with the frame — it is the stage the identity
+     sits on, not content. Only what is written on it waits. */
+  --boot-rail: 150ms;
+  --boot-ring: 520ms;
+  --boot-rail-items: 2300ms;
+  --boot-stage: 3300ms;
+  --boot-numbers: 3700ms;
+}
+
+/* Registered so they interpolate. An unregistered custom property is a
+   discrete string and will not animate — the ring would jump, not draw. */
+@property --ring-sweep {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --frame-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
 }
 
 /* 3. Base type ------------------------------------------------------------ */
@@ -128,14 +204,14 @@ button {
 body {
   background: var(--page-bg);
   color: var(--text);
-  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
-  font-optical-sizing: auto;
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Dates, scores and metrics sit in columns, so their digits must too. */
+/* Dates, scores and metrics sit in columns, so their digits must too. This
+   is also what lets the metric counters tick without reflowing the prose. */
 .card-years,
 .card-date-badge,
 .edu-score-pill,
@@ -166,6 +242,7 @@ body {
 /* 4. Page frame ----------------------------------------------------------- */
 
 #pageContent {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   width: min(100%, calc(100% - 2rem));
@@ -180,11 +257,70 @@ body {
   box-shadow: var(--shadow-frame);
 }
 
+/* The frame ring: a conic gradient masked down to the 1px border, turning
+   forever. `mask-composite: exclude` cuts the fill away and leaves the edge. */
+#pageContent::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--frame-angle),
+    transparent 0deg,
+    var(--accent) 34deg,
+    transparent 96deg,
+    transparent 214deg,
+    var(--accent-on-dark) 268deg,
+    transparent 330deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
 .page-main {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   background: var(--surface);
 }
 
+/* The pointer light. Moved by `translate` from custom properties, so it is
+   a compositor job and never repaints the stage underneath it. */
+.page-main::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 26rem;
+  aspect-ratio: 1;
+  margin: -13rem 0 0 -13rem;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side, oklch(0.61 0.15 253 / 0.055), transparent 72%);
+  translate: var(--px, 50%) var(--py, 30%);
+  opacity: 0;
+  transition: opacity 500ms var(--ease);
+  pointer-events: none;
+}
+
+.page-main.is-lit::before {
+  opacity: 1;
+}
+
 .page-sidebar {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   background: linear-gradient(180deg, var(--sidebar-top), var(--sidebar-bottom));
   color: var(--sidebar-text);
 }
@@ -208,17 +344,54 @@ body {
 }
 
 .content-shell {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: clamp(2.25rem, 4vw, 3rem);
-  padding: clamp(2rem, 4vw, 3.25rem) clamp(1.25rem, 4vw, 3.25rem);
+  gap: var(--stage-gap);
+  padding: var(--stage-pad-top) var(--stage-pad-x);
 }
 
 .sidebar-shell {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.9rem;
-  padding: clamp(1.75rem, 4vw, 2.25rem) 1.5rem;
+  gap: var(--rail-gap);
+  padding: var(--rail-pad-top) 1.5rem;
+}
+
+/* Two columns, three shared lines. The rail's identity block sets all three:
+   the photo's top edge, its centre, and the top of KONTAKTAI below it. The
+   stage matches each one by construction rather than by a tuned offset.
+
+     top     — both shells open on `--rail-pad-top`, so the hero's box starts
+               level with the photo.
+     centre  — the hero's box is given the photo's height and centres its own
+               lines inside it, so the name/role/lede group balances on the
+               photo's axis however many lines it runs to.
+     next    — the stage's gap is wider than the rail's, so the hero gives the
+               difference back. PROFILIS then lands on KONTAKTAI exactly.
+
+   The switch has to leave the flow for any of this to hold: in flow it is the
+   stage's first child and pushes the hero down by its own height. That is why
+   this needs more room than the two-column breakpoint gives — an overlaid
+   switch runs into the name, which is the objection that kept it in flow in
+   the first place. Measured, the name reaches the switch at about 980px and
+   clears it by 81px at 1100px, which is where this starts. Below that the
+   switch keeps its own row and the two columns simply do not line up. */
+@media (min-width: 1100px) {
+  .content-shell {
+    padding-top: var(--rail-pad-top);
+  }
+
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: var(--photo-size);
+    margin-bottom: calc(var(--rail-gap) - var(--stage-gap));
+  }
 }
 
 @media (min-width: 960px) {
@@ -237,6 +410,7 @@ body {
 /* 5. Section headings ----------------------------------------------------- */
 
 .section-heading {
+  position: relative;
   padding-bottom: 0.5rem;
   margin-bottom: 1.1rem;
   border-bottom: 1px solid var(--rule);
@@ -244,6 +418,24 @@ body {
 
 .sidebar-section .section-heading {
   border-bottom-color: var(--sidebar-line);
+}
+
+/* Drawn on rail entry (section 16). The rail only: on the light stage the
+   heading rule is one of the page's grey hairlines and reads as a separator,
+   so an accent bar drawn over it makes two sections louder than their
+   neighbours for no reason. Purely additive over the border, so removing it —
+   or never supporting it — leaves the original hairline. */
+.sidebar-section .section-heading::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-on-dark), transparent 88%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
 }
 
 .section-heading h2 {
@@ -268,10 +460,25 @@ body {
   font-family: "Merriweather Sans", ui-sans-serif, sans-serif;
   font-size: clamp(2.3rem, 5.5vw, 3.6rem);
   font-weight: 700;
+  font-variation-settings: "wght" 700;
   line-height: 1.03;
   letter-spacing: -0.035em;
   color: var(--text-strong);
   text-wrap: balance;
+  perspective: 900px;
+}
+
+/* Script splits the name into these. Without script the h1 is one text node
+   and reads exactly as it does today. */
+.hero-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.hero-char {
+  display: inline-block;
+  white-space: pre;
+  transform-origin: 50% 100%;
 }
 
 .hero-role {
@@ -314,14 +521,24 @@ body {
   line-height: 1.7;
 }
 
+/* The evidence. A highlighter wipes in behind each metric as it reaches
+   reading position, and the digits inside count up — see section 16. */
 .metric-highlight {
   color: var(--text-strong);
   font-weight: 600;
+  padding-inline: 0.14em;
+  margin-inline: -0.14em;
+  border-radius: 0.25rem;
+  background-image: linear-gradient(90deg, var(--accent-tint), var(--accent-tint));
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 0% 100%;
 }
 
 #skills-list {
   display: grid;
   gap: 1rem;
+  perspective: 1200px;
 }
 
 .skill-item {
@@ -360,6 +577,17 @@ body {
   color: var(--text);
   font-size: 0.8125rem;
   line-height: 1.55;
+  /* Displaced by the pointer field in section 16. */
+  transform: translate(var(--push-x, 0px), var(--push-y, 0px));
+  transition:
+    transform 420ms var(--ease),
+    border-color var(--motion-fast) var(--ease),
+    color var(--motion-fast) var(--ease);
+}
+
+.skill-tag:hover {
+  border-color: var(--accent-border);
+  color: var(--text-strong);
 }
 
 /* 8. Experience ----------------------------------------------------------- */
@@ -369,6 +597,7 @@ body {
 #research-content {
   display: grid;
   gap: 1.8rem;
+  perspective: 1200px;
 }
 
 .experience-card + .experience-card {
@@ -450,8 +679,14 @@ body {
    surface so a 30-second scan cannot mistake it for a side project. */
 
 .research-card {
+  position: relative;
+  /* A specular highlight belongs on an object. This is a reading surface —
+     two bullets of prose — so it gets a hint of one, not a sweep. At the
+     0.6 the project cards carry, an `overlay` white lifts this card's body
+     ink from 8.92:1 to 5.18:1 while travelling across the line being read. */
+  --sheen-strength: 0.16;
   padding: 1.15rem 1.25rem;
-  border: 1px solid oklch(0.61 0.15 253 / 0.28);
+  border: 1px solid var(--accent-border);
   border-radius: 0.5rem;
   background: var(--accent-tint);
 }
@@ -468,17 +703,14 @@ body {
 }
 
 .compact-project-card {
+  position: relative;
+  --sheen-strength: 0.45;
   display: flex;
   flex-direction: column;
   padding: 1rem 1.1rem;
   border: 1px solid var(--rule);
   border-radius: 0.5rem;
   background: var(--surface-raised);
-  transition: border-color var(--motion-medium) var(--ease);
-}
-
-.compact-project-card:hover {
-  border-color: var(--rule-strong);
 }
 
 .project-title {
@@ -515,12 +747,69 @@ body {
 
 /* 11. Sidebar ------------------------------------------------------------- */
 
+/* The rail surface, in three layers, deepest first:
+     - the flat gradient on .page-sidebar itself (always present)
+     - ::before, a drifting CSS aurora (the no-WebGL fallback)
+     - #railCanvas, the shader, opaque, covering both when it runs
+   ::after lays grain over all of it. */
+
+.page-sidebar::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: -25%;
+  background:
+    radial-gradient(38% 30% at 28% 22%, var(--rail-flow-near), transparent 70%),
+    radial-gradient(34% 26% at 74% 58%, var(--rail-flow-far), transparent 72%),
+    radial-gradient(40% 32% at 40% 88%, var(--rail-flow-deep), transparent 70%);
+  filter: blur(38px);
+  pointer-events: none;
+}
+
+/* Sticky rather than absolute. The rail is the full column, which on this CV
+   runs past 3000px while only a viewport of it is ever on screen: stretched
+   over all of it, one buffer smears the flow vertically and pays for pixels
+   nobody sees. The negative margin gives the row back, so `.sidebar-shell`
+   still starts at the top of the rail. */
+#railCanvas {
+  /* A <canvas> is an inline replaced element by default, so it sat on a line
+     box and baseline alignment pushed it 18px down the rail — exposing a strip
+     of the flat gradient above it. */
+  display: block;
+  position: sticky;
+  z-index: -1;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  margin-bottom: -100vh;
+  opacity: 0;
+  transition: opacity 1400ms var(--ease);
+  pointer-events: none;
+}
+
+#railCanvas.is-live {
+  opacity: 1;
+}
+
+.page-sidebar::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
 #contacts-section ul {
   display: grid;
   gap: 0.1rem;
 }
 
 .contact-link {
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
   gap: 0.65rem;
@@ -532,11 +821,34 @@ body {
   font-size: 0.875rem;
   line-height: 1.4;
   overflow-wrap: break-word;
-  transition: background-color var(--motion-fast) var(--ease);
+  /* Pulled toward the pointer by the magnet field in section 16. */
+  transform: translate(var(--push-x, 0px), var(--push-y, 0px));
+  transition:
+    transform 420ms var(--ease),
+    color var(--motion-fast) var(--ease);
+}
+
+/* The ground wipes in from the leading edge rather than fading up, so the
+   row reads as being swept rather than switched on. */
+.contact-link::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.09);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--motion-medium) var(--ease);
+  pointer-events: none;
+}
+
+.contact-link:hover::before,
+.contact-link:focus-visible::before {
+  transform: scaleX(1);
 }
 
 .contact-link:hover {
-  background: rgba(255, 255, 255, 0.08);
   color: var(--sidebar-text-strong);
 }
 
@@ -546,10 +858,14 @@ body {
   height: 1rem;
   fill: currentColor;
   color: var(--sidebar-muted);
+  transition:
+    color var(--motion-fast) var(--ease),
+    transform var(--motion-medium) var(--ease-back);
 }
 
 .contact-link:hover svg {
   color: var(--accent-on-dark);
+  transform: scale(1.18) rotate(-6deg);
 }
 
 #education-content {
@@ -647,40 +963,67 @@ body {
 }
 
 .profile-image-btn {
+  position: relative;
   display: block;
   padding: 0;
   border-radius: 50%;
   cursor: zoom-in;
+  transform: translate(var(--push-x, 0px), var(--push-y, 0px));
+  transition: transform 420ms var(--ease);
+}
+
+/* The calibration ring. Drawn once on boot by sweeping a conic stop, then
+   held. No SVG, no extra element. */
+.profile-image-btn::before {
+  content: "";
+  position: absolute;
+  inset: -0.55rem;
+  border-radius: 50%;
+  background: conic-gradient(
+    from -90deg,
+    var(--accent-on-dark) var(--ring-sweep),
+    transparent 0
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  opacity: 0.9;
+  pointer-events: none;
 }
 
 .profile-image {
-  width: clamp(7.5rem, 24vw, 9.5rem);
+  width: var(--photo-size);
   aspect-ratio: 1;
   border-radius: 50%;
   object-fit: cover;
   background: rgba(8, 18, 35, 0.22);
-  transition: box-shadow var(--motion-medium) var(--ease);
+  transition:
+    box-shadow var(--motion-medium) var(--ease),
+    filter var(--motion-medium) var(--ease),
+    scale var(--motion-medium) var(--ease-back);
 }
 
 .profile-image-btn:hover .profile-image,
 .profile-image-btn:focus-visible .profile-image {
   box-shadow: 0 8px 20px -8px rgba(5, 15, 31, 0.55);
+  scale: 1.035;
+  /* Channel separation: the same silhouette offset in red and cyan through
+     two coloured drop-shadows. Cheaper than a shader, survives resize. */
+  filter:
+    drop-shadow(1.5px 0 0 rgba(255, 60, 90, 0.5))
+    drop-shadow(-1.5px 0 0 rgba(0, 200, 255, 0.5));
 }
 
 /* 13. Language switch ----------------------------------------------------- */
 /* Two languages is a segmented control, not a menu: both options stay
    visible, so nobody has to discover that a second one exists. */
 
-/* In normal flow, not an overlay: an absolutely positioned switch collides
-   with the name as soon as the column is narrow. The negative margin pulls
-   the content-shell gap back to 1rem for this one row. */
-.topbar-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: calc(1rem - clamp(2.25rem, 4vw, 3rem));
-}
-
+/* In normal flow wherever the column is too narrow to overlay it clear of the
+   name. The negative margin pulls the content-shell gap back to 1rem for this
+   one row; it is inert once the rule below takes the switch out of flow. */
 .lang-switch {
+  align-self: flex-end;
+  margin-bottom: calc(1rem - var(--stage-gap));
+  position: relative;
   display: flex;
   gap: 0.15rem;
   padding: 0.15rem;
@@ -689,7 +1032,43 @@ body {
   background: var(--surface-raised);
 }
 
+/* Out of the flow on a wide enough column, so the hero is the stage's first
+   child and can line up with the photo — see the column-alignment block in
+   section 4, which owns the 1100px threshold and the reason for it. This
+   override lives here rather than in that block because the rule above weighs
+   the same and comes later in the file. Still the containing block for
+   `.lang-indicator`, which only needs an ancestor that is positioned at all. */
+@media (min-width: 1100px) {
+  .lang-switch {
+    position: absolute;
+    z-index: 2;
+    top: var(--rail-pad-top);
+    right: var(--stage-pad-x);
+  }
+}
+
+/* The fill is one element that slides, not two that swap. `aria-pressed`
+   remains the state of record; this is only what the eye follows. */
+.lang-indicator {
+  position: absolute;
+  z-index: 0;
+  top: 0.15rem;
+  left: 0.15rem;
+  width: calc((100% - 0.45rem) / 2);
+  height: calc(100% - 0.3rem);
+  border-radius: 0.25rem;
+  background: var(--accent-strong);
+  box-shadow: var(--shadow-raised);
+  transition: transform 480ms var(--ease-back);
+}
+
+.lang-switch[data-active="EN"] .lang-indicator {
+  transform: translateX(calc(100% + 0.15rem));
+}
+
 .lang-option {
+  position: relative;
+  z-index: 1;
   min-width: 2.5rem;
   min-height: 2rem;
   padding: 0.2rem 0.5rem;
@@ -698,9 +1077,10 @@ body {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.04em;
+  transform: translate(var(--push-x, 0px), var(--push-y, 0px));
   transition:
-    background-color var(--motion-fast) var(--ease),
-    color var(--motion-fast) var(--ease);
+    color var(--motion-fast) var(--ease),
+    transform 420ms var(--ease);
 }
 
 .lang-option:hover {
@@ -720,7 +1100,6 @@ body {
 }
 
 .lang-option[aria-pressed="true"] {
-  background: var(--accent-strong);
   color: #fff;
 }
 
@@ -747,6 +1126,16 @@ body {
 #profileModal[open] {
   opacity: 1;
   transform: none;
+}
+
+/* Set by script only while the photo morph is running. The view transition
+   owns the arrival then; the dialog's own fade underneath it would read as
+   two competing animations. */
+#profileModal.is-morphing,
+#profileModal.is-morphing[open] {
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
 
 @starting-style {
@@ -795,11 +1184,14 @@ body {
   border-radius: 50%;
   background: rgba(9, 18, 38, 0.72);
   color: #fff;
-  transition: background-color var(--motion-fast) var(--ease);
+  transition:
+    background-color var(--motion-fast) var(--ease),
+    rotate var(--motion-medium) var(--ease-back);
 }
 
 .modal-close-btn:hover {
   background: rgba(9, 18, 38, 0.92);
+  rotate: 90deg;
 }
 
 .modal-close-btn svg {
@@ -838,15 +1230,516 @@ body {
 }
 
 /* 16. Motion -------------------------------------------------------------- */
-/* Reduced motion drops movement but keeps colour and opacity, so hover and
-   focus still read as state changes rather than going inert. */
+/* Five acts: BOOT, LIVE, SCROLL, TRANSLATE, ZOOM.
+   The invariant holding all of them together: the default state of every
+   element is its FINISHED state. Boot animations run `backwards`, so they
+   leave behind no lingering filter, opacity or containing block, and a
+   browser that runs none of this still renders the completed page. */
+
+/* --- keyframes ----------------------------------------------------------- */
+
+@keyframes frame-boot {
+  from {
+    opacity: 0;
+    transform: scale(0.988);
+    filter: blur(5px);
+  }
+}
+
+@keyframes rail-boot {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes ring-draw {
+  from {
+    --ring-sweep: 0deg;
+  }
+  to {
+    --ring-sweep: 360deg;
+  }
+}
+
+/* The weight axis overshoots to 800 before settling at 700, so the letters
+   land with a thickening rather than merely arriving. */
+@keyframes char-boot {
+  from {
+    opacity: 0;
+    transform: translateY(0.42em) rotateX(-72deg);
+    font-variation-settings: "wght" 300;
+  }
+  58% {
+    font-variation-settings: "wght" 800;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    font-variation-settings: "wght" 700;
+  }
+}
+
+@keyframes lede-boot {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 105% 0);
+    transform: translateY(0.3em);
+  }
+}
+
+@keyframes item-boot {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+}
+
+@keyframes frame-spin {
+  to {
+    --frame-angle: 360deg;
+  }
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, -5%, 0) rotate(8deg) scale(1.12);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+
+/* Reveals drive `translate`, `rotate`, `opacity` and `filter` — never
+   `transform`. `transform` belongs to the pointer tilt, and an animation
+   with a `both` fill would otherwise win over it permanently. */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    translate: 0 32px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes reveal-tilt {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+    rotate: x -11deg;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    rotate: x 0deg;
+  }
+}
+
+@keyframes reveal-slide {
+  from {
+    opacity: 0;
+    translate: -12px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes rule-draw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes metric-mark {
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes spine-fill {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* --- ACT I: BOOT --------------------------------------------------------- */
+/* Armed by script adding `.is-armed` to <body> after the first render, and
+   only once the page is actually visible — a background tab never advances
+   the animation clock. */
+
+body.is-armed #pageContent {
+  animation: frame-boot var(--motion-slow) var(--ease-arrive) var(--boot-frame) backwards;
+}
+
+body.is-armed .page-sidebar {
+  animation: rail-boot 1250ms var(--ease-arrive) var(--boot-rail) backwards;
+}
+
+/* `both`, not `backwards`: this one is meant to stay drawn. A lingering
+   custom property costs nothing — it creates no stacking context. */
+body.is-armed .profile-image-btn::before {
+  animation: ring-draw 2200ms var(--ease-arrive) var(--boot-ring) both;
+}
+
+body.is-armed .hero-char {
+  animation: char-boot 1400ms var(--ease-arrive) backwards;
+  animation-delay: calc(var(--boot-name) + var(--i) * 68ms);
+}
+
+body.is-armed .hero-role {
+  animation: lede-boot var(--motion-slow) var(--ease-arrive) var(--boot-lede) backwards;
+}
+
+body.is-armed .hero-specialization {
+  animation: lede-boot var(--motion-slow) var(--ease-arrive) calc(var(--boot-lede) + var(--boot-lede-step)) backwards;
+}
+
+body.is-armed .lang-switch {
+  animation: lede-boot 980ms var(--ease-arrive) var(--boot-lede) backwards;
+}
+
+/* The rail's written content, cascading section by section down a ground that
+   is already there. Its heading leads, then its rows. `--rail-step` is where
+   each section sits in that cascade, so a section's heading, its rule and its
+   rows all read one offset instead of three hand-kept sets of numbers.
+
+   Boot-only, with no scroll reveal: the rail barely scrolls, and two
+   animations competing for one property is how reveal systems flicker. */
+body.is-armed #contacts-section  { --rail-step: 0ms; }
+body.is-armed #education-section { --rail-step: 520ms; }
+body.is-armed #languages-section { --rail-step: 800ms; }
+
+body.is-armed .sidebar-section .section-heading,
+body.is-armed #contacts-section li,
+body.is-armed .info-card,
+body.is-armed .lang-item {
+  animation: item-boot 1150ms var(--ease-arrive) backwards;
+  animation-delay: calc(var(--boot-rail-items) + var(--rail-step, 0ms));
+}
+
+body.is-armed #contacts-section li:nth-child(1) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 120ms); }
+body.is-armed #contacts-section li:nth-child(2) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 200ms); }
+body.is-armed #contacts-section li:nth-child(3) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 280ms); }
+body.is-armed #contacts-section li:nth-child(4) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 360ms); }
+body.is-armed #contacts-section li:nth-child(5) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 440ms); }
+body.is-armed .info-card:nth-child(1) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 100ms); }
+body.is-armed .info-card:nth-child(2) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 180ms); }
+body.is-armed .lang-item:nth-child(1) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 100ms); }
+body.is-armed .lang-item:nth-child(2) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 180ms); }
+
+/* --- ACT II: LIVE -------------------------------------------------------- */
+
+#pageContent::before {
+  animation: frame-spin 24s linear infinite;
+}
+
+.page-sidebar::before {
+  animation: aurora-drift 34s ease-in-out infinite;
+}
+
+/* The pointer halo. Positioned by script through `translate`, a compositor
+   property — the page underneath is never repainted. */
+#cursorHalo {
+  position: fixed;
+  z-index: 60;
+  top: 0;
+  left: 0;
+  width: 15rem;
+  aspect-ratio: 1;
+  margin: -7.5rem 0 0 -7.5rem;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side, oklch(0.61 0.15 253 / 0.05), transparent 70%);
+  opacity: 0;
+  translate: -50vw -50vh;
+  transition: opacity 420ms var(--ease);
+  pointer-events: none;
+}
+
+#cursorHalo.is-live {
+  opacity: 1;
+}
+
+/* Over the rail the halo yields entirely. The rail already answers the pointer
+   — the shader displaces its flow around the cursor — so a disc laid over that
+   is a second, weaker version of an effect already present. It is also the only
+   thing on this page that can break the lightest-frame rule: the shader is
+   clamped to spend exactly the contrast headroom the rail has, which leaves a
+   translucent overlay nothing to spend. Measured, a 0.15 halo drove
+   `--sidebar-muted` to 3.97:1 and even 0.09 only reached 4.48:1. */
+#cursorHalo.is-live.on-rail {
+  opacity: 0;
+}
+
+/* Pointer physics only where there is a real pointer. Touch keeps the flat,
+   fast page. */
+@media (hover: hover) and (pointer: fine) {
+  .compact-project-card,
+  .research-card {
+    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition:
+      transform 620ms var(--ease-back),
+      box-shadow 320ms var(--ease),
+      border-color 320ms var(--ease);
+  }
+
+  /* While the pointer drives the card, the transition is only long enough to
+     smooth the sampling. The long spring is for the release. */
+  .compact-project-card.is-tilting,
+  .research-card.is-tilting {
+    transition-duration: 90ms, 320ms, 320ms;
+  }
+
+  .compact-project-card:hover,
+  .research-card:hover {
+    box-shadow: var(--shadow-lifted);
+    border-color: var(--accent-border);
+  }
+
+  /* Specular sheen, tracking the pointer across the card face. */
+  .compact-project-card::after,
+  .research-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      16rem 16rem at var(--sheen-x, 50%) var(--sheen-y, 50%),
+      rgba(255, 255, 255, var(--sheen-strength, 0.3)),
+      transparent 62%
+    );
+    opacity: 0;
+    mix-blend-mode: overlay;
+    transition: opacity 320ms var(--ease);
+    pointer-events: none;
+  }
+
+  .compact-project-card:hover::after,
+  .research-card:hover::after {
+    opacity: 1;
+  }
+}
+
+/* --- ACT III: SCROLL ----------------------------------------------------- */
+/* Every animated declaration lives inside @supports; no hidden initial state
+   ever does. Firefox has no scroll-driven timelines yet and renders these
+   surfaces finished, which is the page as it shipped.
+
+   Subjects are cards and rows, never the tall sections: the `entry` range of
+   an element taller than the scrollport only completes after scrolling its
+   whole height, which turns a reveal into a crawl. Length offsets are used
+   for the same reason — they do not depend on the subject's height. */
+
+/* Reveals are observer-driven, not scroll-driven. A `view()` timeline takes its
+   progress from scroll position, so anything in the document's LAST viewport
+   can never reach 100% — there is no scroll left — and it holds partway through
+   its reveal, dimmed and blurred, for good. An observer fires once and the
+   animation runs on the clock. Firefox, which has no view timelines, gets the
+   reveals too.
+
+   Nothing is pre-hidden. The observer leads the viewport by 140px, so the
+   animation's own `backwards` fill supplies the hidden start while the element
+   is still off screen. An element that the observer never reaches carries no
+   class at all, and no class is the finished state — so the worst case is a
+   missing animation, never a blank card. */
+
+#about-content.reveal-run,
+.project-list li.reveal-run {
+  animation: reveal-slide 1000ms var(--ease-arrive) backwards;
+}
+
+.skill-item.reveal-run,
+.experience-card.reveal-run {
+  animation: reveal-tilt 1300ms var(--ease-arrive) backwards;
+}
+
+.research-card.reveal-run,
+.compact-project-card.reveal-run {
+  animation: reveal-rise 1250ms var(--ease-arrive) backwards;
+}
+
+/* The grid enters as the list it is. Row two inherits the tail of the count,
+   which reads as the cascade continuing rather than restarting. */
+.compact-project-card.reveal-run {
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* `forwards`, not `backwards`: these two draw toward a state that is not the
+   element's default, so they have to hold it once they arrive. */
+.sidebar-section .section-heading.reveal-run::after {
+  animation: rule-draw 1000ms var(--ease-arrive) forwards;
+}
+
+.metric-highlight.reveal-run {
+  animation: metric-mark 1300ms var(--ease) forwards;
+}
+
+/* First paint only. Script adds `.on-boot` to what is already on screen at the
+   first render, which holds the stage back until the hero and the rail have
+   had theirs. A `backwards` fill covers the wait, so nothing is briefly
+   visible before animating in. Reveals fired later by the observer carry no
+   delay — by then the boot is over. */
+.reveal-run.on-boot {
+  animation-delay: var(--boot-stage);
+}
+
+/* Spelled out because the base rules for these two out-specify the plain
+   `.reveal-run.on-boot` — `#about-content` on an ID, `.project-list li` on an
+   extra type — and each uses the `animation` shorthand, which resets
+   `animation-delay` to 0 rather than leaving it alone. */
+#about-content.reveal-run.on-boot,
+.project-list li.reveal-run.on-boot {
+  animation-delay: var(--boot-stage);
+}
+
+.compact-project-card.reveal-run.on-boot {
+  animation-delay: calc(var(--boot-stage) + var(--i, 0) * 70ms);
+}
+
+/* Each rail rule follows its own heading down the cascade. */
+.sidebar-section .section-heading.reveal-run.on-boot::after {
+  animation-delay: calc(var(--boot-rail-items) + var(--rail-step, 0ms) + 200ms);
+}
+
+/* The spine stays scroll-driven. It is reading progress, so scrubbing IS the
+   effect, and `scroll(root)` reaches 100% at maximum scroll by definition. */
+@supports (animation-timeline: scroll(root)) {
+  @media (min-width: 960px) {
+    #pageContent::after {
+      content: "";
+      position: absolute;
+      z-index: 4;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent-on-dark), var(--accent));
+      transform: scaleY(0);
+      transform-origin: top center;
+      animation: spine-fill linear both;
+      animation-timeline: scroll(root block);
+      pointer-events: none;
+    }
+  }
+}
+
+/* --- ACT IV: TRANSLATE --------------------------------------------------- */
+/* The language swap is the page's only real state change. Nine named regions
+   cross-fade and re-flow as a wave down the page, instead of the document
+   switching in a single frame. Unsupported browsers get the instant swap.
+
+   The sticky .sidebar-shell is deliberately NOT named: a view-transition-name
+   forces a stacking context, and the rail must keep sticking. */
+
+/* Scoped to the swap, and that scoping is load-bearing. Declared
+   unconditionally, these names are picked up by EVERY view transition on the
+   page — including the photo morph, which then inherited the language wave's
+   staggered delays and dimmed the rail and the reading pane at different
+   times. Scoping also stops nine elements carrying a permanent stacking
+   context for a transition that runs twice in a session. */
+:root.is-translating .hero-section       { view-transition-name: r-hero; }
+:root.is-translating #about-section      { view-transition-name: r-about; }
+:root.is-translating #skills-section     { view-transition-name: r-skills; }
+:root.is-translating #experience-section { view-transition-name: r-experience; }
+:root.is-translating #research-section   { view-transition-name: r-research; }
+:root.is-translating #projects-section   { view-transition-name: r-projects; }
+:root.is-translating #contacts-section   { view-transition-name: r-contacts; }
+:root.is-translating #education-section  { view-transition-name: r-education; }
+:root.is-translating #languages-section  { view-transition-name: r-languages; }
+
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease);
+}
+
+::view-transition-group(r-contacts),
+::view-transition-old(r-contacts),
+::view-transition-new(r-contacts) { animation-delay: 40ms; }
+
+::view-transition-group(r-about),
+::view-transition-old(r-about),
+::view-transition-new(r-about) { animation-delay: 70ms; }
+
+::view-transition-group(r-skills),
+::view-transition-old(r-skills),
+::view-transition-new(r-skills) { animation-delay: 110ms; }
+
+::view-transition-group(r-education),
+::view-transition-old(r-education),
+::view-transition-new(r-education) { animation-delay: 130ms; }
+
+::view-transition-group(r-experience),
+::view-transition-old(r-experience),
+::view-transition-new(r-experience) { animation-delay: 160ms; }
+
+::view-transition-group(r-languages),
+::view-transition-old(r-languages),
+::view-transition-new(r-languages) { animation-delay: 185ms; }
+
+::view-transition-group(r-research),
+::view-transition-old(r-research),
+::view-transition-new(r-research) { animation-delay: 210ms; }
+
+::view-transition-group(r-projects),
+::view-transition-old(r-projects),
+::view-transition-new(r-projects) { animation-delay: 245ms; }
+
+/* --- ACT V: ZOOM --------------------------------------------------------- */
+/* The photo morphs into the modal. Script assigns `profile-photo` to exactly
+   one of the two images immediately before each transition and clears it
+   after — the same name cannot be live on both at once. */
+
+/* The page behind the photo has nothing to say during the morph, so it stops
+   cross-fading almost immediately and hands over to the dialog's own scrim.
+   Held at the shared 420ms it stayed a snapshot — and a snapshot captured
+   before the backdrop had faded up, which is why the page read as staying
+   bright long after the click. */
+:root.is-zooming::view-transition-old(root),
+:root.is-zooming::view-transition-new(root) {
+  animation-duration: 160ms;
+}
+
+::view-transition-group(profile-photo) {
+  animation-duration: 380ms;
+  animation-timing-function: var(--ease-arrive);
+  animation-delay: 0ms;
+}
+
+::view-transition-old(profile-photo),
+::view-transition-new(profile-photo) {
+  /* The two images differ in aspect ratio and crop, so a cross-fade between
+     them reads as a dissolve. Height-driven scaling keeps the subject fixed
+     while the frame grows. */
+  height: 100%;
+  object-fit: cover;
+  animation-duration: 380ms;
+  animation-delay: 0ms;
+}
+
+/* --- reduced motion ------------------------------------------------------ */
+/* Dropping the animations outright is correct here precisely because the
+   default state is the finished state. Capping `animation-duration` would
+   not have worked: a scroll-driven animation takes its progress from the
+   timeline, not from time, so a 1ms duration leaves it running at full
+   strength. Transitions still need their own cap. */
 
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
+    animation: none !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
 
@@ -854,17 +1747,63 @@ body {
   #profileModal[open] {
     transform: none;
   }
+
+  /* The rule is drawn by an animation, so without one it needs its finished
+     value stated. */
+  .sidebar-section .section-heading::after {
+    transform: scaleX(1);
+  }
+
+  #cursorHalo,
+  .page-main::before {
+    display: none;
+  }
 }
 
 /* 17. Print --------------------------------------------------------------- */
 /* Recruiters push candidates into an ATS, and the standard move is
    Ctrl+P -> Save as PDF. Without these rules that yields a dark navy slab,
-   or white-on-white under the common "no background graphics" default. */
+   or white-on-white under the common "no background graphics" default.
+   Everything section 16 adds is decoration, so print drops all of it. */
 
 @media print {
   @page {
     margin: 14mm;
   }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    filter: none !important;
+    translate: none !important;
+    rotate: none !important;
+    scale: none !important;
+    box-shadow: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  #pageContent::before,
+  #pageContent::after,
+  .page-sidebar::before,
+  .page-sidebar::after,
+  .page-main::before,
+  .sidebar-section .section-heading::after,
+  .compact-project-card::after,
+  .research-card::after,
+  .contact-link::before,
+  .profile-image-btn::before,
+  #railCanvas,
+  #cursorHalo {
+    display: none !important;
+  }
+
+  .metric-highlight {
+    background: none !important;
+  }
+
 
   body {
     background: #fff;
@@ -879,7 +1818,6 @@ body {
     min-height: 0;
     margin: 0;
     border-radius: 0;
-    box-shadow: none;
     background: #fff;
   }
 
@@ -966,7 +1904,7 @@ body {
     width: 5.5rem;
   }
 
-  .topbar-row,
+  .lang-switch,
   #profileModal,
   .noscript-note {
     display: none;
