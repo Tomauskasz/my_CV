@@ -55,11 +55,11 @@ check("digit runs are found without swallowing their surroundings", () => {
 check("the separator convention is read from the string, never the locale", () => {
   assert.deepEqual(
     { ...describeNumber("6,3") },
-    { value: 6.3, integerDigits: 1, decimals: 1, groupSeparator: "", decimalSeparator: "," },
+    { value: 6.3, decimals: 1, groupSeparator: "", decimalSeparator: "," },
   );
   assert.deepEqual(
     { ...describeNumber("6.3") },
-    { value: 6.3, integerDigits: 1, decimals: 1, groupSeparator: "", decimalSeparator: "." },
+    { value: 6.3, decimals: 1, groupSeparator: "", decimalSeparator: "." },
   );
   // Three digits after a single separator is a thousands group, not a decimal.
   const grouped = describeNumber(`2${NBSP}200`);
@@ -85,15 +85,21 @@ check("a counter never displays a value the figure does not pass through", () =>
   }
 });
 
-check("the printed string never changes width mid-count", () => {
+/* This replaces a width-stability check. Padding to the target's digit count
+   did hold the width, but it printed digits the figure never has — `01`, `08`,
+   `022.2`, `11/011` — and on a CV that reads as broken data. Width is now paid
+   for in reflow; a leading zero is not paid for at all. */
+check("no frame prints a leading zero the figure does not have", () => {
   for (const raw of FIGURES) {
     const spec = describeNumber(raw);
     const exponent = countExponent(spec);
-    const width = printed(spec).length;
     const step = 1000 / 60 / COUNT_DURATION;
     for (let progress = 0; progress <= 1 + step; progress += step) {
       const shown = frameValue(spec, exponent, Math.min(1, progress));
-      assert.equal(shown.length, width, `${raw}: "${shown}" is ${shown.length}, expected ${width}`);
+      assert.ok(
+        !/^0\d/.test(shown),
+        `${raw}: displayed "${shown}", which pads a digit the figure never has`,
+      );
     }
   }
 });

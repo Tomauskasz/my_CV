@@ -56,21 +56,28 @@
 
     return {
       value: Number(`${digits}.${isDecimal ? tail : "0"}`),
-      integerDigits: digits.length,
       decimals,
       groupSeparator,
       decimalSeparator,
     };
   }
 
-  /** Pads to the target's digit count so the string never changes width
-   *  mid-count. Combined with `font-variant-numeric: tabular-nums` on
-   *  `.metric-highlight`, a number counting up inside a sentence cannot
-   *  reflow the prose around it. */
+  /** Prints with no leading zeros, so every frame of a count is a string the
+   *  figure could actually be written as. This used to pad the integer part to
+   *  the target's digit count, which held the string at a constant width — but
+   *  it bought that by inventing digits: 10 printed as `01`, 138 as `016`, and
+   *  `98/100 laps` passed through `11/011`. On a CV, a figure that renders as
+   *  `022.2s median` reads as broken data, and the width was not worth it.
+   *
+   *  The cost is real and chosen: the integer part gains characters as it
+   *  climbs, so a counter inside running prose reflows the words after it.
+   *  `tabular-nums` equalises digit WIDTHS, not digit COUNTS, and cannot hold
+   *  that. Anything that needs a stable measure has to reserve the width in
+   *  layout, not in the string. */
   function formatNumber(value, spec) {
     const fixed = value.toFixed(spec.decimals);
     const [whole, fraction] = fixed.split(".");
-    let integer = whole.padStart(spec.integerDigits, "0");
+    let integer = whole;
     if (spec.groupSeparator) {
       integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, spec.groupSeparator);
     }
