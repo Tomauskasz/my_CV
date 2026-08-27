@@ -253,6 +253,7 @@ const translations = {
 };
 
 const STORAGE_KEY = "cv-lang";
+const THEME_KEY = "cv-theme";
 const elements = {};
 
 const prefersReducedMotion = () =>
@@ -261,6 +262,92 @@ const prefersReducedMotion = () =>
 /** motion.js is optional. Nothing here waits on it, checks for it, or
  *  behaves differently when it is absent — these events go out either way. */
 const emit = (name, detail) => document.dispatchEvent(new CustomEvent(name, { detail }));
+
+/* ---------- theme ---------- */
+
+/* The opening state is chosen by the inline script in <head>, because it has
+   to be settled before the first paint. Everything from the first click on
+   lives here. */
+
+const currentTheme = () =>
+  document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+
+function rememberTheme(theme) {
+  try {
+    window.localStorage.setItem(THEME_KEY, theme);
+  } catch {
+    // Private mode or blocked storage: the switch still works for this visit.
+  }
+}
+
+/** Swaps the palette under an expanding circle struck from the control that
+ *  was pressed.
+ *
+ *  A cross-fade is the obvious move and the wrong one: a theme change moves
+ *  every surface at once, so fading the whole document into the whole
+ *  document is a dip through grey with no direction in it. A circle has an
+ *  origin, and the origin is the button, which is what makes the change read
+ *  as something the visitor did rather than something that happened to them.
+ *
+ *  The radius has to reach the furthest corner from that origin, and neither
+ *  the origin nor the corner is knowable in CSS — which is why this one
+ *  animation is scripted while its staging stays in the stylesheet. */
+function setTheme(theme, origin) {
+  const apply = () => {
+    document.documentElement.dataset.theme = theme;
+    elements.themeToggle?.setAttribute("aria-pressed", String(theme === "dark"));
+  };
+
+  rememberTheme(theme);
+
+  // The rail's shader reads its own dimming from the stylesheet, so it is
+  // told immediately rather than on settle: the flow should already be
+  // travelling as the circle passes over it, not step down afterwards.
+  const announce = () => emit("cv:theme", { theme });
+
+  if (!document.startViewTransition || prefersReducedMotion() || document.hidden) {
+    apply();
+    announce();
+    return;
+  }
+
+  document.documentElement.classList.add("is-theming");
+  const transition = document.startViewTransition(apply);
+
+  transition.ready
+    .then(() => {
+      const reach = Math.hypot(
+        Math.max(origin.x, window.innerWidth - origin.x),
+        Math.max(origin.y, window.innerHeight - origin.y),
+      );
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${origin.x}px ${origin.y}px)`,
+            `circle(${reach}px at ${origin.x}px ${origin.y}px)`,
+          ],
+        },
+        {
+          duration: 620,
+          // Matches `--ease-arrive`. The wipe is an arrival like any other:
+          // most of the distance immediately, then a long settle.
+          easing: "cubic-bezier(0.06, 0.94, 0.13, 1)",
+          pseudoElement: "::view-transition-new(root)",
+        },
+      );
+      announce();
+    })
+    .catch(() => {
+      // Superseded by a second click, or the tab went hidden mid-flight. The
+      // palette has still swapped, so there is nothing to recover — but the
+      // rail has not been told yet, and an uncaught rejection is a console
+      // error on a page whose baseline is zero.
+      announce();
+    });
+
+  const settle = () => document.documentElement.classList.remove("is-theming");
+  transition.finished.then(settle, settle);
+}
 
 /* ---------- language ---------- */
 
@@ -684,6 +771,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".lang-option").forEach((option) => {
     option.addEventListener("click", () => setLanguage(option.dataset.lang));
+  });
+
+  elements.themeToggle = document.getElementById("themeToggle");
+  elements.themeToggle?.setAttribute("aria-pressed", String(currentTheme() === "dark"));
+  elements.themeToggle?.addEventListener("click", (event) => {
+    // The circle is struck from the middle of the button that was pressed, so
+    // a keyboard activation and a click open from the same point.
+    const box = event.currentTarget.getBoundingClientRect();
+    setTheme(currentTheme() === "dark" ? "light" : "dark", {
+      x: box.left + box.width / 2,
+      y: box.top + box.height / 2,
+    });
   });
 
   document.getElementById("profileImageBtn")?.addEventListener("click", openModal);

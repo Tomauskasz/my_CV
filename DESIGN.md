@@ -192,6 +192,47 @@ A near-neutral blue-grey ground, a deep navy rail, and a single sapphire accent.
 - **Accent strong** `oklch(0.49 0.12 253)` — section eyebrows, company names, project tags, active language.
 - **Accent on dark** `oklch(0.88 0.07 253)` — sidebar eyebrows and institution names.
 
+### The dark palette
+
+One block, `:root[data-theme="dark"]`, set by an inline script in `<head>` before the
+first paint. Only colour moves — rhythm, type, motion and the boot timeline are the same
+page in both themes.
+
+The usual arrangement carries the palette twice, once under `@media (prefers-color-scheme:
+dark)` and once under the attribute, and lets the two copies drift. Here the script reads
+`localStorage` then `prefers-color-scheme` and writes one attribute, so there is one copy.
+That trades a no-script dark mode for a single source of truth, and this page already
+renders no content at all without script — the cost was spent long ago.
+
+- **Ground** `oklch(0.15 0.017 258)`, **stage** `oklch(0.225 0.021 257)`, **cards**
+  `oklch(0.27 0.024 256)`.
+- **Ink** `0.97 / 0.87 / 0.73` at low chroma.
+- **Accent climbs.** `--accent-strong` goes `0.49 → 0.79`: it is the eyebrow and
+  company-name ink on the reading stage, and at its light value it disappears into a
+  `0.225` surface.
+- **`--on-accent` inverts.** The ink on an accent fill was a literal `#fff` at its one
+  use site — the active language pill. In dark the fill lightens, so white on it fails.
+  It is a token now, and it is the one hard-coded colour on this page that actually
+  broke a theme.
+- **Shadows shrink to near-black.** There is no light on a dark ground for a shadow to
+  subtract; depth comes from the surface steps instead.
+
+**The rail keeps its material, not its lightness rank.** In light the columns separate on
+lightness. In dark that lever is gone, so separation moves to hue: measured, the rail
+composites to `rgb(24,35,59)` against the stage's `rgb(21,28,38)` — barely lighter, much
+more chromatic. Dimming it far enough to be strictly darker merges it into the stage and
+the two-column structure stops reading.
+
+**The shader is dimmed after its clamp, never before.** `--rail-dim` (1 in light, 0.6 in
+dark) multiplies the fragment colour *after* `min(colour, vec3(0.21, 0.28, 0.52))`, so the
+lightest-frame ceiling still bounds the rail and the dimming can only ever subtract.
+`motion.js` reads the token off the computed style rather than holding a copy. Measured in
+dark: brightest rail pixel `rgb(33,44,82)`, holding `--sidebar-muted` at **8.87:1**.
+
+**Print is one palette.** `@media print` re-declares the ground and ink tokens, so a
+visitor printing from dark mode gets the same sheet as everyone else rather than a black
+rectangle wherever a token slipped past the literals.
+
 ### Named rules
 
 **The lightest-stop rule.** Every ink used on the rail is verified against
@@ -341,16 +382,28 @@ The boot timeline lives in one place, as `--boot-*` tokens.
 
 ### The acts
 
-**I — Boot.** Three phases, in the document's reading order, settling at ~4.6s. Script adds
-`.is-armed` to `<body>` after the first render.
+**I — Boot.** Three phases, in the document's reading order, the last of them settling at
+~3.1s and the numbers finishing at ~4.3s. Script adds `.is-armed` to `<body>` after the
+first render.
 
 | Phase | | Starts | Ends |
 |---|---|---|---|
-| 0 | **Ground** — page frame, rail wipe, photo and its ring | 0ms | 2720ms |
-| 1 | **Hero**, right — name, then role, then specialisation | 250ms | 3110ms |
-| 2 | **Rail content**, left — heading, rule and rows, section by section | 2300ms | 4430ms |
-| 3 | **Stage**, right — profile, skills, section rules, cards | 3300ms | 4600ms |
-| — | **Numbers**, last of all | 3700ms | 8500ms |
+| 0 | **Ground** — page frame, rail wipe, photo and its ring | 0ms | 1700ms |
+| 1 | **Hero**, right — name, then role, then specialisation | 150ms | 2240ms |
+| 2 | **Rail content**, left — heading, rule and rows, section by section | 1250ms | 3020ms |
+| 3 | **Stage**, right — profile, skills, section rules, cards | 1800ms | 3100ms |
+| — | **Numbers**, last of all | 2050ms | 4340ms |
+
+Those ends are measured off the live page, not added up from the stylesheet — every one
+except Ground's, whose ring draws on a pseudo-element that `getComputedStyle` will not
+enumerate, and which is `ring-draw 1400ms` at `--boot-ring` 300ms.
+
+**Phase 3's start is the page's Largest Contentful Paint.** `#about-content` is the LCP
+element, and a `backwards` fill holds it at `opacity: 0` until `--boot-stage`, so LCP
+cannot land before that token fires. At 3300ms the page measured **LCP 4384ms**, inside
+the >4000ms *poor* band. At 1800ms it measures **2364ms median of three cold runs**
+(2352 / 2364 / 2656), under the 2500ms *good* threshold, with FCP 228–496ms and CLS
+0.0004–0.0029. Retune the token and re-measure; do not retune it and re-estimate.
 
 **The rail's ground is not its content.** The dark field and the photograph are the stage
 the identity stands on, so they arrive with the frame; only what is *written* on the rail
@@ -358,21 +411,24 @@ waits its turn. Wiping the whole column in at once made the left side read as po
 existence rather than being filled in.
 
 **A cascade needs one offset, not three sets of numbers.** `--rail-step` places each rail
-section — contacts 0ms, education 520ms, languages 800ms — and that section's heading, its
+section — contacts 0ms, education 290ms, languages 440ms — and that section's heading, its
 drawn rule and its rows all read from it. Keeping three parallel sets of hand-written
 delays in step is how a cascade drifts.
 
-**Two statements are two beats.** The role line and the specialisation under it are separate
-claims, and at 220ms apart against a ~1.25s duration they overlapped by 78% and read as one
-block arriving. `--boot-lede-step` is 860ms, which brings the overlap to 31% — and because
-`--ease-arrive` is so front-loaded, the first line is visually finished well before the
-second starts.
+**Two statements are two beats, and the separation is a ratio.** The role line and the
+specialisation under it are separate claims, and at 220ms apart against a ~1.25s duration
+they overlapped by 78% and read as one block arriving. What fixes that is not a number of
+milliseconds but a fraction of the lede's own duration: 31% overlap reads as two beats.
+So the lede runs at an explicit **700ms** rather than `--motion-slow`, and
+`--boot-lede-step` is **480ms** — the same 31%. Compressing the boot therefore did not
+re-merge them. Move one and you must move the other; that is why the lede does not read
+its duration from the shared token.
 
-Phases overlap at the tails; run strictly end-to-end the sequence passes ten seconds. The frame
-resolves out of a blur, the rail wipes down under a `clip-path`, an accent ring draws
-around the photo by sweeping a conic stop, the name assembles character by character
+Phases overlap at the tails; run strictly end-to-end the sequence would pass six seconds.
+The frame resolves out of a blur, the rail wipes down under a `clip-path`, an accent ring
+draws around the photo by sweeping a conic stop, the name assembles character by character
 with a weight wave running through the variable axis, then the lede and the rail blocks
-arrive. Roughly 1.4s end to end, once per load.
+arrive. Once per load.
 
 **II — Live.** Continuous, and continuous means *cheap*: every ambient effect is a
 transform or an opacity. A hand-written WebGL flow field paints the rail; the page frame
@@ -394,7 +450,28 @@ short label decodes out of scrambled glyphs into the new language.
 **V — Zoom.** The photo morphs into the modal as a shared element rather than a new
 surface fading in over it.
 
+**VI — Theme.** The palette swaps under a circle expanding from the control that was
+pressed, while the rail's flow field takes the same ripple the language swap fires.
+
 ### Named rules
+
+**A theme change is a wipe, not a cross-fade.** Every other transition on this page
+cross-fades because only part of the document changed. A theme change moves every surface
+at once, and cross-fading everything into everything is a dip through grey with no
+direction in it. The new palette is revealed under a circle struck from the pressed
+control, so the change has an origin and reads as something the visitor did. The radius
+has to reach the furthest viewport corner from that origin, and CSS knows neither the
+origin nor the corner — so this one animation is scripted while its staging stays in the
+stylesheet. `::view-transition-old(root)` is held still underneath rather than fading;
+fading both is what puts the grey dip back.
+
+**One resting element is allowed to be invisible, and it is not content.** The theme
+control holds both icons in the markup so the swap has something to animate between, which
+means one of them always sits at `opacity: 0`. That is the single exception to *default
+state is the finished state*, and it is safe for the reason the rule exists: the rule
+protects **content** from being stranded by a script or an animation that never ran. A
+two-state control showing one of its two states is its finished state. Cancel every
+animation on the page and the only thing still hidden is the icon that is supposed to be.
 
 **Tilt is a distance, not an angle.** A single angle across cards of different sizes is a
 bug wearing a constant's clothes: at 12deg a 236px project card moves 31px and the 736px
@@ -457,10 +534,19 @@ off screen. No element is ever pre-hidden by script. This is a failure-mode choi
 timing one: an element the observer never reaches carries no class, and no class is the
 finished state, so a dead observer costs an animation rather than a blank card on a CV.
 
-**Every displayed value is a real one.** No counter ever shows an invented digit. An earlier
-version rolled the least significant digit to pad out the small numbers, and it worked, but a
-figure on a CV that flickers through values it never held is the wrong kind of effect on the
-wrong kind of page.
+**Every displayed value is a real one — per number, and only per number.** No counter shows
+an invented digit. An earlier version rolled the least significant digit to pad out the
+small numbers, and it worked, but a figure on a CV that flickers through values it never
+held is the wrong kind of effect on the wrong kind of page.
+
+Know the limit of that guarantee, because it is narrower than it sounds. It holds for each
+digit run in isolation. It does **not** hold for a claim built out of two of them: a range
+is two independent counters sharing one progress, so `1–2 days` passes through `0–0` and
+`1–1`, `3–4 FPS to ~15 FPS (4×)` passes through `0–0 FPS to ~1 FPS (0×)`, and
+`98/100 laps` passes through `10/10`. Nor does the regex know a metric from a name — the
+`3` in `robotic 3D house printing` is a digit run, so it counts up through `0D`, `1D`,
+`2D`. Measured, not inferred. Anything that needs the guarantee at the level of the
+*claim* rather than the *number* has to stop counting composites, not tune them.
 
 **The curve is per counter, so that they finish together.** All counters run the same
 `COUNT_DURATION`, but how long one *appears* to move is set by how many values it can
@@ -479,9 +565,23 @@ first to settle, at half the duration rather than an eighth — that is arithmet
 tuning choice, and the only ways past it are fake digits or fake precision.
 
 **Never widen a counter to buy steps.** Showing `1.00 days` mid-count would add states, but
-it reflows the sentence around it on every frame and reads as precision the figure does not
-have. Values are padded to the target's own digit count and never beyond it, so with
-`tabular-nums` the prose cannot move.
+it reads as precision the figure does not have. The number of decimals is the authored
+figure's own and is never extended.
+
+**A leading zero is an invented digit, and width is not worth one.** The integer part used
+to be padded to the target's digit count, which held the printed string at a constant
+width. It bought that by printing digits the figure does not have: 10 rendered as `01`,
+138 as `016`, `139.4s median` as `022.2s median`, and `98/100 laps` passed through
+`11/011`. On a CV that reads as broken data. The padding is gone, and
+`test/numbers.test.mjs` now asserts that no frame matches `/^0\d/`.
+
+The width was the reason for the padding, so it is worth recording what losing it actually
+cost: **nothing measurable**. Across a full count of the experience metrics the widest
+single counter travels **9px**, the first bullet holds a constant 49.5px height, and the
+document holds a constant 2947px. `tabular-nums` equalises digit *widths*, which is what
+keeps the travel sub-word; it never equalised digit *counts*, so the padding was buying a
+guarantee the page did not need. Anything that ever does need a stable measure must
+reserve it in layout, not in the string.
 
 **Each hold belongs to the thing being held.** The counters wait twice — once for the boot
 phase, once for a language decode — and both waits live on the counters as `holdUntil`. The
@@ -589,10 +689,11 @@ back. `replayContactRows()` restarts their animation by hand in the same render 
 the others, so the whole rail cascades in reading order: contacts 1800ms, education 2200ms,
 languages 2520ms.
 
-**Nothing else starts while a language change resolves.** `quietUntil` holds the metric
-counters until the decode has finished. Numbers ticking up underneath text that is still
-gibberish is two effects competing for one glance, and the numbers lose. It is zero outside
-a language change, so the boot is unaffected.
+**Nothing else starts while a language change resolves.** The counters wait until the
+decode has finished, through their own `holdUntil` — see *Each hold belongs to the thing
+being held* above. Numbers ticking up underneath text that is still gibberish is two
+effects competing for one glance, and the numbers lose. The hold is zero outside a
+language change, so the boot is unaffected.
 
 The viewport filter is what keeps the decode affordable — nothing off screen is ever
 touched. `DECODE_MAX_CHARS` is a runaway guard set clear of real content, not a filter: the
@@ -620,10 +721,8 @@ bright after I click".
 
 **Counters read their format from the string, never the locale.** The page renders `6.3`
 in English and `6,3` in Lithuanian. A single separator with one or two digits after it is
-a decimal point; three digits is a thousands group. Values are padded to the target's digit
-count so a number counting up inside a sentence cannot reflow the prose around it, and the
-authored string is restored verbatim on the final frame so no rounding can alter a
-published figure.
+a decimal point; three digits is a thousands group. The authored string is restored
+verbatim on the final frame, so no rounding can alter a published figure.
 
 **Overshoot is for release, not for arrival.** `--ease-back` overshoots by ~10%, and the
 detector flags that class of easing as dated by default. It is used here in exactly five
@@ -649,12 +748,21 @@ and hides every decorative pseudo-element and the canvas. Recruiters save this p
 
 ## Components
 
-### Language switch
-A two-option segmented control, not a dropdown. Both languages are always visible, so
-nobody has to discover that the other one exists. The active option is filled with
-`accent-strong`; state is carried on `aria-pressed`. It floats at the top right of the
-reading stage where the column is wide enough to clear the name, and drops into normal
-flow above the name where it is not — see **Layout**.
+### Page controls
+Language and theme are the page's only two settings, so they travel as one cluster with
+one owner for where it sits. `.page-controls` carries the position; neither control knows
+anything about the corner it lives in. The cluster floats at the top right of the reading
+stage where the column is wide enough to clear the name, and drops into normal flow above
+the name where it is not — see **Layout**.
+
+- **Language** — a two-option segmented control, not a dropdown. Both languages stay
+  visible, so nobody has to discover that the other exists. The active option is filled
+  with `accent-strong` over `--on-accent`; state is carried on `aria-pressed`.
+- **Theme** — a toggle button, not a second segmented pair. There is no third theme, and
+  two pills side by side would read as another language switch. Both the sun and the moon
+  are in the markup at the same 1.7px stroke as the modal's close mark; the attribute
+  cross-fades and counter-rotates them, so whichever is leaving turns out of the way and
+  the swap has a direction. The icon shows the state that is on, matching `aria-pressed`.
 
 ### Entries
 Three deliberately different treatments, because three different kinds of claim:
@@ -714,5 +822,12 @@ Three deliberately different treatments, because three different kinds of claim:
   straight out of the ink. Give the rail a pointer response through the shader instead.
 - **Don't stack an override block at the end of the file.** Edit the rule where it
   lives; this stylesheet previously carried four generations of `.sidebar-shell`.
-- **Don't introduce `!important`.** The only ones present are the `[hidden]` reset and
-  the reduced-motion overrides.
+- **Don't introduce `!important`.** The only ones present are the `[hidden]` reset, the
+  reduced-motion overrides and the print block.
+- **Don't hard-code a colour at its use site.** Every one that did is now a token, and the
+  `#fff` on the active language pill is why: it was invisible until a second theme
+  existed, and then it was a contrast failure. If a value is a colour, it is a token, even
+  when there is exactly one use site.
+- **Don't dim the rail by putting something over it.** The shader owns the rail's
+  brightness through `--rail-dim`, applied inside GLSL after the clamp. An overlay would
+  come straight out of the ink, which is the same rule the cursor light already obeys.

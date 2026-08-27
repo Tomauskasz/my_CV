@@ -120,6 +120,39 @@ button {
 
   --rule: oklch(0.87 0.016 252);
 
+  /* Ink that sits ON an accent fill. In light the fill is `--accent-strong`,
+     dark enough to carry white; in dark the fill has to lighten to stay
+     visible, so the ink on it inverts with it. A literal `#fff` here is the
+     one hard-coded colour that actually breaks a theme. */
+  --on-accent: oklch(0.99 0.004 250);
+
+  /* The two pointer lights. Their alphas are a contrast budget, not a taste
+     call — see the cursor-light rule in DESIGN.md — so they are tokens the
+     theme can re-spend rather than literals at their use site. */
+  --stage-light: oklch(0.61 0.15 253 / 0.055);
+  --halo-tint: oklch(0.61 0.15 253 / 0.05);
+  --selection: oklch(0.61 0.15 253 / 0.2);
+
+  /* These six have been named in DESIGN.md since the first version and were
+     never actually declared: each value lived inline at its single use site,
+     which is why the frontmatter and the stylesheet could disagree without
+     anything catching it. Declaring them makes the document true and lets the
+     dark theme reach them. */
+  --photo-placeholder: rgba(8, 18, 35, 0.22);
+  --sidebar-hover: rgba(255, 255, 255, 0.09);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.22);
+  --modal-scrim: rgba(10, 23, 46, 0.68);
+  --modal-control: rgba(9, 18, 38, 0.72);
+  --modal-control-hover: rgba(9, 18, 38, 0.92);
+  --shadow-photo: 0 8px 20px -8px rgba(5, 15, 31, 0.55);
+
+  /* How far the rail shader is turned down. Light spends its whole contrast
+     budget already; dark needs the rail below the reading stage, and the
+     shader is the only layer that can take it there. Multiplied AFTER the
+     GLSL clamp, so darkening can only raise contrast and the lightest-frame
+     rule still holds by construction. */
+  --rail-dim: 1;
+
   /* The rail's flow. These are the CSS aurora's stops — the fallback the rail
      shows wherever WebGL will not run. Alpha is baked in, as with
      `--accent-tint`, because they only ever appear as gradient stops. */
@@ -168,19 +201,26 @@ button {
      Each phase starts before the previous one has finished its tail;
      otherwise the sequence runs past ten seconds. */
   --boot-frame: 0ms;
-  --boot-name: 250ms;
-  --boot-lede: 1000ms;
+  --boot-name: 150ms;
+  --boot-lede: 560ms;
   /* The role line and the specialisation under it are two statements, not one
-     block. At 220ms apart against a ~1s duration they overlapped by 78% and
-     read as arriving together. */
-  --boot-lede-step: 860ms;
+     block. The separation is a RATIO, not a number: at 220ms apart against a
+     ~1s duration they overlapped by 78% and read as arriving together. 480ms
+     against the 700ms lede duration holds the same 31% overlap the longer
+     timeline had, so compressing the boot did not re-merge the two beats. */
+  --boot-lede-step: 480ms;
   /* The rail's GROUND arrives with the frame — it is the stage the identity
      sits on, not content. Only what is written on it waits. */
-  --boot-rail: 150ms;
-  --boot-ring: 520ms;
-  --boot-rail-items: 2300ms;
-  --boot-stage: 3300ms;
-  --boot-numbers: 3700ms;
+  --boot-rail: 100ms;
+  --boot-ring: 300ms;
+  --boot-rail-items: 1250ms;
+  /* This one token is the page's Largest Contentful Paint. Stage content in
+     the first viewport is held at opacity 0 by a `backwards` fill until it
+     fires, so LCP cannot land before it. Measured: at 3300ms the page reported
+     LCP 4384ms, inside the >4000ms "poor" band. Retune this and re-measure;
+     do not retune it and re-estimate. */
+  --boot-stage: 1800ms;
+  --boot-numbers: 2050ms;
 }
 
 /* Registered so they interpolate. An unregistered custom property is a
@@ -196,6 +236,92 @@ button {
   inherits: false;
   initial-value: 0deg;
 }
+
+/* --- the dark palette ----------------------------------------------------
+   Only colour moves. Rhythm, type, motion and the boot timeline are the same
+   page in both themes, which is why nothing below this comment is a layout
+   value.
+
+   One block, keyed on one attribute, because an inline script in <head> sets
+   `data-theme` from localStorage or `prefers-color-scheme` before first
+   paint. The usual arrangement — a media query AND an attribute selector —
+   needs the whole palette written twice and lets the two copies drift. This
+   page already renders nothing at all without script, so making the theme
+   depend on it costs nothing that was not already spent, and it buys a single
+   source of truth.
+
+   THE RAIL KEEPS ITS OWN MATERIAL. In light it is a navy column against a
+   near-white page and the columns separate on lightness alone. In dark that
+   lever is gone — both columns are dark — so the separation moves to hue: the
+   tokens put the rail BELOW the stage, and then the shader paints back over
+   it, which lands the composite at a measured rgb(24,35,59) against the
+   stage's rgb(21,28,38). Slightly lighter, and far more chromatic. That is
+   the shipped result and it is the right one: dimmed far enough to satisfy
+   the token arithmetic, the rail merges into the stage and the two-column
+   structure the whole layout is built on stops reading. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --page-bg: oklch(0.15 0.017 258);
+  --surface: oklch(0.225 0.021 257);
+  --surface-raised: oklch(0.27 0.024 256);
+
+  /* Below `--surface`, deliberately. */
+  --sidebar-top: oklch(0.205 0.036 254);
+  --sidebar-bottom: oklch(0.155 0.028 253);
+
+  --text-strong: oklch(0.97 0.006 250);
+  --text: oklch(0.87 0.014 252);
+  --text-soft: oklch(0.73 0.021 253);
+
+  /* The rail's own inks barely move: it was already a dark material carrying
+     light ink, and dropping the ground under them only adds contrast. */
+  --sidebar-text-strong: oklch(0.99 0.004 250);
+  --sidebar-text: oklch(0.93 0.013 250);
+  --sidebar-muted: oklch(0.86 0.018 250);
+  --sidebar-line: rgba(219, 232, 247, 0.16);
+
+  /* Accent has to climb. `--accent-strong` is the eyebrow and company-name
+     ink on the reading stage, and at its light-mode 0.49 it disappears into a
+     0.225 surface. */
+  --accent: oklch(0.72 0.14 253);
+  --accent-strong: oklch(0.79 0.13 253);
+  --accent-on-dark: oklch(0.86 0.08 253);
+  --accent-tint: oklch(0.72 0.14 253 / 0.14);
+  --accent-border: oklch(0.72 0.14 253 / 0.34);
+  --on-accent: oklch(0.17 0.02 257);
+
+  --rule: oklch(0.33 0.021 254);
+
+  --rail-flow-near: oklch(0.42 0.09 253 / 0.5);
+  --rail-flow-far: oklch(0.38 0.08 262 / 0.45);
+  --rail-flow-deep: oklch(0.35 0.07 246 / 0.4);
+
+  /* A light on a dark ground reads at a fraction of the alpha it needs on a
+     white one, and it costs contrast the same way, so both go up only as far
+     as the ink can pay for. */
+  --stage-light: oklch(0.72 0.14 253 / 0.1);
+  --halo-tint: oklch(0.72 0.14 253 / 0.09);
+  --selection: oklch(0.72 0.14 253 / 0.28);
+
+  --photo-placeholder: rgba(4, 10, 22, 0.4);
+  --modal-scrim: rgba(4, 10, 22, 0.82);
+
+  /* Shadow is nearly free on a dark ground — there is no light for it to
+     subtract. Depth here comes from the surface steps above, so the shadows
+     shrink to a rim rather than trying to shout through the dark. */
+  --shadow-frame: 0 32px 64px -40px rgba(0, 0, 0, 0.6);
+  --shadow-raised: 0 12px 24px -16px rgba(0, 0, 0, 0.55);
+  --shadow-lifted: 0 26px 44px -26px rgba(0, 0, 0, 0.7);
+  --shadow-photo: 0 8px 20px -8px rgba(0, 0, 0, 0.75);
+
+  --rail-dim: 0.6;
+}
+
+/* An `overlay` white is a brightener, and on a dark card it blows the surface
+   out long before it reads as a highlight. Same budget, smaller number. */
+:root[data-theme="dark"] .compact-project-card { --sheen-strength: 0.16; }
+:root[data-theme="dark"] .research-card { --sheen-strength: 0.07; }
 
 /* 3. Base type ------------------------------------------------------------ */
 
@@ -218,7 +344,7 @@ body {
 }
 
 ::selection {
-  background: oklch(0.61 0.15 253 / 0.2);
+  background: var(--selection);
   color: var(--text-strong);
 }
 
@@ -304,7 +430,7 @@ body {
   aspect-ratio: 1;
   margin: -13rem 0 0 -13rem;
   border-radius: 50%;
-  background: radial-gradient(circle closest-side, oklch(0.61 0.15 253 / 0.055), transparent 72%);
+  background: radial-gradient(circle closest-side, var(--stage-light), transparent 72%);
   translate: var(--px, 50%) var(--py, 30%);
   opacity: 0;
   transition: opacity 500ms var(--ease);
@@ -401,7 +527,7 @@ body {
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
   }
 }
 
@@ -834,7 +960,7 @@ body {
   z-index: -1;
   inset: 0;
   border-radius: inherit;
-  background: rgba(255, 255, 255, 0.09);
+  background: var(--sidebar-hover);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform var(--motion-medium) var(--ease);
@@ -993,7 +1119,7 @@ body {
   aspect-ratio: 1;
   border-radius: 50%;
   object-fit: cover;
-  background: rgba(8, 18, 35, 0.22);
+  background: var(--photo-placeholder);
   transition:
     box-shadow var(--motion-medium) var(--ease),
     filter var(--motion-medium) var(--ease),
@@ -1002,7 +1128,7 @@ body {
 
 .profile-image-btn:hover .profile-image,
 .profile-image-btn:focus-visible .profile-image {
-  box-shadow: 0 8px 20px -8px rgba(5, 15, 31, 0.55);
+  box-shadow: var(--shadow-photo);
   scale: 1.035;
   /* Channel separation: the same silhouette offset in red and cyan through
      two coloured drop-shadows. Cheaper than a shader, survives resize. */
@@ -1011,16 +1137,40 @@ body {
     drop-shadow(-1.5px 0 0 rgba(0, 200, 255, 0.5));
 }
 
-/* 13. Language switch ----------------------------------------------------- */
-/* Two languages is a segmented control, not a menu: both options stay
-   visible, so nobody has to discover that a second one exists. */
+/* 13. Page controls ------------------------------------------------------- */
+/* Language and theme are the page's only two settings, so they travel as one
+   cluster with one owner for where it sits. The cluster carries the position;
+   neither control knows anything about the corner it lives in. */
 
 /* In normal flow wherever the column is too narrow to overlay it clear of the
    name. The negative margin pulls the content-shell gap back to 1rem for this
-   one row; it is inert once the rule below takes the switch out of flow. */
-.lang-switch {
+   one row; it is inert once the rule below takes the cluster out of flow. */
+.page-controls {
   align-self: flex-end;
   margin-bottom: calc(1rem - var(--stage-gap));
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Out of the flow on a wide enough column, so the hero is the stage's first
+   child and can line up with the photo — see the column-alignment block in
+   section 4, which owns the 1100px threshold and the reason for it. */
+@media (min-width: 1100px) {
+  .page-controls {
+    position: absolute;
+    z-index: 2;
+    top: var(--rail-pad-top);
+    right: var(--stage-pad-x);
+    margin-bottom: 0;
+  }
+}
+
+/* Two languages is a segmented control, not a menu: both options stay
+   visible, so nobody has to discover that a second one exists. Still the
+   containing block for `.lang-indicator`, which only needs an ancestor that
+   is positioned at all. */
+.lang-switch {
   position: relative;
   display: flex;
   gap: 0.15rem;
@@ -1030,19 +1180,64 @@ body {
   background: var(--surface-raised);
 }
 
-/* Out of the flow on a wide enough column, so the hero is the stage's first
-   child and can line up with the photo — see the column-alignment block in
-   section 4, which owns the 1100px threshold and the reason for it. This
-   override lives here rather than in that block because the rule above weighs
-   the same and comes later in the file. Still the containing block for
-   `.lang-indicator`, which only needs an ancestor that is positioned at all. */
-@media (min-width: 1100px) {
-  .lang-switch {
-    position: absolute;
-    z-index: 2;
-    top: var(--rail-pad-top);
-    right: var(--stage-pad-x);
-  }
+/* One control, two states, so it is a button and not a second segmented pair.
+   The sun and the moon are both in the markup and both drawn at the same
+   1.7px stroke as the modal's close mark; the attribute cross-fades and
+   counter-rotates them. Swapping innerHTML would have nothing to animate
+   between. */
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.375rem;
+  background: var(--surface-raised);
+  color: var(--text-soft);
+  transform: translate(var(--push-x, 0px), var(--push-y, 0px));
+  transition:
+    color var(--motion-fast) var(--ease),
+    border-color var(--motion-fast) var(--ease),
+    transform 420ms var(--ease);
+}
+
+.theme-toggle:hover {
+  color: var(--accent-strong);
+  border-color: var(--accent-border);
+}
+
+.theme-toggle svg {
+  position: absolute;
+  width: 1.05rem;
+  height: 1.05rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    opacity var(--motion-medium) var(--ease),
+    rotate var(--motion-medium) var(--ease-back),
+    scale var(--motion-medium) var(--ease-back);
+}
+
+/* Light showing: the sun is the state, the moon is the offer. Dark inverts
+   it. Whichever is leaving turns out of the way rather than fading in place,
+   so the swap has a direction. */
+.theme-toggle .icon-moon,
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  opacity: 0;
+  rotate: -70deg;
+  scale: 0.5;
+}
+
+.theme-toggle .icon-sun,
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  opacity: 1;
+  rotate: 0deg;
+  scale: 1;
 }
 
 /* The fill is one element that slides, not two that swap. `aria-pressed`
@@ -1095,10 +1290,21 @@ body {
   .contact-link {
     min-height: 2.75rem;
   }
+
+  /* The pointer-fine hover affordances are gone at this width, so the two
+     controls have to be worth tapping instead. */
+  .lang-option,
+  .theme-toggle {
+    min-height: 2.75rem;
+  }
+
+  .theme-toggle {
+    width: 2.75rem;
+  }
 }
 
 .lang-option[aria-pressed="true"] {
-  color: #fff;
+  color: var(--on-accent);
 }
 
 /* 14. Modal --------------------------------------------------------------- */
@@ -1144,7 +1350,7 @@ body {
 }
 
 #profileModal::backdrop {
-  background: rgba(10, 23, 46, 0.68);
+  background: var(--modal-scrim);
   opacity: 0;
   transition:
     opacity var(--motion-medium) var(--ease),
@@ -1180,15 +1386,15 @@ body {
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 50%;
-  background: rgba(9, 18, 38, 0.72);
-  color: #fff;
+  background: var(--modal-control);
+  color: oklch(0.99 0.004 250);
   transition:
     background-color var(--motion-fast) var(--ease),
     rotate var(--motion-medium) var(--ease-back);
 }
 
 .modal-close-btn:hover {
-  background: rgba(9, 18, 38, 0.92);
+  background: var(--modal-control-hover);
   rotate: 90deg;
 }
 
@@ -1385,24 +1591,27 @@ body.is-armed .page-sidebar {
 /* `both`, not `backwards`: this one is meant to stay drawn. A lingering
    custom property costs nothing — it creates no stacking context. */
 body.is-armed .profile-image-btn::before {
-  animation: ring-draw 2200ms var(--ease-arrive) var(--boot-ring) both;
+  animation: ring-draw 1400ms var(--ease-arrive) var(--boot-ring) both;
 }
 
 body.is-armed .hero-char {
   animation: char-boot 1400ms var(--ease-arrive) backwards;
-  animation-delay: calc(var(--boot-name) + var(--i) * 68ms);
+  animation-delay: calc(var(--boot-name) + var(--i) * 46ms);
 }
 
+/* 700ms rather than `--motion-slow`: the lede's duration is what
+   `--boot-lede-step` is measured against, so the two move together or the
+   overlap ratio drifts. `--motion-slow` still owns every other arrival. */
 body.is-armed .hero-role {
-  animation: lede-boot var(--motion-slow) var(--ease-arrive) var(--boot-lede) backwards;
+  animation: lede-boot 700ms var(--ease-arrive) var(--boot-lede) backwards;
 }
 
 body.is-armed .hero-specialization {
-  animation: lede-boot var(--motion-slow) var(--ease-arrive) calc(var(--boot-lede) + var(--boot-lede-step)) backwards;
+  animation: lede-boot 700ms var(--ease-arrive) calc(var(--boot-lede) + var(--boot-lede-step)) backwards;
 }
 
-body.is-armed .lang-switch {
-  animation: lede-boot 980ms var(--ease-arrive) var(--boot-lede) backwards;
+body.is-armed .page-controls {
+  animation: lede-boot 700ms var(--ease-arrive) var(--boot-lede) backwards;
 }
 
 /* The rail's written content, cascading section by section down a ground that
@@ -1413,8 +1622,8 @@ body.is-armed .lang-switch {
    Boot-only, with no scroll reveal: the rail barely scrolls, and two
    animations competing for one property is how reveal systems flicker. */
 body.is-armed #contacts-section  { --rail-step: 0ms; }
-body.is-armed #education-section { --rail-step: 520ms; }
-body.is-armed #languages-section { --rail-step: 800ms; }
+body.is-armed #education-section { --rail-step: 290ms; }
+body.is-armed #languages-section { --rail-step: 440ms; }
 
 body.is-armed .sidebar-section .section-heading,
 body.is-armed #contacts-section li,
@@ -1455,7 +1664,7 @@ body.is-armed .lang-item:nth-child(2) { animation-delay: calc(var(--boot-rail-it
   aspect-ratio: 1;
   margin: -7.5rem 0 0 -7.5rem;
   border-radius: 50%;
-  background: radial-gradient(circle closest-side, oklch(0.61 0.15 253 / 0.05), transparent 70%);
+  background: radial-gradient(circle closest-side, var(--halo-tint), transparent 70%);
   opacity: 0;
   translate: -50vw -50vh;
   transition: opacity 420ms var(--ease);
@@ -1713,6 +1922,44 @@ body.is-armed .lang-item:nth-child(2) { animation-delay: calc(var(--boot-rail-it
   animation-delay: 0ms;
 }
 
+/* --- ACT VI: THEME ------------------------------------------------------- */
+/* The page has exactly one other state change worth a set piece, and unlike
+   the language swap it changes every surface at once — which is precisely why
+   a cross-fade is the wrong move here. A cross-fade of everything is a dip to
+   grey. The new theme is instead revealed under an expanding circle struck
+   from the control that was pressed, so the change has an origin and reads as
+   something the visitor did.
+
+   The clip-path itself is animated from script, because its radius depends on
+   the pressed button's position and the viewport's corner distance — a CSS
+   keyframe cannot know either. Everything the stylesheet CAN own stays here.
+
+   No region names apply: those exist only under `.is-translating`. The whole
+   document is one snapshot, which is what makes a single circle able to carry
+   it. */
+:root.is-theming::view-transition-old(root) {
+  /* The outgoing theme is a still frame the circle is drawn over. Fading it
+     as well would put a grey dip under the wipe. */
+  animation: none;
+  z-index: 0;
+}
+
+:root.is-theming::view-transition-new(root) {
+  animation: none;
+  z-index: 1;
+}
+
+/* The control that fired it stays above its own wipe, so the icon is visible
+   turning over while the circle passes under it. */
+:root.is-theming .theme-toggle {
+  view-transition-name: theme-control;
+}
+
+::view-transition-group(theme-control) {
+  animation-duration: 620ms;
+  animation-timing-function: var(--ease-arrive);
+}
+
 /* --- reduced motion ------------------------------------------------------ */
 /* Dropping the animations outright is correct here precisely because the
    default state is the finished state. Capping `animation-duration` would
@@ -1757,6 +2004,30 @@ body.is-armed .lang-item:nth-child(2) { animation-delay: calc(var(--boot-rail-it
    Everything section 16 adds is decoration, so print drops all of it. */
 
 @media print {
+  /* Paper has one theme. Re-declaring the ground and the ink here rather than
+     relying on the literals further down means a visitor who prints from dark
+     mode gets the same sheet as everyone else, instead of a black rectangle
+     wherever a token slipped through. */
+  :root {
+    color-scheme: light;
+    --page-bg: #fff;
+    --surface: #fff;
+    --surface-raised: #fff;
+    --text-strong: #000;
+    --text: #000;
+    --text-soft: #444;
+    --rule: #999;
+    --accent: #000;
+    --accent-strong: #000;
+    --accent-tint: transparent;
+    --accent-border: #999;
+    --on-accent: #000;
+    --shadow-frame: none;
+    --shadow-raised: none;
+    --shadow-lifted: none;
+    --shadow-photo: none;
+  }
+
   @page {
     margin: 14mm;
   }
