@@ -41,7 +41,7 @@ A practical end-to-end AI engineer: bridges rigorous machine learning / robotics
 ## Evidence on Hand
 
 - Current codebase in index.html, lang.js (complete bilingual copy dictionary), and output.css.
-- Profile photograph (`profile.png`, 800x800). `profile-400.jpg` and `profile-full.jpg` are cut from it: the first is a head-and-shoulders crop for the rail's 152px circle, the second keeps the whole frame for the modal. Regenerate both from the master rather than editing them.
+- Profile photograph (`profile-source.jpg`, 1536x2048). `profile-400.jpg` and `profile-full.jpg` are cut from it: the first is a head-and-shoulders crop for the rail's 152px circle, the second keeps the whole frame for the modal. Regenerate both from the master rather than editing them.
 - Verified academic record: Vilnius TECH (2022–present), 9/10 GPA.
 - Commercial & applied experience: NNCODE (AI Engineer), BeamNG autonomous driving pipeline, CareerCopilot assistant, and practical automation pipelines.
 
