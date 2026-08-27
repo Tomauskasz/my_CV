@@ -103,6 +103,8 @@
     frameValue,
   };
 
-  // `globalThis` rather than `window`: the test runs this same file in Node.
-  globalThis.CVNumbers = api;
+  /* Frozen, so the one global this page adds is a table of constants rather
+     than shared mutable state. `globalThis` rather than `window` because the
+     test runs this same file, unmodified, in Node. */
+  globalThis.CVNumbers = Object.freeze(api);
 })();

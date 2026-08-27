@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 // imported. No test-only export exists in it, and none should.
 const source = readFileSync(fileURLToPath(new URL("../numbers.js", import.meta.url)), "utf8");
 const sandbox = {};
-new Function("globalThis", source).call(sandbox, sandbox);
+new Function("globalThis", source)(sandbox);
 
 const { NUMBER_PATTERN, COUNT_DURATION, describeNumber, countExponent, frameValue } =
   sandbox.CVNumbers;

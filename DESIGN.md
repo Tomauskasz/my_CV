@@ -629,8 +629,8 @@ published figure.
 detector flags that class of easing as dated by default. It is used here in exactly five
 places, all of them an object being *released* or *snapped* into position: the language
 pill, the tilt release, the contact icon, the photo, the close button. Anything that
-merely arrives — sections, cards, the name, the frame — uses `--ease-out-expo` and
-decelerates smoothly. Do not spend the overshoot anywhere else.
+merely arrives — sections, cards, the name, the frame — uses `--ease-arrive`, which is that
+ease-out-expo shape, and decelerates smoothly. Do not spend the overshoot anywhere else.
 
 **Pointer physics need a pointer.** Everything cursor-driven is behind
 `@media (hover: hover) and (pointer: fine)` in CSS and a matching `matchMedia` guard in
@@ -703,7 +703,7 @@ Three deliberately different treatments, because three different kinds of claim:
 - **Don't cap animation duration for reduced motion.** Drop the animation. A scroll-driven
   timeline ignores duration entirely.
 - **Don't spread `--ease-back` around.** Overshoot belongs to the five release gestures
-  listed under Motion. Everything that arrives uses `--ease-out-expo`.
+  listed under Motion. Everything that arrives uses `--ease-arrive`.
 - **Don't blur a reveal.** Entrances move and fade; they do not defocus. A blur filter on
   an entrance also costs a paint per frame where translate and opacity cost none.
 - **Don't hide anything from script and rely on a callback to bring it back.**
