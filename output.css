@@ -1527,16 +1527,11 @@ body.is-armed .lang-item:nth-child(2) { animation-delay: calc(var(--boot-rail-it
 }
 
 /* --- ACT III: SCROLL ----------------------------------------------------- */
-/* Every animated declaration lives inside @supports; no hidden initial state
-   ever does. Firefox has no scroll-driven timelines yet and renders these
-   surfaces finished, which is the page as it shipped.
+/* Subjects are cards and rows, never the tall sections: a section taller than
+   the viewport would spend most of a scroll mid-entrance, which turns a reveal
+   into a crawl.
 
-   Subjects are cards and rows, never the tall sections: the `entry` range of
-   an element taller than the scrollport only completes after scrolling its
-   whole height, which turns a reveal into a crawl. Length offsets are used
-   for the same reason — they do not depend on the subject's height. */
-
-/* Reveals are observer-driven, not scroll-driven. A `view()` timeline takes its
+   Reveals are observer-driven, not scroll-driven. A `view()` timeline takes its
    progress from scroll position, so anything in the document's LAST viewport
    can never reach 100% — there is no scroll left — and it holds partway through
    its reveal, dimmed and blurred, for good. An observer fires once and the
@@ -1746,6 +1741,9 @@ body.is-armed .lang-item:nth-child(2) { animation-delay: calc(var(--boot-rail-it
     transform: scaleX(1);
   }
 
+  /* The shader is motion by definition, and this block is live: switching the
+     setting on mid-session hides it here while motion.js stops drawing it. */
+  #railCanvas,
   #cursorHalo,
   .page-main::before {
     display: none;

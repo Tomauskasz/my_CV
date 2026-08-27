@@ -27,7 +27,8 @@ A practical end-to-end AI engineer: bridges rigorous machine learning / robotics
 ## Capabilities and Constraints
 
 - **Bilingual Delivery:** First-class instant language switching (Lithuanian LT and English EN) managed via clean clientside state without full-page reload.
-- **Static Performance:** Pure HTML, CSS, and vanilla JS runtime with zero external runtime bundle dependencies, ensuring sub-second load times and high Core Web Vitals.
+- **Static Performance:** Pure HTML, CSS, and vanilla JS runtime with zero external runtime bundle dependencies, and no build step. Bytes arrive in well under a second.
+- **Arrival is authored, and it costs a metric.** The page boots as a sequence: the name, then the identity rail, then the reading stage at `--boot-stage` (3300ms), then the figures. Stage content in the first viewport is therefore held at `opacity: 0` until 3.3s by a `backwards` fill, which puts Largest Contentful Paint above the 2.5s Core Web Vitals threshold on a foreground load. This is a chosen trade, not an oversight: a recruiter who watches the evidence arrive is the point of the page. Two paths opt out and render immediately — `prefers-reduced-motion`, and any load that starts in a background tab, where `playEntrance()` defers arming. Retiring the trade means changing `--boot-stage`, not patching around it.
 - **High-Density Scanability:** Clear visual hierarchy, structured project bullet points, chronological education/experience blocks, and accessible interactive touchpoints.
 - **Accessibility:** Keyboard-navigable language toggles, ARIA labeling, semantic structure, high color contrast, and responsive layout scaling.
 

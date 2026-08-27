@@ -410,23 +410,24 @@ and it does that while travelling across the line being read.
 
 **Default state is the finished state.** Boot animations use `animation-fill-mode:
 backwards`, never `both`, so they leave behind no lingering filter, opacity or containing
-block. Scroll reveals live inside `@supports (animation-timeline: view())`; the hidden
-initial state never does. Cancel every animation on the page and nothing is left hidden,
-shifted, or blurred.
+block, and no rule anywhere states a hidden initial value. Cancel every animation on the
+page and nothing is left hidden, shifted, or blurred.
 
 **Order is a phase, not a pile of delays.** Every beat reads its start from a `--boot-*`
-token, and script reads the same tokens through `bootDelay()` rather than keeping its own
-copy — a hard-coded duplicate drifts the first time either side is retuned. The rule the
+token, and `motion.js` reads `--boot-numbers` off the computed style rather than keeping its
+own copy — a hard-coded duplicate drifts the first time either side is retuned. The rule the
 phases encode: the name arrives, then the identity rail that supports it, then the evidence.
 Numbers ticking up beside a name that has not finished assembling reads as two pages loading
 at once.
 
-**Watch the shorthand when staging a reveal.** `.on-boot` supplies the stage's delay, but the
-base reveal rules use the `animation` shorthand, which **resets `animation-delay` to 0**. Two
-of them also out-specify a two-class selector — `#about-content` on an ID, `.project-list li`
-on an extra type — so the profile paragraph silently kept animating at 0ms while everything
-around it waited. Any new reveal target needs its own `.on-boot` entry, or a base rule
-written in longhand.
+**Keep every reveal base rule at one class of specificity.** `.on-boot` supplies the stage's
+delay through a two-class selector, and the base rules use the `animation` shorthand, which
+**resets `animation-delay` to 0**. So any base rule that outweighs `.reveal-run.on-boot`
+silently keeps its element animating at 0ms while everything around it waits — which is what
+`#about-content` (an ID) and `.project-list li` (an extra type) did. Both are now wrapped in
+`:where()`, which weighs nothing. A new reveal target selected by anything heavier than a
+single class must be wrapped the same way; adding a second `.on-boot` rule for it is the
+wrong repair, because it duplicates the delay instead of removing the conflict.
 
 **The entrance waits for a visible page.** `playEntrance()` defers while `document.hidden`
 and re-arms on `visibilitychange`. A background tab never advances the animation clock,
@@ -440,7 +441,7 @@ element has no finished value of its own, like the drawn heading bar, reduced mo
 restates it. `motion.js` returns before it creates a GL context.
 
 **Reveals drive `translate`, never `transform`.** `transform` belongs to the pointer tilt.
-A `view()` animation with a `both` fill would otherwise win over the tilt permanently and
+A reveal animation with a `both` fill would otherwise win over the tilt permanently and
 freeze the cards flat.
 
 **A reveal must not depend on there being more scroll left.** Reveals were scroll-driven
@@ -455,11 +456,6 @@ the animation's own `backwards` fill supplies the hidden start while the element
 off screen. No element is ever pre-hidden by script. This is a failure-mode choice, not a
 timing one: an element the observer never reaches carries no class, and no class is the
 finished state, so a dead observer costs an animation rather than a blank card on a CV.
-
-**Counters ease out on a quint curve.** `1 - (1 - t)^5`, matching `--ease-arrive`'s shape in
-script. A counter covers most of its distance early and then crawls the last stretch, so the
-eye lands on the final figure instead of on a blur of digits — a fifth of the way through it
-is already 67% of the way to the value.
 
 **Every displayed value is a real one.** No counter ever shows an invented digit. An earlier
 version rolled the least significant digit to pad out the small numbers, and it worked, but a
@@ -486,6 +482,27 @@ tuning choice, and the only ways past it are fake digits or fake precision.
 it reflows the sentence around it on every frame and reads as precision the figure does not
 have. Values are padded to the target's own digit count and never beyond it, so with
 `tabular-nums` the prose cannot move.
+
+**Each hold belongs to the thing being held.** The counters wait twice — once for the boot
+phase, once for a language decode — and both waits live on the counters as `holdUntil`. The
+scrambler reports when its last glyph resolves and the boot reads its own token; neither
+reaches across to gate somebody else. A shared "quiet until" cell would be the same two
+waits with three writers and no owner.
+
+**One decision, one lifetime, in all three files.** `prefers-reduced-motion` is re-read every
+time it is asked for — the media block is live by definition, `lang.js` queries it per call,
+and `motion.js` holds the `MediaQueryList` and yields to it inside the loop. A copy that
+froze at load would be the one owner able to disagree with the other two: turning the setting
+on mid-session would quiet the stylesheet and the view transitions while the shader kept
+painting.
+
+**Numbers are the only part of the live layer with a test.** `numbers.js` holds how a figure
+is read, counted and printed — no DOM, no GL, no clock — and `test/numbers.test.mjs` asserts
+the invariants that matter on a CV: a count never displays a value the figure does not pass
+through, the string never changes width, and the round trip through `describeNumber` and
+`formatNumber` is exact. Run it with `node test/numbers.test.mjs`. Everything else in
+`motion.js` needs a compositing browser to mean anything and is deliberately untested;
+that gap is the reason the pure arithmetic was pulled out rather than left inline.
 
 **One loop, and it schedules itself first.** `motion.js` runs a single
 `requestAnimationFrame` driving the shader, the pointer field, the counters and the decode,

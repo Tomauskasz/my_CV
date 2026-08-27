@@ -16,7 +16,14 @@
 (() => {
   "use strict";
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  /* Live, not a one-time read. lang.js and the stylesheet both re-evaluate
+     this setting whenever it is asked for, so a copy that froze at load would
+     be the one owner of this decision that could disagree with the other two:
+     switching the OS toggle on mid-session would quiet the CSS and the view
+     transitions while this file kept painting a shader and following the
+     pointer, which is exactly what the setting exists to stop. */
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (reduced.matches) {
     return;
   }
 
@@ -369,31 +376,33 @@
     let x = -9999;
     let y = -9999;
     let active = false;
-    let stale = true;
 
     let magnets = [];
     let tilts = [];
     let stageBox = null;
     let sidebarBox = null;
 
-    /** Rects are viewport-relative, so they go stale on scroll as well as on
-     *  resize and on every re-render. Every read happens here, in one batch,
-     *  before any style is written — otherwise each write would invalidate
-     *  layout for the next read. */
-    function measure() {
+    /* Two different things go out of date, on two different schedules, so they
+       get two names. A re-render replaces the ELEMENTS, and that happens twice
+       in a session. Scrolling moves their RECTS, and that happens on most
+       frames — which is why collecting the elements is not allowed to be part
+       of it: a querySelectorAll per frame would be paying the rare cost at the
+       frequent rate. */
+    let elementsStale = true;
+    let rectsStale = true;
+
+    /** Collects what the pointer can act on. Only a render can change this. */
+    function collect() {
       magnets = [];
       for (const group of MAGNET_GROUPS) {
         for (const element of document.querySelectorAll(group.selector)) {
-          const box = element.getBoundingClientRect();
-          if (box.width === 0) {
-            continue;
-          }
           magnets.push({
             element,
             radius: group.radius,
             pull: group.pull,
-            centreX: box.left + box.width / 2,
-            centreY: box.top + box.height / 2,
+            centreX: 0,
+            centreY: 0,
+            live: false,
             offsetX: 0,
             offsetY: 0,
           });
@@ -402,22 +411,42 @@
 
       tilts = [];
       for (const element of document.querySelectorAll(TILT_SELECTOR)) {
-        const box = element.getBoundingClientRect();
-        if (box.width === 0) {
+        tilts.push({ element, box: null, limit: 0, tilting: false });
+      }
+
+      elementsStale = false;
+    }
+
+    /** Re-reads geometry. Rects are viewport-relative, so they go stale on
+     *  every scroll. Every read happens here, in one batch, before any style
+     *  is written — otherwise each write would invalidate layout for the next
+     *  read. An element measuring zero wide is not laid out yet and sits out
+     *  this pass rather than being dropped from the set. */
+    function measure() {
+      for (const magnet of magnets) {
+        const box = magnet.element.getBoundingClientRect();
+        magnet.live = box.width > 0;
+        magnet.centreX = box.left + box.width / 2;
+        magnet.centreY = box.top + box.height / 2;
+      }
+
+      for (const tilt of tilts) {
+        const box = tilt.element.getBoundingClientRect();
+        tilt.box = box.width > 0 ? box : null;
+        if (!tilt.box) {
           continue;
         }
         // The longer half-dimension governs the worst-case displacement.
         const half = Math.max(box.width, box.height) / 2;
-        const limit = Math.min(
+        tilt.limit = Math.min(
           TILT_CEILING,
           (Math.asin(Math.min(1, TILT_EDGE / half)) * 180) / Math.PI,
         );
-        tilts.push({ element, box, limit, tilting: false });
       }
 
       stageBox = stage ? stage.getBoundingClientRect() : null;
       sidebarBox = sidebar ? sidebar.getBoundingClientRect() : null;
-      stale = false;
+      rectsStale = false;
     }
 
     window.addEventListener("pointermove", (event) => {
@@ -439,18 +468,23 @@
       stage?.classList.remove("is-lit");
     });
 
-    window.addEventListener("scroll", () => { stale = true; }, { passive: true });
-    window.addEventListener("resize", () => { stale = true; });
+    window.addEventListener("scroll", () => { rectsStale = true; }, { passive: true });
+    window.addEventListener("resize", () => { rectsStale = true; });
 
     return {
+      /** The DOM was rebuilt: every element held here is detached. */
       refresh() {
-        stale = true;
+        elementsStale = true;
+        rectsStale = true;
       },
       update() {
         if (!active) {
           return;
         }
-        if (stale) {
+        if (elementsStale) {
+          collect();
+        }
+        if (rectsStale) {
           measure();
         }
 
@@ -475,6 +509,9 @@
         }
 
         for (const magnet of magnets) {
+          if (!magnet.live) {
+            continue;
+          }
           const dx = x - magnet.centreX;
           const dy = y - magnet.centreY;
           const distance = Math.hypot(dx, dy);
@@ -500,6 +537,9 @@
 
         for (const tilt of tilts) {
           const box = tilt.box;
+          if (!box) {
+            continue;
+          }
           const inside = x >= box.left && x <= box.right && y >= box.top && y <= box.bottom;
 
           if (inside) {
@@ -526,76 +566,18 @@
 
   /* ---------- the evidence counters --------------------------------------- */
 
-  /* A digit run, allowing separators only between digits, so "5–10 min."
-     yields 5 and 10 while "2 200" and "6,3" stay whole. */
-  const NUMBER_PATTERN = /\d+(?:[.,  ]\d+)*/g;
-  const COUNT_DURATION = 2287;
-
-  /** Reads the separator convention out of the string itself. The page is
-   *  bilingual and renders "6,3" in Lithuanian against "6.3" in English, so
-   *  taking the convention from the runtime locale would eventually print
-   *  one language's number in the other's format. */
-  function describeNumber(text) {
-    const parts = text.split(/[.,  ]/);
-    const separators = text.match(/[.,  ]/g) || [];
-    const tail = parts[parts.length - 1];
-
-    // A single separator with one or two digits after it is a decimal point.
-    // Three digits after it is a thousands group.
-    const isDecimal = separators.length === 1 && tail.length <= 2;
-
-    const decimals = isDecimal ? tail.length : 0;
-    const groupSeparator = isDecimal ? "" : separators[0] || "";
-    const decimalSeparator = isDecimal ? separators[0] : "";
-    const digits = isDecimal ? parts.slice(0, -1).join("") : parts.join("");
-
-    return {
-      value: Number(`${digits}.${isDecimal ? tail : "0"}`),
-      integerDigits: digits.length,
-      decimals,
-      groupSeparator,
-      decimalSeparator,
-    };
-  }
-
-  /** Pads to the target's digit count so the string never changes width
-   *  mid-count. Combined with `font-variant-numeric: tabular-nums` on
-   *  `.metric-highlight`, a number counting up inside a sentence cannot
-   *  reflow the prose around it. */
-  function formatNumber(value, spec) {
-    const fixed = value.toFixed(spec.decimals);
-    const [whole, fraction] = fixed.split(".");
-    let integer = whole.padStart(spec.integerDigits, "0");
-    if (spec.groupSeparator) {
-      integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, spec.groupSeparator);
-    }
-    return fraction ? integer + spec.decimalSeparator + fraction : integer;
-  }
-
-  /* Every counter runs for the same COUNT_DURATION, but how long one appears
-     to move is set by how many values it can display: `2 200` passes through
-     thousands, `1` through two. On a single shared curve the small ones are
-     finished while the large ones are still climbing.
-
-     So the curve is per counter. Each gets the ease-out exponent that lands
-     its LAST visible change near the same fraction of the duration —
-     `1 - (1 - t)^k` reaches the final displayed value when it passes
-     `(states - 0.5) / states`, which solves for k directly.
-
-     Clamped to [1, 5]: below 1 the curve becomes an ease-IN, which would make
-     a number sit on a wrong value and then lurch. A one-step counter is
-     therefore still the earliest to settle — at half the duration rather than
-     an eighth — and that is arithmetic, not a tuning choice. */
-  const COUNT_SETTLE_FRACTION = 0.8;
-
-  function countExponent(spec) {
-    const states = Math.max(1, Math.round(spec.value * Math.pow(10, spec.decimals)));
-    const k = Math.log(0.5 / states) / Math.log(1 - COUNT_SETTLE_FRACTION);
-    return Math.min(5, Math.max(1, k));
-  }
+  /* How a figure is read, counted and printed lives in numbers.js — it is the
+     only pure logic here, and it is asserted in test/numbers.test.mjs rather
+     than watched. */
+  const { NUMBER_PATTERN, COUNT_DURATION, describeNumber, countExponent, frameValue } =
+    globalThis.CVNumbers;
 
   function createCounters() {
     const running = [];
+    /* Nothing starts counting before this. The gate belongs here because the
+       behaviour it holds back is here; the two callers below state intent
+       instead of reaching into a shared cell. */
+    let heldUntil = 0;
 
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
@@ -612,6 +594,12 @@
     }, { rootMargin: "0px 0px -12% 0px", threshold: 0.2 });
 
     return {
+      /** Hold the counters until `when`. Numbers ticking up under text that is
+       *  still gibberish, or beside a name that has not finished assembling,
+       *  is two effects competing for one glance. */
+      holdUntil(when) {
+        heldUntil = when;
+      },
       /** Splits each metric's digit runs into their own spans. Runs after
        *  every render, because the prose is rebuilt on a language change. */
       refresh() {
@@ -649,7 +637,7 @@
         }
       },
       update(now) {
-        if (now < quietUntil) {
+        if (now < heldUntil) {
           return;
         }
 
@@ -660,10 +648,7 @@
           }
 
           const progress = Math.min(1, (now - counter.start) / COUNT_DURATION);
-          // Ease-out, exponent chosen per counter — see `countExponent`. Every
-          // frame shows a real interpolated value; nothing is ever invented.
-          const eased = 1 - Math.pow(1 - progress, counter.exponent);
-          counter.element.textContent = formatNumber(counter.spec.value * eased, counter.spec);
+          counter.element.textContent = frameValue(counter.spec, counter.exponent, progress);
 
           if (progress === 1) {
             // The authored string is restored verbatim rather than
@@ -685,12 +670,6 @@
      final row of project cards held partway through its reveal and stayed
      dimmed and blurred for good. An observer fires once and the animation runs
      on the clock, which also gives Firefox the reveals it had no timeline for. */
-
-  /* While a language change is resolving, nothing else on the page starts.
-     The counters are the main thing this holds back: numbers ticking up
-     underneath text that is still gibberish is two effects competing for the
-     same glance. Zero outside a language change, so the boot is unaffected. */
-  let quietUntil = 0;
 
   const REVEAL_SELECTOR = [
     "#about-content",
@@ -826,6 +805,14 @@
     let startAt = Infinity;
     let lastDelay = 0;
 
+    /** When the last glyph resolves. `prime` and `release` both return it so
+     *  the wiring can hold the counters until the page is readable again —
+     *  the scrambler states when it is done, it does not reach across and
+     *  gate somebody else. */
+    function settlesAt() {
+      return jobs.length ? startAt + lastDelay + DECODE_DURATION : performance.now();
+    }
+
     return {
       /** Called inside the view transition's own callback, before the browser
        *  captures the new state. That ordering is the whole point: the
@@ -859,14 +846,14 @@
         }
 
         startAt = performance.now() + DECODE_FALLBACK;
-        quietUntil = startAt + lastDelay + DECODE_DURATION;
+        return settlesAt();
       },
       /** The transition has settled and the live DOM is on screen again. */
       release() {
         if (jobs.length) {
           startAt = performance.now();
-          quietUntil = startAt + lastDelay + DECODE_DURATION;
         }
+        return settlesAt();
       },
       update(now) {
         if (!jobs.length || now < startAt) {
@@ -940,20 +927,20 @@
       const delay = parseFloat(
         getComputedStyle(document.documentElement).getPropertyValue("--boot-numbers"),
       );
-      quietUntil = performance.now() + (Number.isFinite(delay) ? delay : 3700);
+      counters.holdUntil(performance.now() + (Number.isFinite(delay) ? delay : 3700));
+      return;
     }
+
     // Synchronous, inside the transition callback: the scrambled text has to
     // be in the DOM before the browser captures the new state.
-    if (!event.detail?.initial) {
-      scrambler.prime();
-      replayContactRows();
-    }
+    counters.holdUntil(scrambler.prime());
+    replayContactRows();
   });
 
   // Fired once the view transition has settled. Scrambling any earlier would
   // put half-decoded text into the transition's own snapshot.
   document.addEventListener("cv:swapped", () => {
-    scrambler.release();
+    counters.holdUntil(scrambler.release());
     rail?.pulse();
   });
 
@@ -963,6 +950,9 @@
   // frame's work is recoverable; losing the loop is not.
   function frame(now) {
     requestAnimationFrame(frame);
+    if (reduced.matches) {
+      return;
+    }
     rail?.draw(now);
     pointer?.update();
     counters.update(now);

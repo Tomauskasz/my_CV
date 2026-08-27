@@ -298,7 +298,11 @@ function rememberLanguage(language) {
   window.history.replaceState(null, "", url);
 }
 
-function setLanguage(language, { persist = true } = {}) {
+/** `initial` is the first paint, `persist` is whether to remember the choice.
+ *  They coincide at the only two call sites today, but they are not the same
+ *  question — motion.js holds the whole boot on `initial` — so neither is
+ *  derived from the other. */
+function setLanguage(language, { persist = true, initial = false } = {}) {
   const content = translations[language];
   if (!content) {
     return;
@@ -324,7 +328,7 @@ function setLanguage(language, { persist = true } = {}) {
 
     // The stage has just been rebuilt, so every rect and counter the motion
     // layer cached now points at an element that no longer exists.
-    emit("cv:render", { language, initial: !persist });
+    emit("cv:render", { language, initial });
   };
 
   // The swap is the only real state change on this page. A view transition is
@@ -675,7 +679,7 @@ function closeModal() {
 document.addEventListener("DOMContentLoaded", () => {
   elements.profileModal = document.getElementById("profileModal");
 
-  setLanguage(initialLanguage(), { persist: false });
+  setLanguage(initialLanguage(), { persist: false, initial: true });
   playEntrance();
 
   document.querySelectorAll(".lang-option").forEach((option) => {
