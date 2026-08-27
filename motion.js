@@ -103,6 +103,7 @@
     uniform vec2 u_pointer;
     uniform float u_pulse;
     uniform float u_scroll;
+    uniform float u_dim;
 
     float hash(vec2 p) {
       return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -162,6 +163,12 @@
       colour *= mix(1.0, 0.6, u_scroll);
 
       colour = min(colour, vec3(0.21, 0.28, 0.52));
+
+      // Theme, applied AFTER the clamp so it can only ever subtract. The
+      // lightest-frame rule is a ceiling; dimming moves the whole rail below
+      // it without the ceiling needing to know a theme exists.
+      colour *= u_dim;
+
       gl_FragColor = vec4(colour, 1.0);
     }
   `;
@@ -229,6 +236,7 @@
       pointer: gl.getUniformLocation(program, "u_pointer"),
       pulse: gl.getUniformLocation(program, "u_pulse"),
       scroll: gl.getUniformLocation(program, "u_scroll"),
+      dim: gl.getUniformLocation(program, "u_dim"),
     };
 
     let width = 0;
@@ -236,6 +244,19 @@
     let onScreen = true;
     let lost = false;
     let lastDraw = 0;
+    /* Read from the stylesheet, never stored here as a number. `--rail-dim`
+       is a palette decision and the palette has one home; a copy in this file
+       would be the `--boot-numbers` mistake again, one theme later. */
+    let dim = 1;
+
+    function readDim() {
+      const value = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--rail-dim"),
+      );
+      dim = Number.isFinite(value) ? value : 1;
+    }
+
+    readDim();
     let pulse = 0;
     let scrollMax = 1;
     const pointer = { x: 0.5, y: 0.6 };
@@ -312,6 +333,11 @@
       pulse() {
         pulse = 1;
       },
+      /* The palette moved. The rail is the one surface a stylesheet cannot
+         repaint on its own, because its colour is computed in GLSL. */
+      retheme() {
+        readDim();
+      },
       draw(now) {
         if (lost || !onScreen || width === 0) {
           return;
@@ -327,6 +353,7 @@
         gl.uniform1f(uniforms.pulse, pulse);
         // scrollY is a cheap read; scrollHeight is not, so it stays cached.
         gl.uniform1f(uniforms.scroll, Math.min(1, window.scrollY / scrollMax));
+        gl.uniform1f(uniforms.dim, dim);
         gl.uniform2f(uniforms.pointer, pointer.x, pointer.y);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
         if (!canvas.classList.contains("is-live")) {
@@ -382,14 +409,24 @@
     let stageBox = null;
     let sidebarBox = null;
 
-    /* Two different things go out of date, on two different schedules, so they
-       get two names. A re-render replaces the ELEMENTS, and that happens twice
-       in a session. Scrolling moves their RECTS, and that happens on most
-       frames — which is why collecting the elements is not allowed to be part
-       of it: a querySelectorAll per frame would be paying the rare cost at the
-       frequent rate. */
+    /* Only the ELEMENT SET is cached across frames. A re-render replaces it,
+       which happens twice in a session, so `querySelectorAll` is not allowed
+       anywhere near the frame loop — that would pay a rare cost at a frequent
+       rate.
+
+       Rects are not cached, because there is no reliable list of the things
+       that move them. This used to carry a `rectsStale` flag set by `scroll`
+       and `resize`, and it shipped a bug: on a language change the decode
+       swaps every label for scrambled glyphs, the stage reflows, the pointer
+       measures THAT layout, and 1400ms later the real text reflows it back
+       with nothing to mark the cached rects stale. The skill tags then pushed
+       away from where they used to be. Enumerating invalidation causes is how
+       that happened, and font loading or a wrapped tag row would have done it
+       again — so the rects are simply re-read, in one batch, every frame the
+       pointer is active. `measure()` is idempotent by construction (see the
+       offset subtraction below), so re-reading costs a layout flush that the
+       previous frame's writes had already forced. */
     let elementsStale = true;
-    let rectsStale = true;
 
     /** Collects what the pointer can act on. Only a render can change this. */
     function collect() {
@@ -426,11 +463,24 @@
       for (const magnet of magnets) {
         const box = magnet.element.getBoundingClientRect();
         magnet.live = box.width > 0;
-        magnet.centreX = box.left + box.width / 2;
-        magnet.centreY = box.top + box.height / 2;
+        /* Minus its own displacement. The rect includes the `translate` this
+           loop wrote last frame, so measuring a pushed element would record
+           the PUSHED centre and then push it again from there — a tag under
+           the cursor would walk away from itself. Subtracting the offset
+           makes the measurement the element's rest position, which is what
+           makes calling this every frame safe. */
+        magnet.centreX = box.left + box.width / 2 - magnet.offsetX;
+        magnet.centreY = box.top + box.height / 2 - magnet.offsetY;
       }
 
       for (const tilt of tilts) {
+        /* A tilting card's rect is its ROTATED bounding box, which is the same
+           feedback loop in three dimensions. Its LAYOUT box cannot change
+           while the pointer is inside it, so the box captured on entry stays
+           correct until the pointer leaves. */
+        if (tilt.tilting) {
+          continue;
+        }
         const box = tilt.element.getBoundingClientRect();
         tilt.box = box.width > 0 ? box : null;
         if (!tilt.box) {
@@ -446,7 +496,6 @@
 
       stageBox = stage ? stage.getBoundingClientRect() : null;
       sidebarBox = sidebar ? sidebar.getBoundingClientRect() : null;
-      rectsStale = false;
     }
 
     window.addEventListener("pointermove", (event) => {
@@ -468,14 +517,10 @@
       stage?.classList.remove("is-lit");
     });
 
-    window.addEventListener("scroll", () => { rectsStale = true; }, { passive: true });
-    window.addEventListener("resize", () => { rectsStale = true; });
-
     return {
       /** The DOM was rebuilt: every element held here is detached. */
       refresh() {
         elementsStale = true;
-        rectsStale = true;
       },
       update() {
         if (!active) {
@@ -484,9 +529,7 @@
         if (elementsStale) {
           collect();
         }
-        if (rectsStale) {
-          measure();
-        }
+        measure();
 
         if (halo) {
           halo.style.translate = `${x}px ${y}px`;
@@ -921,13 +964,19 @@
     // finished assembling reads as two pages loading at once.
     if (initial) {
       // Read from the stylesheet so the timeline keeps one home; a copy here
-      // would drift the first time either is retuned. ponytail: assumes ms,
-      // as every --boot-* token is authored. Authoring one in seconds would
-      // need a unit check here.
+      // would drift the first time either is retuned -- which is exactly what
+      // the old `3700` fallback did the moment --boot-numbers moved to 2050.
+      // So there is no fallback number any more: an unreadable token means no
+      // hold at all, which costs one beat of choreography, where a stale
+      // constant silently held the evidence back for a delay nobody authored.
+      // ponytail: assumes ms, as every --boot-* token is authored. Authoring
+      // one in seconds would need a unit check here.
       const delay = parseFloat(
         getComputedStyle(document.documentElement).getPropertyValue("--boot-numbers"),
       );
-      counters.holdUntil(performance.now() + (Number.isFinite(delay) ? delay : 3700));
+      if (Number.isFinite(delay)) {
+        counters.holdUntil(performance.now() + delay);
+      }
       return;
     }
 
@@ -941,6 +990,16 @@
   // put half-decoded text into the transition's own snapshot.
   document.addEventListener("cv:swapped", () => {
     counters.holdUntil(scrambler.release());
+    rail?.pulse();
+  });
+
+  /* The theme changed. The stylesheet has already repainted everything it
+     owns; the rail is the exception, because its colour is computed in the
+     fragment shader and no cascade reaches it. The ripple is fired at the
+     same moment so the flow field is visibly travelling as the wipe crosses
+     it, rather than stepping to a new brightness after the fact. */
+  document.addEventListener("cv:theme", () => {
+    rail?.retheme();
     rail?.pulse();
   });
 
