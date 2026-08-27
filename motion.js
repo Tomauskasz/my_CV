@@ -686,18 +686,6 @@
      dimmed and blurred for good. An observer fires once and the animation runs
      on the clock, which also gives Firefox the reveals it had no timeline for. */
 
-  /** Reads a `--boot-*` token so the timeline has exactly one home. Script
-   *  that hard-codes its own copy of a delay drifts away from the stylesheet
-   *  the first time either is retuned. */
-  function bootDelay(token, fallback) {
-    const raw = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
-    const value = parseFloat(raw);
-    if (!Number.isFinite(value)) {
-      return fallback;
-    }
-    return raw.endsWith("ms") ? value : value * 1000;
-  }
-
   /* While a language change is resolving, nothing else on the page starts.
      The counters are the main thing this holds back: numbers ticking up
      underneath text that is still gibberish is two effects competing for the
@@ -847,6 +835,10 @@
        *  and re-spell itself. */
       prime() {
         jobs = [];
+        // Per-prime, like `jobs`. Left to accumulate it only ever grew toward
+        // the 460ms cap, holding the counters quiet after a switch that never
+        // needed the wait.
+        lastDelay = 0;
         const viewportHeight = window.innerHeight;
 
         for (const element of document.querySelectorAll(DECODE_SELECTOR)) {
@@ -941,7 +933,14 @@
     // on a language change. Numbers ticking up beside a name that has not
     // finished assembling reads as two pages loading at once.
     if (initial) {
-      quietUntil = performance.now() + bootDelay("--boot-numbers", 3700);
+      // Read from the stylesheet so the timeline keeps one home; a copy here
+      // would drift the first time either is retuned. ponytail: assumes ms,
+      // as every --boot-* token is authored. Authoring one in seconds would
+      // need a unit check here.
+      const delay = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--boot-numbers"),
+      );
+      quietUntil = performance.now() + (Number.isFinite(delay) ? delay : 3700);
     }
     // Synchronous, inside the transition callback: the scrambled text has to
     // be in the DOM before the browser captures the new state.

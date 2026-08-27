@@ -255,11 +255,6 @@ const translations = {
 const STORAGE_KEY = "cv-lang";
 const elements = {};
 
-/** Entrance motion plays once per load. A language switch re-renders the same
- *  content, and replaying the arrival on every toggle turns an authored moment
- *  into a tic. */
-let entrancePlayed = false;
-
 const prefersReducedMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -399,8 +394,11 @@ function createBulletList(items) {
 
 /* ---------- entrance ---------- */
 
+/** Entrance motion plays once per load: `is-armed` goes on the body and stays
+ *  there, so a language switch re-renders under an arming that has already
+ *  fired rather than replaying the arrival as a tic. */
 function playEntrance() {
-  if (entrancePlayed || prefersReducedMotion()) {
+  if (prefersReducedMotion()) {
     return;
   }
 
@@ -411,7 +409,6 @@ function playEntrance() {
     return;
   }
 
-  entrancePlayed = true;
   document.body.classList.add("is-armed");
 }
 

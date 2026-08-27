@@ -23,7 +23,6 @@ colors:
   rail-flow-far: "oklch(0.5 0.1 262 / 0.45)"
   rail-flow-deep: "oklch(0.47 0.09 246 / 0.4)"
   rule: "oklch(0.87 0.016 252)"
-  rule-strong: "oklch(0.78 0.03 252)"
   sidebar-hover: "rgba(255, 255, 255, 0.08)"
   photo-placeholder: "rgba(8, 18, 35, 0.22)"
   modal-scrim: "rgba(10, 23, 46, 0.68)"

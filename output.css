@@ -119,7 +119,6 @@ button {
   --accent-border: oklch(0.61 0.15 253 / 0.28);
 
   --rule: oklch(0.87 0.016 252);
-  --rule-strong: oklch(0.78 0.03 252);
 
   /* The rail's flow. These are the CSS aurora's stops — the fallback the rail
      shows wherever WebGL will not run. Alpha is baked in, as with
@@ -137,7 +136,6 @@ button {
   --photo-size: clamp(7.5rem, 24vw, 9.5rem);
   --rail-pad-top: clamp(1.75rem, 4vw, 2.25rem);
   --rail-gap: 1.9rem;
-  --stage-pad-top: clamp(2rem, 4vw, 3.25rem);
   --stage-pad-x: clamp(1.25rem, 4vw, 3.25rem);
   --stage-gap: clamp(2.25rem, 4vw, 3rem);
 
@@ -349,7 +347,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--stage-gap);
-  padding: var(--stage-pad-top) var(--stage-pad-x);
+  padding: clamp(2rem, 4vw, 3.25rem) var(--stage-pad-x);
 }
 
 .sidebar-shell {
@@ -1431,9 +1429,9 @@ body.is-armed #contacts-section li:nth-child(2) { animation-delay: calc(var(--bo
 body.is-armed #contacts-section li:nth-child(3) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 280ms); }
 body.is-armed #contacts-section li:nth-child(4) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 360ms); }
 body.is-armed #contacts-section li:nth-child(5) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 440ms); }
-body.is-armed .info-card:nth-child(1) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 100ms); }
-body.is-armed .info-card:nth-child(2) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 180ms); }
+body.is-armed .info-card:nth-child(1),
 body.is-armed .lang-item:nth-child(1) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 100ms); }
+body.is-armed .info-card:nth-child(2),
 body.is-armed .lang-item:nth-child(2) { animation-delay: calc(var(--boot-rail-items) + var(--rail-step) + 180ms); }
 
 /* --- ACT II: LIVE -------------------------------------------------------- */
@@ -1551,8 +1549,11 @@ body.is-armed .lang-item:nth-child(2) { animation-delay: calc(var(--boot-rail-it
    class at all, and no class is the finished state — so the worst case is a
    missing animation, never a blank card. */
 
-#about-content.reveal-run,
-.project-list li.reveal-run {
+/* `:where()` weighs nothing, which is the point: these two would otherwise
+   out-specify `.reveal-run.on-boot` below — one on an ID, one on an extra type
+   — and the `animation` shorthand resets `animation-delay` to 0 rather than
+   leaving it alone, so the boot delay would be lost on exactly these. */
+:where(#about-content, .project-list li).reveal-run {
   animation: reveal-slide 1000ms var(--ease-arrive) backwards;
 }
 
@@ -1588,15 +1589,6 @@ body.is-armed .lang-item:nth-child(2) { animation-delay: calc(var(--boot-rail-it
    visible before animating in. Reveals fired later by the observer carry no
    delay — by then the boot is over. */
 .reveal-run.on-boot {
-  animation-delay: var(--boot-stage);
-}
-
-/* Spelled out because the base rules for these two out-specify the plain
-   `.reveal-run.on-boot` — `#about-content` on an ID, `.project-list li` on an
-   extra type — and each uses the `animation` shorthand, which resets
-   `animation-delay` to 0 rather than leaving it alone. */
-#about-content.reveal-run.on-boot,
-.project-list li.reveal-run.on-boot {
   animation-delay: var(--boot-stage);
 }
 
