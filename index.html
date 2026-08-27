@@ -23,12 +23,33 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Merriweather+Sans:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400..700&family=Merriweather+Sans:wght@300..800&display=swap"
       rel="stylesheet"
     />
-    <link href="./output.css?v=23" rel="stylesheet" />
+    <link href="./output.css?v=56" rel="stylesheet" />
     <link rel="icon" href="data:," />
-    <script src="lang.js?v=23" defer></script>
+
+    <!-- Inline and before the stylesheet on purpose: this is the one thing on
+         the page that has to run before the first paint. Deferred, a dark-mode
+         visitor gets a white flash on every load. It picks the opening state
+         and nothing else; the switch itself lives in lang.js. -->
+    <script>
+      try {
+        var saved = localStorage.getItem("cv-theme");
+        document.documentElement.dataset.theme =
+          saved === "dark" || saved === "light"
+            ? saved
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+      } catch (e) {
+        // Private mode can throw on localStorage. The page still has a theme.
+        document.documentElement.dataset.theme = "light";
+      }
+    </script>
+    <script src="lang.js?v=56" defer></script>
+    <script src="numbers.js?v=56" defer></script>
+    <script src="motion.js?v=56" defer></script>
   </head>
 
   <body>
@@ -37,8 +58,36 @@
     <main id="pageContent" aria-label="Curriculum vitae">
       <section class="page-main">
         <div class="content-shell">
-          <div class="topbar-row">
-            <div class="lang-switch" role="group" id="langSwitch">
+          <div class="page-controls">
+            <!-- A toggle button, not a second segmented pair: there is no
+                 third theme, and two pills side by side would read as another
+                 language switch. -->
+            <button
+              type="button"
+              class="theme-toggle"
+              id="themeToggle"
+              aria-pressed="false"
+              aria-label="Dark theme"
+            >
+              <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4.2" />
+                <path
+                  d="M12 2.4v2.3M12 19.3v2.3M4.22 4.22l1.63 1.63M18.15 18.15l1.63 1.63M2.4 12h2.3M19.3 12h2.3M4.22 19.78l1.63-1.63M18.15 5.85l1.63-1.63"
+                />
+              </svg>
+              <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20.6 14.6A8.7 8.7 0 0 1 9.4 3.4a8.7 8.7 0 1 0 11.2 11.2Z" />
+              </svg>
+            </button>
+
+            <div
+              class="lang-switch"
+              role="group"
+              id="langSwitch"
+              data-active="LT"
+              aria-label="Language"
+            >
+              <span class="lang-indicator" aria-hidden="true"></span>
               <button type="button" class="lang-option" data-lang="LT" aria-pressed="false">
                 LT
               </button>
@@ -90,7 +139,11 @@
         </div>
       </section>
 
-      <aside class="page-sidebar">
+      <aside class="page-sidebar" aria-label="Contact details and education">
+        <!-- Painted by motion.js when WebGL is available; the CSS aurora and the
+             flat gradient below it are the two fallbacks. -->
+        <canvas id="railCanvas" aria-hidden="true"></canvas>
+
         <div class="sidebar-shell">
           <div class="profile-image-wrap">
             <button type="button" id="profileImageBtn" class="profile-image-btn">
@@ -193,5 +246,7 @@
         </svg>
       </button>
     </dialog>
+
+    <div id="cursorHalo" aria-hidden="true"></div>
   </body>
 </html>

@@ -14,3 +14,6 @@ AGENTS.md
 .gitattributes
 
 GEMINI.md
+
+# Impeccable session output, not source.
+.impeccable/critique/

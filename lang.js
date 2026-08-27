@@ -253,7 +253,101 @@ const translations = {
 };
 
 const STORAGE_KEY = "cv-lang";
+const THEME_KEY = "cv-theme";
 const elements = {};
+
+const prefersReducedMotion = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** motion.js is optional. Nothing here waits on it, checks for it, or
+ *  behaves differently when it is absent — these events go out either way. */
+const emit = (name, detail) => document.dispatchEvent(new CustomEvent(name, { detail }));
+
+/* ---------- theme ---------- */
+
+/* The opening state is chosen by the inline script in <head>, because it has
+   to be settled before the first paint. Everything from the first click on
+   lives here. */
+
+const currentTheme = () =>
+  document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+
+function rememberTheme(theme) {
+  try {
+    window.localStorage.setItem(THEME_KEY, theme);
+  } catch {
+    // Private mode or blocked storage: the switch still works for this visit.
+  }
+}
+
+/** Swaps the palette under an expanding circle struck from the control that
+ *  was pressed.
+ *
+ *  A cross-fade is the obvious move and the wrong one: a theme change moves
+ *  every surface at once, so fading the whole document into the whole
+ *  document is a dip through grey with no direction in it. A circle has an
+ *  origin, and the origin is the button, which is what makes the change read
+ *  as something the visitor did rather than something that happened to them.
+ *
+ *  The radius has to reach the furthest corner from that origin, and neither
+ *  the origin nor the corner is knowable in CSS — which is why this one
+ *  animation is scripted while its staging stays in the stylesheet. */
+function setTheme(theme, origin) {
+  const apply = () => {
+    document.documentElement.dataset.theme = theme;
+    elements.themeToggle?.setAttribute("aria-pressed", String(theme === "dark"));
+  };
+
+  rememberTheme(theme);
+
+  // The rail's shader reads its own dimming from the stylesheet, so it is
+  // told immediately rather than on settle: the flow should already be
+  // travelling as the circle passes over it, not step down afterwards.
+  const announce = () => emit("cv:theme", { theme });
+
+  if (!document.startViewTransition || prefersReducedMotion() || document.hidden) {
+    apply();
+    announce();
+    return;
+  }
+
+  document.documentElement.classList.add("is-theming");
+  const transition = document.startViewTransition(apply);
+
+  transition.ready
+    .then(() => {
+      const reach = Math.hypot(
+        Math.max(origin.x, window.innerWidth - origin.x),
+        Math.max(origin.y, window.innerHeight - origin.y),
+      );
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${origin.x}px ${origin.y}px)`,
+            `circle(${reach}px at ${origin.x}px ${origin.y}px)`,
+          ],
+        },
+        {
+          duration: 620,
+          // Matches `--ease-arrive`. The wipe is an arrival like any other:
+          // most of the distance immediately, then a long settle.
+          easing: "cubic-bezier(0.06, 0.94, 0.13, 1)",
+          pseudoElement: "::view-transition-new(root)",
+        },
+      );
+      announce();
+    })
+    .catch(() => {
+      // Superseded by a second click, or the tab went hidden mid-flight. The
+      // palette has still swapped, so there is nothing to recover — but the
+      // rail has not been told yet, and an uncaught rejection is a console
+      // error on a page whose baseline is zero.
+      announce();
+    });
+
+  const settle = () => document.documentElement.classList.remove("is-theming");
+  transition.finished.then(settle, settle);
+}
 
 /* ---------- language ---------- */
 
@@ -291,24 +385,71 @@ function rememberLanguage(language) {
   window.history.replaceState(null, "", url);
 }
 
-function setLanguage(language, { persist = true } = {}) {
+/** `initial` is the first paint, `persist` is whether to remember the choice.
+ *  They coincide at the only two call sites today, but they are not the same
+ *  question — motion.js holds the whole boot on `initial` — so neither is
+ *  derived from the other. */
+function setLanguage(language, { persist = true, initial = false } = {}) {
   const content = translations[language];
   if (!content) {
     return;
   }
 
-  document.documentElement.lang = language === "LT" ? "lt" : "en";
-  document.title = content.docTitle;
-
-  document.querySelectorAll(".lang-option").forEach((option) => {
-    option.setAttribute("aria-pressed", String(option.dataset.lang === language));
-  });
-
   if (persist) {
     rememberLanguage(language);
   }
 
-  updateContent(content);
+  const apply = () => {
+    document.documentElement.lang = language === "LT" ? "lt" : "en";
+    document.title = content.docTitle;
+
+    document.querySelectorAll(".lang-option").forEach((option) => {
+      option.setAttribute("aria-pressed", String(option.dataset.lang === language));
+    });
+
+    // The sliding fill follows this attribute. `aria-pressed` above remains
+    // the state of record; this is only what the eye tracks.
+    document.getElementById("langSwitch")?.setAttribute("data-active", language);
+
+    updateContent(content);
+
+    // The stage has just been rebuilt, so every rect and counter the motion
+    // layer cached now points at an element that no longer exists.
+    emit("cv:render", { language, initial });
+  };
+
+  // The swap is the only real state change on this page. A view transition is
+  // what makes it read as the document translating rather than teleporting;
+  // without support the callback simply runs, which is today's behaviour.
+  // The first render is excluded: it has nothing to transition from, it must
+  // stay synchronous, and there is no prior state to cross-fade from.
+  if (persist && document.startViewTransition && !prefersReducedMotion() && !document.hidden) {
+    // A transition that is skipped or superseded — a fast double-click on the
+    // switch, or a tab hidden mid-flight — rejects `ready`. The DOM update
+    // still runs, so there is nothing to recover from; it just must not be
+    // left unhandled, because that surfaces as a console error.
+    // The nine region names exist only under this class, so only the language
+    // swap gets the staggered wave. Without it the photo morph inherited the
+    // same nine snapshots and their delays.
+    document.documentElement.classList.add("is-translating");
+
+    const transition = document.startViewTransition(apply);
+    transition.ready.catch(() => {});
+    // Both arms, deliberately. The scrambled text is already in the DOM by
+    // this point — it was written inside `apply` so the transition could
+    // capture it — so a rejected `finished` that skipped this would leave the
+    // page in glyphs with nothing scheduled to resolve them.
+    const settle = () => {
+      document.documentElement.classList.remove("is-translating");
+      emit("cv:swapped", { language });
+    };
+    transition.finished.then(settle, settle);
+  } else {
+    apply();
+    if (persist) {
+      emit("cv:swapped", { language });
+    }
+  }
 }
 
 /* ---------- rendering ---------- */
@@ -340,6 +481,26 @@ function createBulletList(items) {
   });
 
   return list;
+}
+
+/* ---------- entrance ---------- */
+
+/** Entrance motion plays once per load: `is-armed` goes on the body and stays
+ *  there, so a language switch re-renders under an arming that has already
+ *  fired rather than replaying the arrival as a tic. */
+function playEntrance() {
+  if (prefersReducedMotion()) {
+    return;
+  }
+
+  // A background tab never advances the animation clock, so arming now would
+  // hold the page at opacity 0 behind a fill-mode the visitor never sees.
+  if (document.hidden) {
+    document.addEventListener("visibilitychange", playEntrance, { once: true });
+    return;
+  }
+
+  document.body.classList.add("is-armed");
 }
 
 function renderSkills(container, skills) {
@@ -415,8 +576,9 @@ function renderResearch(container, entries) {
 function renderProjects(container, projects) {
   container.replaceChildren();
 
-  projects.forEach((project) => {
+  projects.forEach((project, index) => {
     const article = el("article", "compact-project-card");
+    article.style.setProperty("--i", index);
     article.append(
       el("h3", "project-title", project.title),
       el("p", "project-desc", project.description),
@@ -537,8 +699,66 @@ function updateContent(content) {
    inerting and focus restoration natively, and CSS `allow-discrete` runs the
    fade. Nothing here duplicates any of it. */
 
+const PHOTO_NAME = "profile-photo";
+
+/** Hands one `view-transition-name` from the thumbnail to the modal image
+ *  and back. It cannot be declared in CSS on both, because a name live on
+ *  two elements at once makes the transition invalid — so it is assigned
+ *  immediately before each capture and cleared immediately after. */
+function morphPhoto(from, to, mutate) {
+  const canMorph =
+    document.startViewTransition && !prefersReducedMotion() && !document.hidden && from && to;
+
+  if (!canMorph) {
+    mutate();
+    return;
+  }
+
+  from.style.viewTransitionName = PHOTO_NAME;
+  elements.profileModal?.classList.add("is-morphing");
+  document.documentElement.classList.add("is-zooming");
+
+  const transition = document.startViewTransition(() => {
+    from.style.viewTransitionName = "";
+    to.style.viewTransitionName = PHOTO_NAME;
+    mutate();
+  });
+
+  transition.ready.catch(() => {});
+  transition.finished
+    .finally(() => {
+      from.style.viewTransitionName = "";
+      to.style.viewTransitionName = "";
+      elements.profileModal?.classList.remove("is-morphing");
+      document.documentElement.classList.remove("is-zooming");
+    })
+    .catch(() => {});
+}
+
 function openModal() {
-  elements.profileModal?.showModal();
+  const dialog = elements.profileModal;
+  if (!dialog) {
+    return;
+  }
+
+  morphPhoto(
+    document.getElementById("profileImage"),
+    document.getElementById("modalProfileImg"),
+    () => dialog.showModal(),
+  );
+}
+
+function closeModal() {
+  const dialog = elements.profileModal;
+  if (!dialog?.open) {
+    return;
+  }
+
+  morphPhoto(
+    document.getElementById("modalProfileImg"),
+    document.getElementById("profileImage"),
+    () => dialog.close(),
+  );
 }
 
 /* ---------- wiring ---------- */
@@ -546,23 +766,42 @@ function openModal() {
 document.addEventListener("DOMContentLoaded", () => {
   elements.profileModal = document.getElementById("profileModal");
 
-  setLanguage(initialLanguage(), { persist: false });
+  setLanguage(initialLanguage(), { persist: false, initial: true });
+  playEntrance();
 
   document.querySelectorAll(".lang-option").forEach((option) => {
     option.addEventListener("click", () => setLanguage(option.dataset.lang));
   });
 
+  elements.themeToggle = document.getElementById("themeToggle");
+  elements.themeToggle?.setAttribute("aria-pressed", String(currentTheme() === "dark"));
+  elements.themeToggle?.addEventListener("click", (event) => {
+    // The circle is struck from the middle of the button that was pressed, so
+    // a keyboard activation and a click open from the same point.
+    const box = event.currentTarget.getBoundingClientRect();
+    setTheme(currentTheme() === "dark" ? "light" : "dark", {
+      x: box.left + box.width / 2,
+      y: box.top + box.height / 2,
+    });
+  });
+
   document.getElementById("profileImageBtn")?.addEventListener("click", openModal);
 
-  elements.profileModal
-    ?.querySelector(".modal-close-btn")
-    ?.addEventListener("click", () => elements.profileModal.close());
+  elements.profileModal?.querySelector(".modal-close-btn")?.addEventListener("click", closeModal);
 
   // A click that lands on the dialog element itself is a click on the
   // backdrop; anything inside the photo or the button stops here.
   elements.profileModal?.addEventListener("click", (event) => {
     if (event.target === elements.profileModal) {
-      elements.profileModal.close();
+      closeModal();
     }
+  });
+
+  // Escape closes a <dialog> natively, which would skip the morph and leave
+  // Escape looking like a different control from the close button. The
+  // dialog still closes — it just takes the same route.
+  elements.profileModal?.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeModal();
   });
 });
